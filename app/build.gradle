@@ -1,6 +1,12 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'com.android.application'
 }
+
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
 
 android {
     compileSdk 30
@@ -10,7 +16,7 @@ android {
         minSdk 22
         targetSdk 30
         versionCode 1
-        versionName "1.0"
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -19,6 +25,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    def timestamp = new SimpleDateFormat("yyyyMMddHHmm").format(new Date())
+                    def type = buildType.name
+                    def appVersionName = "${applicationId}-v${versionName}"
+
+                    outputFileName = "${appVersionName}-${timestamp}-${type}.apk"
+                }
+            }
         }
     }
     compileOptions {
