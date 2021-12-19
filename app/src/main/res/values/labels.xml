@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Add UI labels here -->
+<resources>
+    <string name="app_login">SCT Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password</string>
+</resources>

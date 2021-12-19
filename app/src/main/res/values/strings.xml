@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SCTP</string>
+    <string name="login">Login</string>
 </resources>
