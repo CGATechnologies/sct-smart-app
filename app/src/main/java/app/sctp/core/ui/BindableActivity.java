@@ -22,6 +22,7 @@ public abstract class BindableActivity extends BaseActivity {
         return (T) viewBinding;
     }
 
+    @SuppressWarnings("unchecked")
     protected <T extends View> T getRootView() {
         return (T) getViewBinding().getRoot();
     }
@@ -30,7 +31,7 @@ public abstract class BindableActivity extends BaseActivity {
      * Override to bind views
      *
      * @param inflater .
-     * @return
+     * @return .
      */
     protected abstract ViewBinding bindViews(LayoutInflater inflater);
 }

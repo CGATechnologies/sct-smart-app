@@ -2,19 +2,27 @@ package app.sctp.app;
 
 import android.app.Application;
 
-import retrofit2.Retrofit;
+import app.sctp.core.ApplicationConfiguration;
+
 
 public class SctApplication extends Application {
+
+    private static SctApplication instance;
+    private ApplicationConfiguration configuration;
+
+    public static SctApplication getInstance() {
+        return instance;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        initComponents();
+        instance = this;
+        configuration = new ApplicationConfiguration(this);
+        configuration.refreshUserDetailsIfAvailable();
     }
 
-    private void initComponents() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .build();
+    public ApplicationConfiguration getConfiguration() {
+        return configuration;
     }
 }

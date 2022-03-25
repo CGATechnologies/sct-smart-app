@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ScrollView
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                tools:text="Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/district"
+                tools:text="Likoma Districts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <app.sctp.core.ui.CardViewMenuItem
+                    android:id="@+id/targetingCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/gap1"
+                    app:labelText="@string/label_targeting"
+                    app:menuIcon="@drawable/ic_targeting"
+                    app:targetAction="@+id/action_home_to_targeting" />
+
+                <View
+                    android:id="@+id/gap1"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
+
+                <app.sctp.core.ui.CardViewMenuItem
+                    android:id="@+id/caseManagementCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@+id/gap1"
+                    app:labelText="Case Mgmt"
+                    app:menuIcon="@drawable/ic_case_management" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <app.sctp.core.ui.CardViewMenuItem
+                    android:id="@+id/grmCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/gap2"
+                    app:labelText="@string/label_grm"
+                    app:menuIcon="@drawable/ic_targeting" />
+
+                <View
+                    android:id="@+id/gap2"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
+
+
+                <app.sctp.core.ui.CardViewMenuItem
+                    android:id="@+id/transfersCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@+id/gap2"
+                    app:CardViewMenuItemStatus="Disabled"
+                    app:labelText="@string/label_transfers"
+                    app:menuIcon="@drawable/ic_transfers" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <app.sctp.core.ui.CardViewMenuItem
+                    android:id="@+id/monAndEvalCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/gap3"
+                    app:labelText="@string/monitoring_and_evaluation"
+                    app:menuIcon="@drawable/ic_monitoring_and_evaluation" />
+
+                <View
+                    android:id="@+id/gap3"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
+
+                <app.sctp.core.ui.CardViewMenuItem
+                    android:id="@+id/administrationCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@+id/gap3"
+                    app:labelText="@string/label_administration"
+                    app:menuIcon="@drawable/ic_administration"
+                    app:targetAction="@+id/action_home_to_administration" />
+
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="4dp"
+                tools:text="v1.0.0" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

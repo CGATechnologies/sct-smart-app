@@ -1,0 +1,47 @@
+package app.sctp.core;
+
+import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+public final class SharedPreferenceAccessor {
+    private static final String KEY_ACCESS_TOKEN = "access_token";
+    private static final String UPDATE_AVAILABLE = "app_update_available";
+    private static final String UPDATE_MANDATORY = "app_update_mandatory";
+
+
+    private final Application application;
+
+    public SharedPreferenceAccessor(Application applicationContext) {
+        this.application = applicationContext;
+    }
+
+    private SharedPreferences getPrefs() {
+        return PreferenceManager.getDefaultSharedPreferences(application);
+    }
+
+    private SharedPreferences.Editor getEditor() {
+        return getPrefs().edit();
+    }
+
+    public String getAccessToken() {
+        return getPrefs()
+                .getString(KEY_ACCESS_TOKEN, null);
+    }
+
+    public void setAccessToken(String accessToken) {
+        getEditor()
+                .putString(KEY_ACCESS_TOKEN, accessToken)
+                .apply();
+    }
+
+    public boolean hasAccessToken() {
+        return getAccessToken() != null;
+    }
+
+    public void setUpdateAvailable(Boolean updateAvailable, Boolean mandatoryUpdate) {
+        getEditor().putBoolean(UPDATE_AVAILABLE, updateAvailable)
+                .putBoolean(UPDATE_MANDATORY, mandatoryUpdate)
+                .apply();
+    }
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CardViewMenuItem">
+        <attr name="labelText" format="string|reference" localization="suggested" />
+        <attr name="menuIcon" format="reference" />
+        <attr name="CardViewMenuItemStatus" />
+        <attr name="targetAction" format="reference" />
+    </declare-styleable>
+
+    <attr name="CardViewMenuItemStatus" format="enum">
+        <enum name="Enabled" value="0" />
+        <enum name="Disabled" value="1" />
+    </attr>
+</resources>

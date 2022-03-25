@@ -6,4 +6,16 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password</string>
+    <string name="label_targeting">Targeting</string>
+    <string name="label_administration">Administration</string>
+    <string name="label_home">Home</string>
+    <string name="label_case_management">Case Management</string>
+    <string name="label_transfers">Transferrs</string>
+    <string name="label_grm">GRM</string>
+    <string name="monitoring_and_evaluation"><![CDATA[M&E]]></string>
+    <string name="label_loading">Loading...</string>
+    <string name="app_outdated_version">You are using an outdated version. Please update now</string>
+    <string name="auth_invalid_credentials">Invalid login credentials</string>
+    <string name="processing_wait">Processing. Please wait...</string>
+    <string name="app_network_fail">Failed to connect to server. Make sure you have an internet connection</string>
 </resources>

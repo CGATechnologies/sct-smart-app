@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SCTP</string>
     <string name="login">Login</string>
+    <string name="auth_account_locked">Inactive account or district user profile is deactivated.</string>
 </resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="app.sctp.home.HomeFragment"
+        android:label="@string/label_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_targeting"
+            app:destination="@id/targetingFragment" />
+
+        <action
+            android:id="@+id/action_home_to_administration"
+            app:destination="@id/administrationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/targetingFragment"
+        android:name="app.sctp.targeting.TargetingFragment"
+        android:label="@string/label_targeting"
+        tools:layout="@layout/fragment_blank" />
+
+    <fragment
+        android:id="@+id/administrationFragment"
+        android:name="app.sctp.administration.Administration"
+        android:label="@string/label_administration"
+        tools:layout="@layout/fragment_administration" />
+
+</navigation>
