@@ -13,6 +13,7 @@ import app.sctp.app.SctApplication;
 import app.sctp.core.net.api.AppVersionInterceptor;
 import app.sctp.core.net.api.AuthorizationTokenInterceptor;
 import app.sctp.core.net.api.HttpLoggingInterceptor;
+import app.sctp.core.net.api.ext.SctpApiCallAdapterFactory;
 import app.sctp.user.UserDetails;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -46,6 +47,7 @@ public class ApplicationConfiguration {
 
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(this.apiBaseUrl)
+                .addCallAdapterFactory(new SctpApiCallAdapterFactory(gson))
                 //.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)

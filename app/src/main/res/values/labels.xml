@@ -18,4 +18,5 @@
     <string name="auth_invalid_credentials">Invalid login credentials</string>
     <string name="processing_wait">Processing. Please wait...</string>
     <string name="app_network_fail">Failed to connect to server. Make sure you have an internet connection</string>
+    <string name="auth_success">Successfully logged in!</string>
 </resources>

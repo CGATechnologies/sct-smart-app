@@ -5,11 +5,13 @@ import android.content.Context;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.StringRes;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import app.sctp.LoginActivity;
 import app.sctp.R;
 
 public final class UiUtils {
@@ -58,5 +60,9 @@ public final class UiUtils {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setMessage(context.getText(R.string.processing_wait));
         return dialog;
+    }
+
+    public static void toast(Context context, @StringRes int resId) {
+        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
     }
 }
