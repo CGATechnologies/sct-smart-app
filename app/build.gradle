@@ -7,8 +7,8 @@ plugins {
 
 def versionMajor = 1
 def versionMinor = 1
-def versionPatch = 0
-def versionCodeSerial = 1
+def versionPatch = 1
+def versionCodeSerial = 2
 
 def nav_version = "2.4.1"
 def retrofit_version = "2.9.0"

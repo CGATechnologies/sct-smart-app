@@ -6,6 +6,7 @@ public class GeoLocation {
     private Long id;
     private String name;
     private BigInteger code;
+    private LocationType locationType;
 
     public Long getId() {
         return id;
@@ -29,5 +30,13 @@ public class GeoLocation {
 
     public void setCode(BigInteger code) {
         this.code = code;
+    }
+
+    public LocationType getLocationType() {
+        return locationType;
+    }
+
+    public void setLocationType(LocationType locationType) {
+        this.locationType = locationType;
     }
 }
