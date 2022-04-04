@@ -21,6 +21,7 @@
 
         <activity
             android:name=".StartupActivity"
+            android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
             android:windowSoftInputMode="adjustResize">
@@ -31,8 +32,18 @@
         </activity>
 
 
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:excludeFromRecents="true"
+            android:parentActivityName=".StartupActivity" />
+
+        <activity
+            android:name=".targeting.ui.activities.LocationSelectionActivity"
+            android:label="@string/title_select_location"
+            android:theme="@style/Theme.SCTP.Windowed" />
 
     </application>
 

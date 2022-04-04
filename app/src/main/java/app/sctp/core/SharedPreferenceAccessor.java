@@ -8,6 +8,8 @@ public final class SharedPreferenceAccessor {
     private static final String KEY_ACCESS_TOKEN = "access_token";
     private static final String UPDATE_AVAILABLE = "app_update_available";
     private static final String UPDATE_MANDATORY = "app_update_mandatory";
+    private static final String KEY_SELECTED_VILLAGE = "target.village";
+    private static final String KEY_SUPPRESS_LOCATION_PROMPT = "target.suppress_location_prompt";
 
 
     private final Application application;
@@ -35,6 +37,10 @@ public final class SharedPreferenceAccessor {
                 .apply();
     }
 
+    public boolean getBoolean(String key, boolean defaultValue) {
+        return getPrefs().getBoolean(key, defaultValue);
+    }
+
     public boolean hasAccessToken() {
         return getAccessToken() != null;
     }
@@ -42,6 +48,19 @@ public final class SharedPreferenceAccessor {
     public void setUpdateAvailable(Boolean updateAvailable, Boolean mandatoryUpdate) {
         getEditor().putBoolean(UPDATE_AVAILABLE, updateAvailable)
                 .putBoolean(UPDATE_MANDATORY, mandatoryUpdate)
+                .apply();
+    }
+
+    public boolean isLocationSelected() {
+        return getBoolean(KEY_SELECTED_VILLAGE, false);
+    }
+
+    public boolean getSuppressInitialLocationPrompt() {
+        return getBoolean(KEY_SUPPRESS_LOCATION_PROMPT, false);
+    }
+
+    public void setSuppressInitialLocationPrompt(boolean suppress) {
+        getEditor().putBoolean(KEY_SUPPRESS_LOCATION_PROMPT, suppress)
                 .apply();
     }
 }

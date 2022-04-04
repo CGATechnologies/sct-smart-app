@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/targetingFragment"
-        android:name="app.sctp.targeting.TargetingFragment"
+        android:name="app.sctp.targeting.fragments.TargetingFragment"
         android:label="@string/label_targeting"
         tools:layout="@layout/fragment_blank" />
 

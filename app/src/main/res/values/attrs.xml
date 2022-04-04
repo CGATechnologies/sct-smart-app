@@ -11,4 +11,22 @@
         <enum name="Enabled" value="0" />
         <enum name="Disabled" value="1" />
     </attr>
+
+    <declare-styleable name="LocationSelector">
+        <attr name="title" format="string|reference" />
+        <attr name="prompt" format="string|reference" />
+        <attr name="locationType" format="enum">
+            <enum name="district" value="1" />
+            <enum name="traditional_authority" value="2" />
+            <enum name="village_cluster" value="3" />
+            <enum name="zone" value="4" />
+            <enum name="village" value="5" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="StandardRecyclerView">
+        <attr name="empty_label" format="string|reference" />
+        <attr name="allow_filter" format="boolean|reference" />
+        <attr name="filter_hint" format="string|reference" />
+    </declare-styleable>
 </resources>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.viewbinding.ViewBinding;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,6 +31,13 @@ public class LoginActivity extends BindableActivity {
 
     private AcivityLoginBinding binding;
     private AuthenticationRequest authenticationRequest;
+
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 
     @Override
     protected ViewBinding bindViews(LayoutInflater inflater) {

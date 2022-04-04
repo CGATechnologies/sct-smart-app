@@ -1,6 +1,7 @@
 package app.sctp.user;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 public class UserDetails implements Serializable {
     private String guid;
@@ -11,6 +12,7 @@ public class UserDetails implements Serializable {
     private String authority;
     private String districtName;
     private String authorityName;
+    private Long districtCode;
 
     public String getGuid() {
         return guid;
@@ -38,6 +40,14 @@ public class UserDetails implements Serializable {
 
     public Long getDistrictId() {
         return districtId;
+    }
+
+    public Long getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(Long districtCode) {
+        this.districtCode = districtCode;
     }
 
     public void setDistrictId(Long districtId) {

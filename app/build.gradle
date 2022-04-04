@@ -11,6 +11,8 @@ def versionPatch = 1
 def versionCodeSerial = 2
 
 def nav_version = "2.4.1"
+def room_version = "2.4.2"
+def paging_version = "2.1.2"
 def retrofit_version = "2.9.0"
 
 def localProperties = new Properties()
@@ -28,10 +30,11 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        Properties properties = new Properties()
-
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-        manifestPlaceholders = [MAPS_API_KEY: "${properties.getProperty('MAPS_API_KEY')}"]
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
 
     }
 
@@ -84,12 +87,22 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.auth0.android:jwtdecode:2.0.1'
 
+    // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
-
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
 
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
 
+    // room
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // paging
+    implementation "androidx.room:room-paging:$room_version"
+    //noinspection GradleDependency
+    implementation "androidx.paging:paging-runtime:$paging_version"
 }

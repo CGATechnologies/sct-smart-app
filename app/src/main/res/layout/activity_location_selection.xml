@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:fillViewport="true"
+    android:measureAllChildren="true"
+
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/select_location_of_operations"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="?attr/colorPrimarySurface" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="0dp"
+        app:cardUseCompatPadding="false">
+
+        <app.sctp.core.ui.views.LocationSelector
+            android:id="@+id/ta_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            app:locationType="traditional_authority"
+            app:prompt="@string/select_traditional_authority"
+            app:title="@string/traditional_authority" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:padding="0dp"
+        app:cardCornerRadius="0dp"
+        app:cardUseCompatPadding="false">
+
+        <app.sctp.core.ui.views.LocationSelector
+            android:id="@+id/village_cluster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            app:locationType="village_cluster"
+            app:prompt="@string/select_village_cluster"
+            app:title="@string/village_cluster" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="0dp"
+        app:cardUseCompatPadding="false">
+
+        <app.sctp.core.ui.views.LocationSelector
+            android:id="@+id/zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            app:locationType="zone"
+            app:prompt="@string/select_zone"
+            app:title="@string/zone" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:padding="0dp"
+        app:cardCornerRadius="0dp"
+        app:cardUseCompatPadding="false">
+
+        <app.sctp.core.ui.views.LocationSelector
+            android:id="@+id/village"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            app:locationType="village"
+            app:prompt="@string/select_village"
+            app:title="@string/village" />
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

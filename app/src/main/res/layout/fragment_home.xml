@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <app.sctp.core.ui.CardViewMenuItem
+                <app.sctp.core.ui.views.CardViewMenuItem
                     android:id="@+id/targetingCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginEnd="2dp" />
 
-                <app.sctp.core.ui.CardViewMenuItem
+                <app.sctp.core.ui.views.CardViewMenuItem
                     android:id="@+id/caseManagementCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <app.sctp.core.ui.CardViewMenuItem
+                <app.sctp.core.ui.views.CardViewMenuItem
                     android:id="@+id/grmCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                     android:layout_marginEnd="2dp" />
 
 
-                <app.sctp.core.ui.CardViewMenuItem
+                <app.sctp.core.ui.views.CardViewMenuItem
                     android:id="@+id/transfersCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -113,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <app.sctp.core.ui.CardViewMenuItem
+                <app.sctp.core.ui.views.CardViewMenuItem
                     android:id="@+id/monAndEvalCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                     android:layout_marginStart="2dp"
                     android:layout_marginEnd="2dp" />
 
-                <app.sctp.core.ui.CardViewMenuItem
+                <app.sctp.core.ui.views.CardViewMenuItem
                     android:id="@+id/administrationCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -141,6 +141,14 @@
                     app:targetAction="@+id/action_home_to_administration" />
 
             </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/logout_button"
+                android:layout_marginTop="4dp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="@string/logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/info"

@@ -12,10 +12,10 @@ import app.sctp.BuildConfig;
 import app.sctp.app.SctApplication;
 import app.sctp.core.net.api.AppVersionInterceptor;
 import app.sctp.core.net.api.AuthorizationTokenInterceptor;
-import app.sctp.core.net.api.HttpLoggingInterceptor;
 import app.sctp.core.net.api.ext.SctpApiCallAdapterFactory;
 import app.sctp.user.UserDetails;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -42,18 +42,25 @@ public class ApplicationConfiguration {
                 .callTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
                 .addInterceptor(new AppVersionInterceptor(accessor))
                 .addInterceptor(new AuthorizationTokenInterceptor(accessor))
-                .addInterceptor(new HttpLoggingInterceptor())
+                .addInterceptor(loggingInterceptor())
                 .build();
 
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(this.apiBaseUrl)
                 .addCallAdapterFactory(new SctpApiCallAdapterFactory(gson))
-                //.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();
 
         this.jwtUtils = new JwtUtils(gson);
+    }
+
+    private HttpLoggingInterceptor loggingInterceptor() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.level(BuildConfig.DEBUG
+                ? HttpLoggingInterceptor.Level.BODY
+                : HttpLoggingInterceptor.Level.NONE);
+        return interceptor;
     }
 
     public JwtUtils getJwtUtils() {
