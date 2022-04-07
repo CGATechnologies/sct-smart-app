@@ -6,14 +6,11 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.List;
-
 import app.sctp.R;
 import app.sctp.app.SctApplication;
 import app.sctp.core.ui.adapter.GenericAdapter;
 import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.DialogLocationSelectionBinding;
-import app.sctp.persistence.DatabaseCallDataObserver;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationType;
 import app.sctp.targeting.ui.LocationItemViewHolderCreator;
@@ -38,20 +35,23 @@ class SelectionDialog extends Dialog {
         locationViewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(SctApplication.getInstance())
                 .create(LocationViewModel.class);
-        geoLocationAdapter = new GenericAdapter<>(new LocationItemViewHolderCreator());
-        geoLocationAdapter.setItemSelectionListener(new ItemSelectionListener<GeoLocation>() {
-            @Override
-            public void onItemSelected(GeoLocation item) {
-                if (listener != null) {
-                    listener.onLocationSelected(item);
+
+        geoLocationAdapter = new GenericAdapter<>(new LocationItemViewHolderCreator(
+            new ItemSelectionListener<GeoLocation>() {
+                @Override
+                public void onItemSelected(GeoLocation item) {
+                    if (listener != null) {
+                        listener.onLocationSelected(item);
+                        dismiss();
+                    }
                 }
-            }
 
-            @Override
-            public void onItemLongSelected(GeoLocation item) {
+                @Override
+                public void onItemLongSelected(GeoLocation item) {
 
-            }
-        });
+                }
+            }));
+
         binding.recyclerView.setAdapter(geoLocationAdapter);
     }
 

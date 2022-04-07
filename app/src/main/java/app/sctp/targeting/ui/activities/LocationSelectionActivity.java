@@ -19,6 +19,7 @@ import app.sctp.core.net.api.ext.ApiCall;
 import app.sctp.core.net.api.ext.ApiErrorCallback;
 import app.sctp.core.ui.WindowedActivity;
 import app.sctp.core.ui.adapter.GenericAdapter;
+import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.ActivityLocationSelectionBinding;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationDownloadResponse;
@@ -50,7 +51,20 @@ public class LocationSelectionActivity extends WindowedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         locationViewModel = getViewModel(LocationViewModel.class);
-        adapter = new GenericAdapter<>(new LocationItemViewHolderCreator());
+
+        adapter = new GenericAdapter<>(new LocationItemViewHolderCreator(
+            new ItemSelectionListener<GeoLocation>() {
+                @Override
+                public void onItemSelected(GeoLocation item) {
+                    // TODO(zikani03): Handler here?
+                }
+
+                @Override
+                public void onItemLongSelected(GeoLocation item) {
+
+                }
+            }));
+
         listLocations();
     }
 
