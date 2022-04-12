@@ -1,5 +1,5 @@
 # sct-smart-app
-Companion application for the SCT MIS
+Companion application for the SCT MIS | [![Sign And Release](https://github.com/CGATechnologies/sct-smart-app/actions/workflows/android.yml/badge.svg?branch=main)](https://github.com/CGATechnologies/sct-smart-app/actions/workflows/android.yml)
 
 ## Specifications
 

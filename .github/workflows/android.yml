@@ -2,10 +2,8 @@ permissions: write-all
 name: Sign And Release
 on:
   push:
-    branches:
-      - main
-    #tags:
-    #  - v*
+    tags:
+      - v*
 env:
   KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
   API_URL: ${{ secrets.API_URL }}
