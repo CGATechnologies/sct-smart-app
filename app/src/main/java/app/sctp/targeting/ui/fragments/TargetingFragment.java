@@ -12,7 +12,7 @@ public class TargetingFragment extends BaseFragment {
 
 
     private void downloadDistrictLocations() {
-        ProgressDialog progressDialog = UiUtils.progressDialog(requireContext());
+        /*ProgressDialog progressDialog = UiUtils.progressDialog(requireContext());
         getConfiguration().getService(TargetingService.class)
                 .getLocationsUnderDistrict(10L)
                 .beforeCall(progressDialog::show)
@@ -24,6 +24,6 @@ public class TargetingFragment extends BaseFragment {
                     // TODO save data to some
                 }).onError(data -> {
             // TODO show error
-        }).execute();
+        }).execute();*/
     }
 }
