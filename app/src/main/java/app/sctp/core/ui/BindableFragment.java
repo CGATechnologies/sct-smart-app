@@ -8,12 +8,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewbinding.ViewBinding;
 
 import java.util.Locale;
 
 import app.sctp.app.SctApplication;
 import app.sctp.core.ApplicationConfiguration;
+import app.sctp.persistence.BaseRepository;
+import app.sctp.persistence.SctpAppDatabase;
+import app.sctp.persistence.SctpAppDatabase_Impl;
 
 public abstract class BindableFragment extends Fragment {
 

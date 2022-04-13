@@ -29,4 +29,9 @@
         <attr name="allow_filter" format="boolean|reference" />
         <attr name="filter_hint" format="string|reference" />
     </declare-styleable>
+
+    <declare-styleable name="DualLineTextView">
+        <attr name="line1" format="string|reference" />
+        <attr name="line2" format="string|reference" />
+    </declare-styleable>
 </resources>

@@ -41,4 +41,12 @@
     <string name="village_cluster">Village cluster</string>
     <string name="select_zone">Select zone</string>
     <string name="zone">Zone</string>
+    <string name="community_meeting">Community Meeting</string>
+    <string name="district_meeting">District\nMeeting</string>
+    <string name="location_information">Selected location</string>
+    <string name="label_community_meeting">Community Meeting</string>
+    <string name="targeting_home_summary">Select type of meeting</string>
+    <string name="auth_account_locked">Inactive account or district user profile is deactivated.</string>
+    <string name="select_village">Select village</string>
+    <string name="label_district_meeting">District Meeting</string>
 </resources>
