@@ -52,7 +52,9 @@
     <string name="label_apply">Apply</string>
     <string name="error_zone_must_be_selected">You must select a zone</string>
     <string name="error_cluster_must_be_selected">You must select a cluster</string>
-    <string name="error_ta_must_be_selected">You must select a tradional authority</string>
+    <string name="error_ta_must_be_selected">You must select a traditional authority</string>
     <string name="error_no_location_selected">You must select at least one location</string>
     <string name="location_information_summary">Click to view location details</string>
+    <string name="download_new_data">Download new data</string>
+    <string name="empty_sessions">There are not items to show.\n\nSelect \"Download new data\" in the menu above to get new data from the server.</string>
 </resources>

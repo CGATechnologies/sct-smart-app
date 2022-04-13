@@ -20,7 +20,7 @@ import app.sctp.persistence.BaseRepository;
 import app.sctp.persistence.SctpAppDatabase;
 import app.sctp.persistence.SctpAppDatabase_Impl;
 
-public abstract class BindableFragment extends Fragment {
+public abstract class BindableFragment extends BaseFragment {
 
     private ViewBinding viewBinding;
 
@@ -37,22 +37,14 @@ public abstract class BindableFragment extends Fragment {
         return (T) viewBinding;
     }
 
+    /**
+     * <p>Initialize components within {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}</p>
+     * <p>Heavy initialization should be done in {@link #onViewCreated(View, Bundle)}</p>
+     *
+     * @param savedInstance .
+     */
     protected void initializeComponents(Bundle savedInstance) {
     }
 
     protected abstract ViewBinding bindViews(LayoutInflater inflater, ViewGroup container, Bundle bundle);
-
-    protected final String format(String text, Object... args) {
-        return String.format(Locale.US, text, args);
-    }
-
-    private ApplicationConfiguration applicationConfiguration;
-
-    protected final ApplicationConfiguration getApplicationConfiguration() {
-        return applicationConfiguration;
-    }
-
-    public BindableFragment() {
-        applicationConfiguration = SctApplication.getInstance().getConfiguration();
-    }
 }

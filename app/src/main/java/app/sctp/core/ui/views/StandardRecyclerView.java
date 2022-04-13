@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,8 +53,9 @@ public class StandardRecyclerView extends RelativeLayout {
         boolean allowFiltering = true;
 
         if (attributeSet != null) {
-            TypedArray typedArray = context.obtainStyledAttributes(R.styleable.StandardRecyclerView);
-            emptyLabel = typedArray.getText(R.styleable.StandardRecyclerView_empty_label);
+            TypedArray typedArray = context
+                    .obtainStyledAttributes(attributeSet, R.styleable.StandardRecyclerView);
+            emptyLabel = typedArray.getString(R.styleable.StandardRecyclerView_empty_label);
             filterHint = typedArray.getText(R.styleable.StandardRecyclerView_filter_hint);
             allowFiltering = typedArray.getBoolean(R.styleable.StandardRecyclerView_allow_filter, true);
             typedArray.recycle();
@@ -104,6 +106,10 @@ public class StandardRecyclerView extends RelativeLayout {
 
     public void setSearchFilterListener(SearchFilterListener searchFilterListener) {
         this.searchFilterListener = searchFilterListener;
+    }
+
+    public void setEmptyLabel(@StringRes int message) {
+        binding.emptyText.setText(message);
     }
 
     private class ListObserver extends RecyclerView.AdapterDataObserver {
