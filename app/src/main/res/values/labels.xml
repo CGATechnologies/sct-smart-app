@@ -41,4 +41,20 @@
     <string name="village_cluster">Village cluster</string>
     <string name="select_zone">Select zone</string>
     <string name="zone">Zone</string>
+    <string name="community_meeting">Community Meeting</string>
+    <string name="district_meeting">District\nMeeting</string>
+    <string name="location_information">Selected location</string>
+    <string name="label_community_meeting">Community Meeting</string>
+    <string name="targeting_home_summary">Select type of meeting</string>
+    <string name="auth_account_locked">Inactive account or district user profile is deactivated.</string>
+    <string name="select_village">Select village</string>
+    <string name="label_district_meeting">District Meeting</string>
+    <string name="label_apply">Apply</string>
+    <string name="error_zone_must_be_selected">You must select a zone</string>
+    <string name="error_cluster_must_be_selected">You must select a cluster</string>
+    <string name="error_ta_must_be_selected">You must select a traditional authority</string>
+    <string name="error_no_location_selected">You must select at least one location</string>
+    <string name="location_information_summary">Click to view location details</string>
+    <string name="download_new_data">Download new data</string>
+    <string name="empty_sessions">There are not items to show.\n\nSelect \"Download new data\" in the menu above to get new data from the server.</string>
 </resources>

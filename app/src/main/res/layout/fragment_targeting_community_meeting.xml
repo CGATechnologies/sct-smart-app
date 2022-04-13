@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <app.sctp.core.ui.views.ExpandablePanel
+        android:id="@+id/location_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        app:content_background_color="@color/background_color"
+        app:layout="@layout/location_info"
+        app:panel_summary="@string/location_information_summary"
+        app:panel_title="@string/location_information" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="0dp"
+        app:cardUseCompatPadding="false">
+
+        <app.sctp.core.ui.views.StandardRecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            app:allow_filter="false"
+            app:empty_label="@string/empty_sessions" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</LinearLayout>

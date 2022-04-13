@@ -45,6 +45,11 @@
             android:label="@string/title_select_location"
             android:theme="@style/Theme.SCTP.Windowed" />
 
+        <activity
+            android:name=".targeting.ui.activities.TargetingModuleActivity"
+            android:label="@string/label_targeting"
+            android:theme="@style/Theme.SCTP.Windowed" />
+
     </application>
 
 </manifest>

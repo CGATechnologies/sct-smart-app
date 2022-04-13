@@ -1,7 +1,5 @@
 package app.sctp.core.net.api.ext;
 
-import app.sctp.core.net.api.ApiResponseCallback;
-
 public interface ApiCall<T> {
     ApiCall<T> beforeCall(NotificationCallback callback);
 

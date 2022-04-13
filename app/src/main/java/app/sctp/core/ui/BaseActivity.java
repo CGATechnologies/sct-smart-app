@@ -1,8 +1,11 @@
 package app.sctp.core.ui;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,6 +23,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         return String.format(Locale.US, format, args);
     }
 
+    private ActionBar actionBar;
+    private boolean toolbarInitialized;
     private ApplicationConfiguration applicationConfiguration;
 
     protected final ApplicationConfiguration getApplicationConfiguration() {
@@ -29,6 +34,31 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected final <T extends BaseViewModel> T getViewModel(Class<T> viewModelClass) {
         return ViewModelProvider.AndroidViewModelFactory.getInstance(SctApplication.getInstance())
                 .create(viewModelClass);
+    }
+
+    protected final void setupToolBar() {
+        if (!toolbarInitialized) {
+            actionBar = getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+            toolbarInitialized = true;
+        }
+    }
+
+    protected final void setSubTitle(CharSequence subTitle) {
+        if (actionBar != null) {
+            actionBar.setSubtitle(subTitle);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

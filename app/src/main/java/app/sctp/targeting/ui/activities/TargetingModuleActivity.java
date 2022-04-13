@@ -1,42 +1,49 @@
-package app.sctp.home;
+package app.sctp.targeting.ui.activities;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewbinding.ViewBinding;
 
-import app.sctp.BuildConfig;
-import app.sctp.LoginActivity;
-import app.sctp.MainActivity;
 import app.sctp.R;
-import app.sctp.StartupActivity;
-import app.sctp.core.ui.BindableFragment;
-import app.sctp.databinding.FragmentHomeBinding;
-import app.sctp.targeting.ui.activities.LocationSelectionActivity;
-import app.sctp.targeting.ui.activities.TargetingModuleActivity;
+import app.sctp.core.ui.BindableActivity;
+import app.sctp.databinding.ActivityTargetingModuleBinding;
 import app.sctp.user.UserDetails;
-import app.sctp.utils.UiUtils;
 
-public class HomeFragment extends BindableFragment {
+public class TargetingModuleActivity extends BindableActivity {
     private static final int REQUEST_ID_LOCATION_SELECTION = 1002;
 
-    private FragmentHomeBinding binding;
     private NavController navController;
+    private ActivityTargetingModuleBinding binding;
 
     @Override
-    protected ViewBinding bindViews(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
-        return binding = FragmentHomeBinding.inflate(inflater);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupToolBar();
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.host_fragment);
+
+        //noinspection ConstantConditions
+        navController = navHostFragment.getNavController();
+
+        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> setSubTitle(navDestination.getLabel()));
+    }
+
+    public static void launch(Context context) {
+        context.startActivity(new Intent(context, TargetingModuleActivity.class));
     }
 
     @Override
+    protected ViewBinding bindViews(LayoutInflater inflater) {
+        return binding = ActivityTargetingModuleBinding.inflate(inflater);
+    }
+
+    /*@Override
     protected void initializeComponents(Bundle savedInstance) {
         binding.info.setText(format("v%s", BuildConfig.VERSION_NAME));
         binding.targetingCard.setOnClickListener(v -> navigateToTargeting());
@@ -54,27 +61,10 @@ public class HomeFragment extends BindableFragment {
         UserDetails userDetails = getApplicationConfiguration().getUserDetails();
         binding.name.setText(userDetails.fullName());
         binding.district.setText(format("%s district", userDetails.getDistrictName()));
-    }
-
-    private NavController getNavController() {
-        if (navController != null) {
-            return navController;
-        }
-        return navController = Navigation.findNavController(binding.getRoot());
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_ID_LOCATION_SELECTION) {
-            if (resultCode == Activity.RESULT_OK) {
-                // TODO launch submodule selection screen
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
     private void navigateToTargeting() {
-        /*UserDetails userDetails = getApplicationConfiguration().getUserDetails();
+        UserDetails userDetails = getApplicationConfiguration().getUserDetails();
         boolean locationSet = getApplicationConfiguration()
                 .sharedPreferenceAccessor()
                 .isLocationSelected();
@@ -82,9 +72,7 @@ public class HomeFragment extends BindableFragment {
             LocationSelectionActivity.selectLocation(this, REQUEST_ID_LOCATION_SELECTION);
         } else {
             // target submodules selection
-            TargetingModuleActivity.launch(requireContext());
-        }*/
-        TargetingModuleActivity.launch(requireContext());
+        }
     }
 
     private void navigateToAdministration() {

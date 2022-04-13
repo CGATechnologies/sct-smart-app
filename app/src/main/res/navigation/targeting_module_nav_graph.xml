@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="app.sctp.targeting.ui.fragments.TargetingModuleFragment"
+        android:label="@string/label_home"
+        tools:layout="@layout/fragment_targeting">
+        <action
+            android:id="@+id/action_home_to_community_meeting"
+            app:destination="@id/communityMeeting"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_home_to_district_meeting"
+            app:destination="@id/districtMeeting"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/communityMeeting"
+        android:name="app.sctp.targeting.ui.fragments.CommunityMeetingFragment"
+        android:label="@string/label_community_meeting"
+        tools:layout="@layout/fragment_targeting_community_meeting">
+
+        <argument
+            android:name="selectedLocation"
+            app:argType="app.sctp.targeting.models.LocationSelection"
+            app:nullable="false" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/districtMeeting"
+        android:name="app.sctp.targeting.ui.fragments.DistrictMeetingFragment"
+        android:label="@string/label_district_meeting"
+        tools:layout="@layout/fragment_targeting_district_meeting">
+
+        <argument
+            android:name="selectedLocation"
+            app:argType="app.sctp.targeting.models.LocationSelection"
+            app:nullable="false" />
+
+    </fragment>
+
+</navigation>
