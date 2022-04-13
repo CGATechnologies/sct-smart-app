@@ -2,6 +2,8 @@ package app.sctp.core.ui.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
@@ -16,6 +18,7 @@ import app.sctp.databinding.StandardRecyclerviewBinding;
 public class StandardRecyclerView extends RelativeLayout {
     private ListObserver listObserver;
     private StandardRecyclerviewBinding binding;
+    private SearchFilterListener searchFilterListener;
 
     public StandardRecyclerView(Context context) {
         super(context);
@@ -67,6 +70,25 @@ public class StandardRecyclerView extends RelativeLayout {
         binding.emptyText.setText(emptyLabel);
         binding.searchEditInputText.setHint(filterHint);
         binding.searchFilter.setVisibility(allowFiltering ? VISIBLE : GONE);
+        //noinspection ConstantConditions
+        binding.searchFilter.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (searchFilterListener != null) {
+                    searchFilterListener.onTextUpdated(s.toString());
+                }
+            }
+        });
 
         listObserver = new ListObserver(this);
     }
@@ -78,6 +100,10 @@ public class StandardRecyclerView extends RelativeLayout {
         }
         binding.recyclerView.setAdapter(adapter);
         adapter.registerAdapterDataObserver(listObserver);
+    }
+
+    public void setSearchFilterListener(SearchFilterListener searchFilterListener) {
+        this.searchFilterListener = searchFilterListener;
     }
 
     private class ListObserver extends RecyclerView.AdapterDataObserver {
@@ -122,5 +148,9 @@ public class StandardRecyclerView extends RelativeLayout {
             boolean isEmpty = recyclerView.binding.recyclerView.getAdapter().getItemCount() == 0;
             binding.viewFlipper.setDisplayedChild(isEmpty ? 0 : 1);
         }
+    }
+
+    public interface SearchFilterListener {
+        void onTextUpdated(CharSequence text);
     }
 }

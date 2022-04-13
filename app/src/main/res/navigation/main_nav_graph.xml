@@ -10,20 +10,20 @@
         android:name="app.sctp.home.HomeFragment"
         android:label="@string/label_home"
         tools:layout="@layout/fragment_home">
-        <action
+        <!--<action
             android:id="@+id/action_home_to_targeting"
-            app:destination="@id/targetingFragment" />
+            app:destination="@id/targetingFragment" />-->
 
-        <action
+        <!--<action
             android:id="@+id/action_home_to_administration"
-            app:destination="@id/administrationFragment" />
+            app:destination="@id/administrationFragment" />-->
     </fragment>
 
-    <fragment
+    <!--<fragment
         android:id="@+id/targetingFragment"
-        android:name="app.sctp.targeting.fragments.TargetingFragment"
+        android:name="app.sctp.targeting."
         android:label="@string/label_targeting"
-        tools:layout="@layout/fragment_blank" />
+        tools:layout="@layout/fragment_blank" />-->
 
     <fragment
         android:id="@+id/administrationFragment"

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="location"
+            type="app.sctp.targeting.models.LocationSelection" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--
+                    <app.sctp.core.ui.views.DualLineTextView
+                        android:id="@+id/district"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:line1="@string/label_district" />-->
+
+        <app.sctp.core.ui.views.DualLineTextView
+            android:id="@+id/traditional_authority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:line1="@string/traditional_authority"
+            app:line2="@{location.traditionalAuthorityName}" />
+
+        <app.sctp.core.ui.views.DualLineTextView
+            android:id="@+id/village_cluster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:line1="@string/village_cluster"
+            app:line2="@{location.clusterName}" />
+
+        <app.sctp.core.ui.views.DualLineTextView
+            android:id="@+id/zone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:line1="@string/zone"
+            app:line2="@{location.zoneName}" />
+
+        <app.sctp.core.ui.views.DualLineTextView
+            android:id="@+id/village"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:line1="@string/village"
+            app:line2="@{location.villageName}" />
+
+    </LinearLayout>
+</layout>

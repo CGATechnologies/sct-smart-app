@@ -21,9 +21,12 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/summary"
+            android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            android:textSize="14sp"
             tools:text="Summary" />
 
     </merge>

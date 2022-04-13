@@ -35,6 +35,7 @@ public class DualLineTextView extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attributeSet) {
+        setOrientation(VERTICAL);
         binding = DualLineTextviewBinding.inflate(
                 LayoutInflater.from(context),
                 this,

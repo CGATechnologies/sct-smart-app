@@ -34,4 +34,15 @@
         <attr name="line1" format="string|reference" />
         <attr name="line2" format="string|reference" />
     </declare-styleable>
+
+    <declare-styleable name="ExpandablePanel">
+        <attr name="panel_title" format="string|reference" />
+        <attr name="content_background_color" format="color|reference" />
+        <attr name="panel_summary" format="string|reference" />
+        <attr name="layout" format="reference" />
+        <attr name="view_mode" format="enum">
+            <enum name="collapse" value="0" />
+            <enum name="expand" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>

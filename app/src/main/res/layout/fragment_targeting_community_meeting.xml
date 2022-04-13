@@ -6,13 +6,36 @@
     android:layout_height="match_parent"
     android:background="@color/background_color"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        style="@style/TextAppearance.AppCompat.Headline"
-        android:layout_width="wrap_content"
+    <app.sctp.core.ui.views.ExpandablePanel
+        android:id="@+id/location_information"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_community_meeting" />
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        app:content_background_color="@color/background_color"
+        app:layout="@layout/location_info"
+        app:panel_summary="@string/location_information_summary"
+        app:panel_title="@string/location_information" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="0dp"
+        app:cardUseCompatPadding="false">
+
+        <app.sctp.core.ui.views.StandardRecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            app:allow_filter="false" />
+
+    </com.google.android.material.card.MaterialCardView>
+
 
 </LinearLayout>
