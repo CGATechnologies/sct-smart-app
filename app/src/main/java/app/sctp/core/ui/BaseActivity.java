@@ -9,10 +9,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Locale;
 
 import app.sctp.app.SctApplication;
 import app.sctp.core.ApplicationConfiguration;
+import app.sctp.core.model.NotificationEvent;
 import app.sctp.persistence.BaseRepository;
 import app.sctp.persistence.BaseViewModel;
 import io.reactivex.Observable;
@@ -65,5 +70,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         applicationConfiguration = SctApplication.getInstance().getConfiguration();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(NotificationEvent event) {
+        // TODO
     }
 }

@@ -105,4 +105,7 @@ dependencies {
     implementation "androidx.room:room-paging:$room_version"
     //noinspection GradleDependency
     implementation "androidx.paging:paging-runtime:$paging_version"
+
+
+    implementation("org.greenrobot:eventbus:3.3.1")
 }
