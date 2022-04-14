@@ -1,29 +1,15 @@
 package app.sctp.targeting.models;
 
-import androidx.annotation.NonNull;
-
 import java.util.List;
 
 public class HouseholdDetailResponse {
-    @NonNull
-    private Household household;
+    private List<HouseholdDetails> householdDetails;
 
-    @NonNull
-    private List<Individual> members;
-
-    public Household getHousehold() {
-        return household;
+    public List<HouseholdDetails> getHouseholdDetails() {
+        return householdDetails;
     }
 
-    public void setHousehold(Household household) {
-        this.household = household;
-    }
-
-    public List<Individual> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Individual> members) {
-        this.members = members;
+    public void setHouseholdDetails(List<HouseholdDetails> householdDetails) {
+        this.householdDetails = householdDetails;
     }
 }

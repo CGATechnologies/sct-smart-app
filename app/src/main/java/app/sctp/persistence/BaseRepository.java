@@ -9,6 +9,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public abstract class BaseRepository {
+    public static final int DEFAULT_PAGE_SIZE = 20;
+
     private static final Handler handler;
     private static final ExecutorService executorService;
 

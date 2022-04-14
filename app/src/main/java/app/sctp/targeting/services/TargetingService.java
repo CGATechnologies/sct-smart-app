@@ -1,8 +1,6 @@
 package app.sctp.targeting.services;
 
 
-import java.util.List;
-
 import app.sctp.core.net.api.ext.ApiCall;
 import app.sctp.targeting.models.HouseholdDetailResponse;
 import app.sctp.targeting.models.TargetingSessionResponse;
@@ -14,5 +12,5 @@ public interface TargetingService {
     ApiCall<TargetingSessionResponse> getPreEligibilitySessions();
 
     @GET("/targeting/pre-eligibility/sessions/{sessionId}/households")
-    ApiCall<List<HouseholdDetailResponse>> getHouseholdsFromPreEligibilitySession(@Path("sessionId")Long sessionId);
+    ApiCall<HouseholdDetailResponse> getHouseholdsFromPreEligibilitySession(@Path("sessionId")Long sessionId);
 }
