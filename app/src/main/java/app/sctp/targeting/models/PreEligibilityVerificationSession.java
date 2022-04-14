@@ -1,8 +1,18 @@
 package app.sctp.targeting.models;
 
-import java.util.List;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class TargetingSessionResponse {
+import java.util.List;
+import java.util.Locale;
+
+import app.sctp.core.model.Diffable;
+import kotlin.jvm.Transient;
+
+@Entity(tableName = "pev_sessions")
+public class PreEligibilityVerificationSession implements Diffable {
+
+    @PrimaryKey
     private Long id;
     private String taName;
     private Long programId;
@@ -146,5 +156,19 @@ public class TargetingSessionResponse {
 
     public void setOpen(boolean open) {
         this.open = open;
+    }
+
+    public String getHouseholdCountSummary() {
+        return String.format(Locale.US, "0/%,d household%s selected",
+                households, households != 1 ? 's' : "");
+    }
+
+    public String getCreationSummary() {
+        return String.format(Locale.US, "%s • %s", createdBy, createdAt);
+    }
+
+    @Override
+    public Object getDiffValue() {
+        return id;
     }
 }

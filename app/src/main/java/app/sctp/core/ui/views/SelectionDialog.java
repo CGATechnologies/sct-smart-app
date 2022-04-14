@@ -13,7 +13,7 @@ import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.DialogLocationSelectionBinding;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationType;
-import app.sctp.targeting.ui.LocationItemViewHolderCreator;
+import app.sctp.targeting.ui.viewholders.LocationItemViewHolderCreator;
 import app.sctp.targeting.viewmodels.LocationViewModel;
 import app.sctp.utils.UiUtils;
 

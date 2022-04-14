@@ -57,4 +57,6 @@
     <string name="location_information_summary">Click to view location details</string>
     <string name="download_new_data">Download new data</string>
     <string name="empty_sessions">There are not items to show.\n\nSelect \"Download new data\" in the menu above to get new data from the server.</string>
+    <string name="error_downloading_pev_sessions">Error downloading data</string>
+    <string name="download_successful">Updated successfully!</string>
 </resources>

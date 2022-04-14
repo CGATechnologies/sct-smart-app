@@ -3,6 +3,7 @@ package app.sctp.targeting.models;
 import java.io.Serializable;
 
 public class LocationSelection implements Serializable {
+    private Long districtCode;
     private GeoLocation traditionalAuthority;
     private GeoLocation zone;
     private GeoLocation cluster;
@@ -11,11 +12,20 @@ public class LocationSelection implements Serializable {
     public LocationSelection() {
     }
 
-    public LocationSelection(GeoLocation traditionalAuthority, GeoLocation zone, GeoLocation cluster, GeoLocation village) {
+    public LocationSelection(Long districtCode, GeoLocation traditionalAuthority, GeoLocation zone, GeoLocation cluster, GeoLocation village) {
+        this.districtCode = districtCode;
         this.traditionalAuthority = traditionalAuthority;
         this.zone = zone;
         this.cluster = cluster;
         this.village = village;
+    }
+
+    public Long getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(Long districtCode) {
+        this.districtCode = districtCode;
     }
 
     public GeoLocation getTraditionalAuthority() {

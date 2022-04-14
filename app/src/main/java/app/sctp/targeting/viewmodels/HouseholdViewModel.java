@@ -82,6 +82,10 @@ public class HouseholdViewModel extends BaseViewModel {
         householdRepository.save(households);
     }
 
+    public void save(Household household) {
+        householdRepository.save(household);
+    }
+
     public LiveData<PagedList<Household>> getHouseholdsLiveData() {
         return householdsLiveData;
     }

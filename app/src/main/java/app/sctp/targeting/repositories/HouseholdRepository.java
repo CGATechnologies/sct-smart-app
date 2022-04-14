@@ -30,6 +30,11 @@ public class HouseholdRepository extends BaseRepository {
         super.post(() -> householdDao.insert(households));
     }
 
+    @Transaction
+    public void save(Household household) {
+        super.post(() -> householdDao.insert(household));
+    }
+
     public DataSource.Factory<Integer, Household> search(Long sessionId, String search) {
         return householdDao.search(sessionId, search);
     }

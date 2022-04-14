@@ -1,4 +1,4 @@
-package app.sctp.targeting.ui;
+package app.sctp.targeting.ui.viewholders;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

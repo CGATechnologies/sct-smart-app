@@ -21,23 +21,22 @@
         app:panel_summary="@string/location_information_summary"
         app:panel_title="@string/location_information" />
 
-    <com.google.android.material.card.MaterialCardView
+   <!-- <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="0dp"
         app:cardUseCompatPadding="false">
 
-        <app.sctp.core.ui.views.StandardRecyclerView
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            app:allow_filter="false"
-            app:empty_label="@string/empty_sessions" />
 
-    </com.google.android.material.card.MaterialCardView>
+
+    </com.google.android.material.card.MaterialCardView>-->
+
+    <app.sctp.core.ui.views.StandardRecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:allow_filter="false"
+        app:empty_label="@string/empty_sessions" />
 
 
 </LinearLayout>

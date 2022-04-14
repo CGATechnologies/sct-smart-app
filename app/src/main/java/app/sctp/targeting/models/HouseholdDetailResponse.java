@@ -2,7 +2,9 @@ package app.sctp.targeting.models;
 
 import java.util.List;
 
-public class HouseholdDetailResponse {
+import app.sctp.core.net.api.PagedResponse;
+
+public class HouseholdDetailResponse extends PagedResponse {
     private List<HouseholdDetails> householdDetails;
 
     public List<HouseholdDetails> getHouseholdDetails() {

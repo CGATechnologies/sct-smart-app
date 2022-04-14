@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="session"
+            type="app.sctp.targeting.models.PreEligibilityVerificationSession" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/locationCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="2dp">
+
+        <LinearLayout
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/session_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="@{session.criterionName}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:text="District Name" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/household_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{session.householdCountSummary}"
+                tools:text="3 households" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/session_info"
+                android:paddingBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{session.creationSummary}"
+                tools:text="328" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

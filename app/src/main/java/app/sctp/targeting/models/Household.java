@@ -73,7 +73,7 @@ public class Household {
     @ColumnInfo
     private Boolean cbtSelection;
 
-    @ColumnInfo
+    @ColumnInfo(index = true)
     private Long cbtSessionId;
 
     @ColumnInfo

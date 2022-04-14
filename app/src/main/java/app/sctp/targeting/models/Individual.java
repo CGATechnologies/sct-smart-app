@@ -12,7 +12,7 @@ public class Individual {
     @ColumnInfo
     private Long id;
 
-    @ColumnInfo
+    @ColumnInfo(index = true)
     private Long householdId;
 
     @ColumnInfo

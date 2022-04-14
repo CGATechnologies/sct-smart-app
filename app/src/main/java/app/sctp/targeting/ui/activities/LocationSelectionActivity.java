@@ -26,7 +26,7 @@ import app.sctp.targeting.models.LocationDownloadResponse;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.LocationType;
 import app.sctp.targeting.services.LocationService;
-import app.sctp.targeting.ui.LocationItemViewHolderCreator;
+import app.sctp.targeting.ui.viewholders.LocationItemViewHolderCreator;
 import app.sctp.targeting.viewmodels.LocationViewModel;
 import app.sctp.utils.UiUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -103,6 +103,7 @@ public class LocationSelectionActivity extends WindowedActivity {
             }
 
             LocationSelection locationSelection = new LocationSelection(
+                    getApplicationConfiguration().getUserDetails().getDistrictCode(),
                     ta, villageCluster, zone, village
             );
             setResult(RESULT_OK, new Intent().putExtra(PARAM_LOCATION, locationSelection));
