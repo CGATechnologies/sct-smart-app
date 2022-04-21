@@ -20,17 +20,29 @@ import app.sctp.core.ApplicationConfiguration;
 import app.sctp.core.model.NotificationEvent;
 import app.sctp.persistence.BaseRepository;
 import app.sctp.persistence.BaseViewModel;
+import app.sctp.utils.ComponentDebugLogger;
+import app.sctp.utils.ComponentDebugLoggerImpl;
 import io.reactivex.Observable;
 
 public abstract class BaseActivity extends AppCompatActivity {
+    private final ComponentDebugLogger componentLogger;
 
     protected String format(String format, Object... args) {
         return String.format(Locale.US, format, args);
     }
 
+
     private ActionBar actionBar;
     private boolean toolbarInitialized;
     private ApplicationConfiguration applicationConfiguration;
+
+    public BaseActivity() {
+        componentLogger = new ComponentDebugLoggerImpl(getClass().getCanonicalName());
+    }
+
+    protected ComponentDebugLogger getComponentLogger() {
+        return componentLogger;
+    }
 
     protected final ApplicationConfiguration getApplicationConfiguration() {
         return applicationConfiguration;

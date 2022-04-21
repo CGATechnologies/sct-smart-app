@@ -69,6 +69,9 @@ android {
             buildConfigField("String", "API_URL", "\"" + localProperties['api.url'] + "\"")
         }
     }
+    tasks.withType(JavaCompile) {
+        options.deprecation = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

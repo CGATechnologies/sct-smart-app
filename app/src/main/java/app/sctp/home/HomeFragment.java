@@ -74,16 +74,6 @@ public class HomeFragment extends BindableFragment {
     }
 
     private void navigateToTargeting() {
-        /*UserDetails userDetails = getApplicationConfiguration().getUserDetails();
-        boolean locationSet = getApplicationConfiguration()
-                .sharedPreferenceAccessor()
-                .isLocationSelected();
-        if (!locationSet) {
-            LocationSelectionActivity.selectLocation(this, REQUEST_ID_LOCATION_SELECTION);
-        } else {
-            // target submodules selection
-            TargetingModuleActivity.launch(requireContext());
-        }*/
         TargetingModuleActivity.launch(requireContext());
     }
 

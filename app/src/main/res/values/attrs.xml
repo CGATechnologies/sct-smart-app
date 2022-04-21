@@ -45,4 +45,6 @@
             <enum name="expand" value="1" />
         </attr>
     </declare-styleable>
+
+    <item name="view_holder_self_reference_tag" type="id" />
 </resources>

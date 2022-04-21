@@ -1,8 +1,12 @@
 package app.sctp.core.net.api;
 
-public class PagedResponse {
+import java.util.List;
+
+public class PagedResponse<T> {
     private int page;
     private int totalPages;
+    private long totalItems;
+    private List<T> items;
 
     public int getPage() {
         return page;
@@ -20,7 +24,23 @@ public class PagedResponse {
         this.totalPages = totalPages;
     }
 
-    public boolean isLastPage(){
+    public long getTotalItems() {
+        return totalItems;
+    }
+
+    public void setTotalItems(long totalItems) {
+        this.totalItems = totalItems;
+    }
+
+    public List<T> getItems() {
+        return items;
+    }
+
+    public void setItems(List<T> items) {
+        this.items = items;
+    }
+
+    public boolean isLastPage() {
         return page == totalPages;
     }
 }

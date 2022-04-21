@@ -72,6 +72,10 @@ public final class UiUtils {
         Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
     }
 
+    public static void toast(Context context, CharSequence text) {
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+    }
+
     public static DialogCall dialogPrompt(Context context, @StringRes int message) {
         return new DialogCallImpl(new AlertDialog.Builder(context).setMessage(message).create());
     }

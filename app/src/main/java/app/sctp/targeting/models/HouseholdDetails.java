@@ -4,7 +4,7 @@ import java.util.List;
 
 public class HouseholdDetails {
     private Household household;
-    private List<Individual> members;
+    private List<Individual> memberDetails;
 
     public Household getHousehold() {
         return household;
@@ -14,11 +14,11 @@ public class HouseholdDetails {
         this.household = household;
     }
 
-    public List<Individual> getMembers() {
-        return members;
+    public List<Individual> getMemberDetails() {
+        return memberDetails;
     }
 
-    public void setMembers(List<Individual> members) {
-        this.members = members;
+    public void setMemberDetails(List<Individual> memberDetails) {
+        this.memberDetails = memberDetails;
     }
 }

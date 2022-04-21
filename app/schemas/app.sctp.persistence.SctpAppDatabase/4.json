@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 3,
-    "identityHash": "a5075461eb054418817ee475a81d1e89",
+    "version": 4,
+    "identityHash": "90b44797c4c1776e21cb524783b6bb29",
     "entities": [
       {
         "tableName": "locations",
@@ -60,7 +60,7 @@
       },
       {
         "tableName": "households",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`householdId` INTEGER, `createdAt` INTEGER, `modifiedAt` INTEGER, `deletedAt` INTEGER, `locationCode` TEXT, `taCode` INTEGER, `clusterCode` INTEGER, `zoneCode` INTEGER, `villageCode` INTEGER, `villageName` TEXT, `groupVillageHeadCode` INTEGER, `groupVillageHeadName` TEXT, `mlCode` TEXT, `ubrCode` TEXT, `accountNumber` TEXT, `ubrCsvBatchNumber` INTEGER, `cbtRank` INTEGER, `generalRank` INTEGER, `lastCbtRanking` INTEGER, `lastGeneralRanking` INTEGER, `cbtSelection` INTEGER, `cbtSessionId` INTEGER, `cbtPmt` INTEGER, `cbtStatus` TEXT, `dependencyRatio` REAL NOT NULL, `floorType` TEXT, `roofType` TEXT, `wallType` TEXT, `latrineType` TEXT, `houseCondition` TEXT, `fuelSource` TEXT, `maizeHarvestLasted` TEXT, `maizeInGranaryWillLast` TEXT, `mealsEatenLastWeek` TEXT, `receivesMonetaryAssistance` INTEGER, PRIMARY KEY(`householdId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`householdId` INTEGER, `createdAt` TEXT, `modifiedAt` TEXT, `deletedAt` TEXT, `locationCode` TEXT, `taCode` INTEGER, `clusterCode` INTEGER, `zoneCode` INTEGER, `villageCode` INTEGER, `villageName` TEXT, `groupVillageHeadCode` INTEGER, `groupVillageHeadName` TEXT, `mlCode` TEXT, `ubrCode` TEXT, `accountNumber` TEXT, `ubrCsvBatchNumber` INTEGER, `cbtRank` INTEGER, `generalRank` INTEGER, `lastCbtRanking` TEXT, `lastGeneralRanking` TEXT, `cbtSelection` INTEGER, `cbtSessionId` INTEGER, `cbtPmt` INTEGER, `cbtStatus` TEXT, `dependencyRatio` REAL NOT NULL, `floorType` TEXT, `roofType` TEXT, `wallType` TEXT, `latrineType` TEXT, `houseCondition` TEXT, `fuelSource` TEXT, `maizeHarvestLasted` TEXT, `maizeInGranaryWillLast` TEXT, `mealsEatenLastWeek` TEXT, `receivesMonetaryAssistance` INTEGER, PRIMARY KEY(`householdId`))",
         "fields": [
           {
             "fieldPath": "householdId",
@@ -71,19 +71,19 @@
           {
             "fieldPath": "createdAt",
             "columnName": "createdAt",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "modifiedAt",
             "columnName": "modifiedAt",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "deletedAt",
             "columnName": "deletedAt",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -173,13 +173,13 @@
           {
             "fieldPath": "lastCbtRanking",
             "columnName": "lastCbtRanking",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "lastGeneralRanking",
             "columnName": "lastGeneralRanking",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -294,7 +294,7 @@
       },
       {
         "tableName": "Individual",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`highestEducationLevel` TEXT, `chronicIllness` TEXT, `maritalStatus` TEXT, `householdCode` TEXT, `orphanStatus` TEXT, `individualId` TEXT, `idIssueDate` INTEGER, `idExpiryDate` INTEGER, `dateOfBirth` INTEGER, `relationshipToHead` TEXT, `phoneNumber` TEXT, `householdId` INTEGER, `fitForWork` INTEGER, `schoolName` TEXT, `modifiedAt` TEXT, `gradeLevel` TEXT, `disability` TEXT, `deletedAt` TEXT, `createdAt` TEXT, `firstName` TEXT, `lastName` TEXT, `status` INTEGER NOT NULL, `sourcedFrom` TEXT DEFAULT '', `isEstimatedDob` INTEGER NOT NULL, `locationCode` INTEGER, `ubrCsvBatchNumber` INTEGER, `middleName` TEXT, `ubr_household_member_id` INTEGER DEFAULT 0, `gender` TEXT, `id` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`highestEducationLevel` TEXT, `chronicIllness` TEXT, `maritalStatus` TEXT, `householdCode` TEXT, `orphanStatus` TEXT, `individualId` TEXT, `idIssueDate` TEXT, `idExpiryDate` TEXT, `dateOfBirth` TEXT, `relationshipToHead` TEXT, `phoneNumber` TEXT, `householdId` INTEGER, `fitForWork` INTEGER, `schoolName` TEXT, `modifiedAt` TEXT, `gradeLevel` TEXT, `disability` TEXT, `deletedAt` TEXT, `createdAt` TEXT, `firstName` TEXT, `lastName` TEXT, `status` INTEGER NOT NULL, `sourcedFrom` TEXT DEFAULT '', `isEstimatedDob` INTEGER NOT NULL, `locationCode` INTEGER, `ubrCsvBatchNumber` INTEGER, `middleName` TEXT, `ubr_household_member_id` INTEGER DEFAULT 0, `gender` TEXT, `id` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "educationLevel",
@@ -335,19 +335,19 @@
           {
             "fieldPath": "idIssueDate",
             "columnName": "idIssueDate",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "idExpiryDate",
             "columnName": "idExpiryDate",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
             "fieldPath": "dateOfBirth",
             "columnName": "dateOfBirth",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -612,7 +612,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a5075461eb054418817ee475a81d1e89')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '90b44797c4c1776e21cb524783b6bb29')"
     ]
   }
 }

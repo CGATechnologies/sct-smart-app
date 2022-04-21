@@ -15,6 +15,7 @@ import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationType;
 import app.sctp.targeting.ui.viewholders.LocationItemViewHolderCreator;
 import app.sctp.targeting.viewmodels.LocationViewModel;
+import app.sctp.utils.PlatformUtils;
 import app.sctp.utils.UiUtils;
 
 class SelectionDialog extends Dialog {
@@ -37,20 +38,20 @@ class SelectionDialog extends Dialog {
                 .create(LocationViewModel.class);
 
         geoLocationAdapter = new GenericAdapter<>(new LocationItemViewHolderCreator(
-            new ItemSelectionListener<GeoLocation>() {
-                @Override
-                public void onItemSelected(GeoLocation item) {
-                    if (listener != null) {
-                        listener.onLocationSelected(item);
-                        dismiss();
+                new ItemSelectionListener<GeoLocation>() {
+                    @Override
+                    public void onItemSelected(GeoLocation item) {
+                        if (listener != null) {
+                            listener.onLocationSelected(item);
+                            dismiss();
+                        }
                     }
-                }
 
-                @Override
-                public void onItemLongSelected(GeoLocation item) {
+                    @Override
+                    public void onItemLongSelected(GeoLocation item) {
 
-                }
-            }));
+                    }
+                }));
 
         binding.recyclerView.setAdapter(geoLocationAdapter);
     }
@@ -64,7 +65,10 @@ class SelectionDialog extends Dialog {
         this.listener = listener;
         this.binding.prompt.setText(prompt);
         this.locationViewModel.getLocationsByType(locationType)
-                .error(data -> UiUtils.toast(getContext(), R.string.error_loading_db_locations, locationType.description))
+                .error(data -> {
+                    PlatformUtils.printStackTrace(data);
+                    UiUtils.toast(getContext(), R.string.error_loading_db_locations, locationType.description);
+                })
                 .success(geoLocationAdapter::submitList)
                 .execute();
         super.show();

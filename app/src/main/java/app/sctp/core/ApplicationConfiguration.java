@@ -6,6 +6,8 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import app.sctp.BuildConfig;
@@ -30,6 +32,7 @@ public class ApplicationConfiguration {
     private final Application application;
     private final OkHttpClient httpClient;
     private final SharedPreferenceAccessor accessor;
+    private final ExecutorService networkExecutorService;
 
     public ApplicationConfiguration(SctApplication application) {
         this.gson = new GsonBuilder().create();
@@ -53,6 +56,7 @@ public class ApplicationConfiguration {
                 .build();
 
         this.jwtUtils = new JwtUtils(gson);
+        this.networkExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
     }
 
     private HttpLoggingInterceptor loggingInterceptor() {
@@ -74,6 +78,10 @@ public class ApplicationConfiguration {
 
     public UserDetails getUserDetails() {
         return userDetails;
+    }
+
+    public void postBackgroundWork(Runnable runnable) {
+        networkExecutorService.submit(runnable);
     }
 
     public void setUserDetails(UserDetails userDetails) {

@@ -14,13 +14,13 @@ public class Household {
     private Long householdId;
 
     @ColumnInfo
-    private Date createdAt;
+    private String createdAt;
 
     @ColumnInfo
-    private Date modifiedAt;
+    private String modifiedAt;
 
     @ColumnInfo
-    private Date deletedAt;
+    private String deletedAt;
 
     @ColumnInfo
     private String locationCode;
@@ -65,10 +65,10 @@ public class Household {
     private Integer generalRank;
 
     @ColumnInfo
-    private Date lastCbtRanking;
+    private String lastCbtRanking;
 
     @ColumnInfo
-    private Date lastGeneralRanking;
+    private String lastGeneralRanking;
 
     @ColumnInfo
     private Boolean cbtSelection;
@@ -123,27 +123,27 @@ public class Household {
         this.householdId = householdId;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getModifiedAt() {
+    public String getModifiedAt() {
         return modifiedAt;
     }
 
-    public void setModifiedAt(Date modifiedAt) {
+    public void setModifiedAt(String modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
-    public Date getDeletedAt() {
+    public String getDeletedAt() {
         return deletedAt;
     }
 
-    public void setDeletedAt(Date deletedAt) {
+    public void setDeletedAt(String deletedAt) {
         this.deletedAt = deletedAt;
     }
 
@@ -259,19 +259,19 @@ public class Household {
         this.generalRank = generalRank;
     }
 
-    public Date getLastCbtRanking() {
+    public String getLastCbtRanking() {
         return lastCbtRanking;
     }
 
-    public void setLastCbtRanking(Date lastCbtRanking) {
+    public void setLastCbtRanking(String lastCbtRanking) {
         this.lastCbtRanking = lastCbtRanking;
     }
 
-    public Date getLastGeneralRanking() {
+    public String getLastGeneralRanking() {
         return lastGeneralRanking;
     }
 
-    public void setLastGeneralRanking(Date lastGeneralRanking) {
+    public void setLastGeneralRanking(String lastGeneralRanking) {
         this.lastGeneralRanking = lastGeneralRanking;
     }
 

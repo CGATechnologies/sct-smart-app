@@ -85,7 +85,7 @@ public class LocationSelector extends LinearLayout {
     private void updateUi() {
         String locationName;
         if (selectedLocation == null) {
-            locationName = "[Select Location]";
+            locationName = "[No Location Selected]";
         } else {
             locationName = selectedLocation.getName();
         }

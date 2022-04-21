@@ -1,11 +1,9 @@
 package app.sctp.targeting.models;
 
-import java.util.List;
-
 import app.sctp.core.net.api.PagedResponse;
 
-public class HouseholdDetailResponse extends PagedResponse {
-    private List<HouseholdDetails> householdDetails;
+public class HouseholdDetailResponse extends PagedResponse<HouseholdDetails> {
+    /*private List<HouseholdDetails> householdDetails;
 
     public List<HouseholdDetails> getHouseholdDetails() {
         return householdDetails;
@@ -13,5 +11,5 @@ public class HouseholdDetailResponse extends PagedResponse {
 
     public void setHouseholdDetails(List<HouseholdDetails> householdDetails) {
         this.householdDetails = householdDetails;
-    }
+    }*/
 }

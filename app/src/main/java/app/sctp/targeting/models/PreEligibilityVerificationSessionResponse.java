@@ -1,9 +1,9 @@
 package app.sctp.targeting.models;
 
-import java.util.List;
+import app.sctp.core.net.api.PagedResponse;
 
-public class PreEligibilityVerificationSessionResponse {
-    private int page;
+public class PreEligibilityVerificationSessionResponse extends PagedResponse<PreEligibilityVerificationSession> {
+    /*private int page;
     private int totalPages;
     private List<PreEligibilityVerificationSession> sessions;
 
@@ -33,5 +33,5 @@ public class PreEligibilityVerificationSessionResponse {
 
     public boolean isLastPage(){
         return getPage() == getTotalPages();
-    }
+    }*/
 }

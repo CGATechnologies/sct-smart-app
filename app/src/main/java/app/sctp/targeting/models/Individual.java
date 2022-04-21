@@ -4,92 +4,249 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Individual {
-    @PrimaryKey
-    @ColumnInfo
-    private Long id;
+    @SerializedName("education_level")
+    @ColumnInfo(name = "highestEducationLevel")
+    private EducationLevel educationLevel;
 
+    @SerializedName("chronic_illness")
+    @ColumnInfo
+    private ChronicIllness chronicIllness;
+
+    @SerializedName("marital_status")
+    @ColumnInfo
+    private MaritalStatus maritalStatus;
+
+    @SerializedName("household_code")
+    @ColumnInfo
+    private String householdCode;
+
+    @SerializedName("orphan_status")
+    @ColumnInfo
+    private Orphanhood orphanStatus;
+
+    @SerializedName("individual_id")
+    @ColumnInfo
+    private String individualId;
+
+    @SerializedName("id_issue_date")
+    @ColumnInfo
+    private String idIssueDate;
+
+    @SerializedName("id_expiry_date")
+    @ColumnInfo
+    private String idExpiryDate;
+
+    @SerializedName("date_of_birth")
+    @ColumnInfo
+    private String dateOfBirth;
+
+    @ColumnInfo(name = "relationshipToHead")
+    private RelationshipToHead relationship;
+
+    @SerializedName("phone_number")
+    @ColumnInfo
+    private String phoneNumber;
+
+    @SerializedName("household_id")
     @ColumnInfo(index = true)
     private Long householdId;
 
+    @SerializedName("fit_for_work")
     @ColumnInfo
+    private Boolean fitForWork;
+
+    @SerializedName("school_name")
+    @ColumnInfo
+    private String schoolName;
+
+    @SerializedName("modified_at")
+    @ColumnInfo
+    private String modifiedAt;
+
+    @SerializedName("grade_level")
+    @ColumnInfo
+    private GradeLevel gradeLevel;
+
+    @ColumnInfo
+    private Disability disability;
+
+    @SerializedName("deleted_at")
+    @ColumnInfo
+    private String deletedAt;
+
+    @SerializedName("created_at")
+    @ColumnInfo
+    private String createdAt;
+
+    @ColumnInfo
+    @SerializedName("first_name")
     private String firstName;
 
     @ColumnInfo
+    @SerializedName("last_name")
     private String lastName;
 
     @ColumnInfo
-    private String middleName;
+    private int status;
 
-    @ColumnInfo
-    private Date dateOfBirth;
+    @ColumnInfo(defaultValue = "")
+    private String sourcedFrom;
 
     @ColumnInfo
     private boolean isEstimatedDob;
 
-    @ColumnInfo
-    private String locationCode;
-
-    @ColumnInfo
-    private Long ubrCsvBatchNumber;
-
-    @ColumnInfo
-    private String status;
-
-    @ColumnInfo
-    private String gender;
-
-    @ColumnInfo
-    private String maritalStatus;
-
-    @ColumnInfo
-    private String individualId;
-
-    @ColumnInfo
-    private Date idIssueDate;
-
-    @ColumnInfo
-    private Date idExpiryDate;
-
-    @ColumnInfo
-    private Date createdAt;
-
-    @ColumnInfo
-    private Date modifiedAt;
-
-    @ColumnInfo
-    private Date deletedAt;
-
-    @ColumnInfo
-    private String phoneNumber;
-
-    @ColumnInfo
-    private String highestEducationLevel;
-
-    @ColumnInfo
-    private String gradeLevel;
-
-    @ColumnInfo
-    private String schoolName;
-
-    @ColumnInfo
-    private String sourcedFrom;
-
-    @ColumnInfo
-    private String relationshipToHead;
-
-    @ColumnInfo(name = "ubr_household_member_id")
-    private Long urbMemberId;
-
-    public Long getId() {
-        return id;
+    public boolean isEstimatedDob() {
+        return isEstimatedDob;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEstimatedDob(boolean estimatedDob) {
+        isEstimatedDob = estimatedDob;
+    }
+
+    /*
+    These column are unused. A migration can be made but Sqlite has limitations with the ALTER keyword
+
+    sourcedFrom
+    isEstimatedDob
+    middleName
+    locationCode
+    ubrCsvBatchNumber
+    ubr_household_member_id*/
+
+    private Long locationCode;
+    private Long ubrCsvBatchNumber;
+
+    public Long getUbrCsvBatchNumber() {
+        return ubrCsvBatchNumber;
+    }
+
+    public void setUbrCsvBatchNumber(Long ubrCsvBatchNumber) {
+        this.ubrCsvBatchNumber = ubrCsvBatchNumber;
+    }
+
+    public Long getLocationCode() {
+        return locationCode;
+    }
+
+    public void setLocationCode(Long locationCode) {
+        this.locationCode = locationCode;
+    }
+
+    private String middleName;
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    @ColumnInfo(name = "ubr_household_member_id", defaultValue = "0")
+    private Long ubrId;
+
+
+    @ColumnInfo
+    private Gender gender;
+
+    @PrimaryKey
+    @ColumnInfo
+    private Long id;
+
+    public EducationLevel getEducationLevel() {
+        return educationLevel;
+    }
+
+    public void setEducationLevel(EducationLevel educationLevel) {
+        this.educationLevel = educationLevel;
+    }
+
+    public ChronicIllness getChronicIllness() {
+        return chronicIllness;
+    }
+
+    public void setChronicIllness(ChronicIllness chronicIllness) {
+        this.chronicIllness = chronicIllness;
+    }
+
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getHouseholdCode() {
+        return householdCode;
+    }
+
+    public void setHouseholdCode(String householdCode) {
+        this.householdCode = householdCode;
+    }
+
+    public Orphanhood getOrphanStatus() {
+        return orphanStatus;
+    }
+
+    public void setOrphanStatus(Orphanhood orphanStatus) {
+        this.orphanStatus = orphanStatus;
+    }
+
+    public String getIndividualId() {
+        return individualId;
+    }
+
+    public void setIndividualId(String individualId) {
+        this.individualId = individualId;
+    }
+
+    public String getIdIssueDate() {
+        return idIssueDate;
+    }
+
+    public void setIdIssueDate(String idIssueDate) {
+        this.idIssueDate = idIssueDate;
+    }
+
+    public String getIdExpiryDate() {
+        return idExpiryDate;
+    }
+
+    public void setIdExpiryDate(String idExpiryDate) {
+        this.idExpiryDate = idExpiryDate;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public RelationshipToHead getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(RelationshipToHead relationship) {
+        this.relationship = relationship;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getHouseholdId() {
@@ -98,6 +255,62 @@ public class Individual {
 
     public void setHouseholdId(Long householdId) {
         this.householdId = householdId;
+    }
+
+    public Boolean getFitForWork() {
+        return fitForWork;
+    }
+
+    public void setFitForWork(Boolean fitForWork) {
+        this.fitForWork = fitForWork;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
+    }
+
+    public String getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(String modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
+    public GradeLevel getGradeLevel() {
+        return gradeLevel;
+    }
+
+    public void setGradeLevel(GradeLevel gradeLevel) {
+        this.gradeLevel = gradeLevel;
+    }
+
+    public Disability getDisability() {
+        return disability;
+    }
+
+    public void setDisability(Disability disability) {
+        this.disability = disability;
+    }
+
+    public String getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(String deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getFirstName() {
@@ -116,148 +329,28 @@ public class Individual {
         this.lastName = lastName;
     }
 
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public boolean isEstimatedDob() {
-        return isEstimatedDob;
-    }
-
-    public void setEstimatedDob(boolean estimatedDob) {
-        isEstimatedDob = estimatedDob;
-    }
-
-    public String getLocationCode() {
-        return locationCode;
-    }
-
-    public void setLocationCode(String locationCode) {
-        this.locationCode = locationCode;
-    }
-
-    public Long getUbrCsvBatchNumber() {
-        return ubrCsvBatchNumber;
-    }
-
-    public void setUbrCsvBatchNumber(Long ubrCsvBatchNumber) {
-        this.ubrCsvBatchNumber = ubrCsvBatchNumber;
-    }
-
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
-    public String getMaritalStatus() {
-        return maritalStatus;
+    public Long getId() {
+        return id;
     }
 
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
-    public String getIndividualId() {
-        return individualId;
-    }
-
-    public void setIndividualId(String individualId) {
-        this.individualId = individualId;
-    }
-
-    public Date getIdIssueDate() {
-        return idIssueDate;
-    }
-
-    public void setIdIssueDate(Date idIssueDate) {
-        this.idIssueDate = idIssueDate;
-    }
-
-    public Date getIdExpiryDate() {
-        return idExpiryDate;
-    }
-
-    public void setIdExpiryDate(Date idExpiryDate) {
-        this.idExpiryDate = idExpiryDate;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(Date modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public Date getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Date deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getHighestEducationLevel() {
-        return highestEducationLevel;
-    }
-
-    public void setHighestEducationLevel(String highestEducationLevel) {
-        this.highestEducationLevel = highestEducationLevel;
-    }
-
-    public String getGradeLevel() {
-        return gradeLevel;
-    }
-
-    public void setGradeLevel(String gradeLevel) {
-        this.gradeLevel = gradeLevel;
-    }
-
-    public String getSchoolName() {
-        return schoolName;
-    }
-
-    public void setSchoolName(String schoolName) {
-        this.schoolName = schoolName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getSourcedFrom() {
@@ -268,19 +361,11 @@ public class Individual {
         this.sourcedFrom = sourcedFrom;
     }
 
-    public String getRelationshipToHead() {
-        return relationshipToHead;
+    public Long getUbrId() {
+        return ubrId;
     }
 
-    public void setRelationshipToHead(String relationshipToHead) {
-        this.relationshipToHead = relationshipToHead;
-    }
-
-    public Long getUrbMemberId() {
-        return urbMemberId;
-    }
-
-    public void setUrbMemberId(Long urbMemberId) {
-        this.urbMemberId = urbMemberId;
+    public void setUbrId(Long ubrId) {
+        this.ubrId = ubrId;
     }
 }

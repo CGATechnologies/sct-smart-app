@@ -2,6 +2,8 @@ package app.sctp.targeting.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,15 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import app.sctp.R;
-import app.sctp.core.net.api.ErrorResponse;
-import app.sctp.core.net.api.ext.ApiErrorCallback;
-import app.sctp.core.net.api.ext.ApiStatusCallback;
-import app.sctp.core.net.api.ext.NotificationCallback;
 import app.sctp.core.ui.BindableFragment;
 import app.sctp.core.ui.adapter.GenericAdapter;
+import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.FragmentTargetingCommunityMeetingBinding;
 import app.sctp.databinding.LocationInfoBinding;
 import app.sctp.targeting.models.GeoLocation;
@@ -35,11 +36,14 @@ import app.sctp.targeting.ui.viewholders.PreEligibilityVerificationSessionViewHo
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
 import app.sctp.targeting.viewmodels.IndividualViewModel;
 import app.sctp.targeting.viewmodels.PreEligibilityVerificationSessionViewModel;
+import app.sctp.utils.PlatformUtils;
 import app.sctp.utils.UiUtils;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
+import retrofit2.Call;
+import retrofit2.HttpException;
+import retrofit2.Response;
 
 public class CommunityMeetingFragment extends BindableFragment {
 
@@ -49,6 +53,7 @@ public class CommunityMeetingFragment extends BindableFragment {
     private LocationInfoBinding locationInfoBinding;
     private IndividualViewModel individualViewModel;
     private FragmentTargetingCommunityMeetingBinding binding;
+    private final Handler handler = new Handler(Looper.getMainLooper());
     private PreEligibilityVerificationSessionViewModel sessionViewModel;
     private GenericAdapter<PreEligibilityVerificationSession> sessionAdapter;
 
@@ -70,6 +75,17 @@ public class CommunityMeetingFragment extends BindableFragment {
         progressDialog = UiUtils.progressDialog(requireContext());
 
         sessionAdapter = new GenericAdapter<>(new PreEligibilityVerificationSessionViewHolderCreator());
+        sessionAdapter.setItemSelectionListener(new ItemSelectionListener<PreEligibilityVerificationSession>() {
+            @Override
+            public void onItemSelected(PreEligibilityVerificationSession item) {
+                //Household
+            }
+
+            @Override
+            public void onItemLongSelected(PreEligibilityVerificationSession item) {
+
+            }
+        });
 
         householdViewModel = getViewModel(HouseholdViewModel.class);
         individualViewModel = getViewModel(IndividualViewModel.class);
@@ -92,7 +108,8 @@ public class CommunityMeetingFragment extends BindableFragment {
 
                     @Override
                     public void onError(Throwable t) {
-
+                        PlatformUtils.printStackTrace(t);
+                        UiUtils.toast(requireContext(), R.string.error_loading_data);
                     }
 
                     @Override
@@ -123,72 +140,115 @@ public class CommunityMeetingFragment extends BindableFragment {
     }
 
     private void downloadEligibilityVerificationSessions() {
-        int currentPage = 0;
-        getService(TargetingService.class)
-                .getPreEligibilitySessions(
-                        locationCode(locationSelection.getTraditionalAuthority())
-                        , locationCode(locationSelection.getCluster())
-                        , locationCode(locationSelection.getZone())
-                        , locationCode(locationSelection.getVillage())
-                        , currentPage
-                )
-                .beforeCall(() -> progressDialog.show())
-                .afterCall(() -> progressDialog.dismiss())
-                .onSuccess(data -> {
-                    sessionViewModel.save(data.getSessions());
-                    UiUtils.toast(requireContext(), R.string.download_successful);
-                })
-                .onError(data -> UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_pev_sessions))
-                .execute();
-    }
-
-    private void downloadSessions(int page) {
+        progressDialog.show();
         progressDialog.setMessage("Downloading sessions...");
-        getService(TargetingService.class)
-                .getPreEligibilitySessions(
-                        locationCode(locationSelection.getTraditionalAuthority())
-                        , locationCode(locationSelection.getCluster())
-                        , locationCode(locationSelection.getZone())
-                        , locationCode(locationSelection.getVillage())
-                        , page
-                )
+        getApplicationConfiguration().postBackgroundWork(() -> {
+            try {
+                int page = 0;
+                AtomicInteger pageCount = new AtomicInteger(0);
+                do {
+                    handler.post(() -> progressDialog.setMessage("Downloading sessions..."));
+
+                    Response<PreEligibilityVerificationSessionResponse> sessionResponse =
+                            getService(TargetingService.class)
+                                    .getPreEligibilitySessions(
+                                            locationCode(locationSelection.getTraditionalAuthority())
+                                            , locationCode(locationSelection.getCluster())
+                                            , locationCode(locationSelection.getZone())
+                                            , locationCode(locationSelection.getVillage())
+                                            , page
+                                    ).execute();
+                    if (sessionResponse.isSuccessful()) {
+                        PreEligibilityVerificationSessionResponse response = sessionResponse.body();
+
+                        pageCount.compareAndSet(0, response.getTotalPages());
+
+                        if (!response.getItems().isEmpty()) {
+                            sessionViewModel.save(response.getItems());
+                        }
+                        // download households under this session
+                        downloadSessionHouseholds(response.getItems());
+
+                        progressDialog.setProgress(page);
+                    } else {
+                        throw new HttpException(sessionResponse);
+                    }
+                } while (++page < pageCount.get());
+                handler.post(() -> {
+                    progressDialog.dismiss();
+                    UiUtils.snackbar(binding.getRoot(), R.string.download_successful);
+                });
+            } catch (Exception exception) {
+                PlatformUtils.printStackTrace(exception);
+                handler.post(() -> {
+                    progressDialog.dismiss();
+                    UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_data);
+                });
+            }
+        });
+    }
+
+    private void downloadSessionHouseholds(List<PreEligibilityVerificationSession> sessions) throws IOException {
+        handler.post(() -> progressDialog.setMessage("Downloading household data..."));
+        for (PreEligibilityVerificationSession session : sessions) {
+            int page = 0;
+            AtomicInteger pageCount = new AtomicInteger(0);
+            do {
+                Response<HouseholdDetailResponse> response =
+                        getService(TargetingService.class)
+                                .getHouseholdsFromPreEligibilitySession(session.getId(), page)
+                                .execute();
+                if (response.isSuccessful()) {
+                    HouseholdDetailResponse detailResponse = response.body();
+                    pageCount.compareAndSet(0, detailResponse.getTotalPages());
+
+                    if (!detailResponse.getItems().isEmpty()) {
+                        for (HouseholdDetails householdDetails : detailResponse.getItems()) {
+                            householdViewModel.save(householdDetails.getHousehold());
+                            if (!householdDetails.getMemberDetails().isEmpty()) {
+                                individualViewModel.save(householdDetails.getMemberDetails());
+                            }
+                        }
+                    }
+                } else {
+                    throw new HttpException(response);
+                }
+            } while (++page < pageCount.get());
+        }
+
+
+        /*getService(TargetingService.class)
+                .getHouseholdsFromPreEligibilitySession(sessions.remove(0).getId(), householdRequestPage)
                 .beforeCall(() -> progressDialog.show())
                 .afterCall(() -> progressDialog.dismiss())
                 .onSuccess(data -> {
-                    if (!data.getSessions().isEmpty()) {
-                        sessionViewModel.save(data.getSessions());
-                        if (!data.isLastPage()) {
-                            downloadSessionHouseholds(data.getSessions());
+                    List<HouseholdDetails> householdDetailsList = data.getItems();
+                    Runnable onHouseholdsDownloaded = () -> {
+                        if (!isLastRequestForSessions) {
+                            downloadSessions(nextPage);
+                        } else {
+                            progressDialog.dismiss();
+                            UiUtils.toast(requireContext(), R.string.download_successful);
+                        }
+                    };
+                    if (!householdDetailsList.isEmpty()) {
+                        for (HouseholdDetails householdDetails : householdDetailsList) {
+                            individualViewModel.save(householdDetails.getMembers());
+                            householdViewModel.save(householdDetails.getHousehold());
                         }
                     }
-                    UiUtils.toast(requireContext(), R.string.download_successful);
-                })
-                .onError(data -> UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_pev_sessions))
-                .execute();
-    }
-
-    private void downloadSessionHouseholds(List<PreEligibilityVerificationSession> sessions) {
-        progressDialog.setMessage("Downloading households...");
-        getService(TargetingService.class)
-                .getHouseholdsFromPreEligibilitySession(sessions.remove(0).getId())
-                .beforeCall(() -> progressDialog.show())
-                .afterCall(() -> progressDialog.dismiss())
-                .onSuccess(new ApiStatusCallback<HouseholdDetailResponse>() {
-                    @Override
-                    public void call(HouseholdDetailResponse data) {
-                        if (!data.getHouseholdDetails().isEmpty()) {
-                            for (HouseholdDetails householdDetails : data.getHouseholdDetails()) {
-                                householdViewModel.save(householdDetails.getHousehold());
-                                individualViewModel.save(householdDetails.getMembers());
-                            }
-                            if (!data.isLastPage()) {
-
-                            }
+                    if (!data.isLastPage()) {
+                        if (sessions.isEmpty()) {
+                            onHouseholdsDownloaded.run();
+                        } else {
+                            downloadSessionHouseholds(sessions, nextPage, isLastRequestForSessions, householdRequestPage + 1);
                         }
+                    } else {
+                        onHouseholdsDownloaded.run();
                     }
                 })
                 .onError(data -> UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_pev_sessions))
-                .execute();
+                .execute();*/
     }
 
     private Long locationCode(GeoLocation geoLocation) {

@@ -1,34 +1,36 @@
 package app.sctp.core.ui.adapter;
 
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.lifecycle.Lifecycle;
-import androidx.paging.PagedList;
-import androidx.paging.PagedListAdapter;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
+import app.sctp.R;
 import app.sctp.core.model.Diffable;
 
 public class GenericAdapter<T extends Diffable> extends RecyclerView.Adapter<ItemViewHolder<T>> implements ItemAdapter<T> {
     private final List<T> items;
+    private final boolean allowItemSelection;
+    private final View.OnClickListener onClickListener;
     private final ItemViewHolderCreator<T> viewHolderCreator;
     private ItemSelectionListener<T> delegateSelectionListener;
     private final ItemSelectionListener<T> itemSelectionListener;
 
     public GenericAdapter(@NonNull ItemViewHolderCreator<T> viewHolderCreator) {
+        this(viewHolderCreator, true);
+    }
+
+    public GenericAdapter(@NonNull ItemViewHolderCreator<T> viewHolderCreator, boolean allowItemSelection) {
         super();
         this.items = new LinkedList<>();
         this.viewHolderCreator = viewHolderCreator;
+        this.allowItemSelection = allowItemSelection;
         this.itemSelectionListener = new ItemSelectionListener<T>() {
             @Override
             public void onItemSelected(T item) {
@@ -43,6 +45,10 @@ public class GenericAdapter<T extends Diffable> extends RecyclerView.Adapter<Ite
                     delegateSelectionListener.onItemLongSelected(item);
                 }
             }
+        };
+        this.onClickListener = v -> {
+            ItemViewHolder<?> itemViewHolder = (ItemViewHolder<?>) v.getTag(R.id.view_holder_self_reference_tag);
+            itemSelectionListener.onItemSelected(getItemAt(itemViewHolder.getAdapterPosition()));
         };
     }
 
@@ -67,6 +73,13 @@ public class GenericAdapter<T extends Diffable> extends RecyclerView.Adapter<Ite
 
     @Override
     public final void onBindViewHolder(@NonNull ItemViewHolder<T> holder, int position, @NonNull List<Object> payloads) {
+        if (allowItemSelection) {
+            holder.itemView.setOnClickListener(this.onClickListener);
+            holder.itemView.setTag(R.id.view_holder_self_reference_tag, holder);
+        } else {
+            holder.itemView.setOnClickListener(null);
+            holder.itemView.setTag(R.id.view_holder_self_reference_tag, null);
+        }
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position);
         } else {
@@ -83,8 +96,9 @@ public class GenericAdapter<T extends Diffable> extends RecyclerView.Adapter<Ite
         return items.get(position);
     }
 
-    public void clearItems(){
-        int count = items.size();;
+    public void clearItems() {
+        int count = items.size();
+        ;
         items.clear();
         notifyItemRangeRemoved(0, count);
     }

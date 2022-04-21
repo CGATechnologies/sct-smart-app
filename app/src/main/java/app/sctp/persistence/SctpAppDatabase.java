@@ -22,14 +22,17 @@ import app.sctp.targeting.models.PreEligibilityVerificationSession;
                 Individual.class,
                 PreEligibilityVerificationSession.class
         },
-        version = 3,
+        version = SctpAppDatabase.VERSION,
         autoMigrations = {
                 @AutoMigration(from = 1, to = 2),
-                @AutoMigration(from = 2, to = 3)
+                @AutoMigration(from = 2, to = 3),
+                @AutoMigration(from = 3, to = 4/*, spec = SctpAppDatabase.V4AutoMigrationSpec.class*/)
         }
 )
 @TypeConverters({Converters.class})
 public abstract class SctpAppDatabase extends RoomDatabase {
+    public static final int VERSION = 4;
+
     public abstract LocationDao locationDao();
 
     public abstract HouseholdDao householdDao();

@@ -11,12 +11,20 @@ import java.util.Locale;
 import app.sctp.app.SctApplication;
 import app.sctp.core.ApplicationConfiguration;
 import app.sctp.persistence.BaseViewModel;
+import app.sctp.utils.ComponentDebugLogger;
+import app.sctp.utils.ComponentDebugLoggerImpl;
 
 public abstract class BaseFragment extends Fragment {
+    private final ComponentDebugLogger componentLogger;
     private final ApplicationConfiguration configuration;
 
     public BaseFragment(){
-        configuration = SctApplication.getInstance().getConfiguration();;
+        configuration = SctApplication.getInstance().getConfiguration();
+        componentLogger = new ComponentDebugLoggerImpl(getClass().getCanonicalName());
+    }
+
+    protected ComponentDebugLogger getComponentLogger() {
+        return componentLogger;
     }
 
     @Override

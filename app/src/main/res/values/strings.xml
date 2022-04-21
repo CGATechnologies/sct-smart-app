@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">SCTP</string>
     <string name="login">Login</string>
+    <string name="error_loading_data">Error loading data</string>
+    <string name="error_downloading_data">Error downloading data</string>
 </resources>
