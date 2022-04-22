@@ -59,4 +59,6 @@
     <string name="empty_sessions">There are not items to show.\n\nSelect \"Download new data\" in the menu above to get new data from the server.</string>
     <string name="error_downloading_pev_sessions">Error downloading data</string>
     <string name="download_successful">Updated successfully!</string>
+    <string name="community_meeting_pev_results">Eligibility selection</string>
+    <string name="empty_households">There are no households to show.</string>
 </resources>

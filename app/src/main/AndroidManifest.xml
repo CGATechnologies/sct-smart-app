@@ -50,6 +50,11 @@
             android:label="@string/label_targeting"
             android:theme="@style/Theme.SCTP.Windowed" />
 
+        <activity
+            android:name=".targeting.ui.activities.PreEligibilityVerificationSessionActivity"
+            android:label="@string/label_community_meeting"
+            android:theme="@style/Theme.SCTP.Windowed" />
+
     </application>
 
 </manifest>

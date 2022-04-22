@@ -7,8 +7,8 @@ plugins {
 
 def versionMajor = 1
 def versionMinor = 2
-def versionPatch = 0
-def versionCodeSerial = 3
+def versionPatch = 1
+def versionCodeSerial = 4
 
 def nav_version = "2.4.1"
 def room_version = "2.4.2"
@@ -108,6 +108,7 @@ dependencies {
     implementation "androidx.room:room-paging:$room_version"
     //noinspection GradleDependency
     implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-common:3.1.1"
 
 
     implementation("org.greenrobot:eventbus:3.3.1")

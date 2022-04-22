@@ -25,10 +25,10 @@
 
         <ViewFlipper
             android:id="@+id/viewFlipper"
-            android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/search_filter"
+            android:layout_marginTop="16dp"
             android:measureAllChildren="true">
 
             <androidx.appcompat.widget.AppCompatTextView

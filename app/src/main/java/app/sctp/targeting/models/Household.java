@@ -6,8 +6,10 @@ import androidx.room.PrimaryKey;
 
 import java.sql.Date;
 
+import app.sctp.core.model.Diffable;
+
 @Entity(tableName = "households")
-public class Household {
+public class Household implements Diffable {
 
     @PrimaryKey
     @ColumnInfo
@@ -393,5 +395,15 @@ public class Household {
 
     public void setReceivesMonetaryAssistance(Boolean receivesMonetaryAssistance) {
         this.receivesMonetaryAssistance = receivesMonetaryAssistance;
+    }
+
+    @Override
+    public Object getDiffValue() {
+        return getHouseholdId();
+    }
+
+    @Override
+    public boolean contentsSameAs(Diffable diffable) {
+        return false;
     }
 }

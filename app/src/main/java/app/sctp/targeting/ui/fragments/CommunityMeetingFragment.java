@@ -32,6 +32,7 @@ import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.PreEligibilityVerificationSession;
 import app.sctp.targeting.models.PreEligibilityVerificationSessionResponse;
 import app.sctp.targeting.services.TargetingService;
+import app.sctp.targeting.ui.activities.PreEligibilityVerificationSessionActivity;
 import app.sctp.targeting.ui.viewholders.PreEligibilityVerificationSessionViewHolderCreator;
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
 import app.sctp.targeting.viewmodels.IndividualViewModel;
@@ -78,7 +79,10 @@ public class CommunityMeetingFragment extends BindableFragment {
         sessionAdapter.setItemSelectionListener(new ItemSelectionListener<PreEligibilityVerificationSession>() {
             @Override
             public void onItemSelected(PreEligibilityVerificationSession item) {
-                //Household
+                PreEligibilityVerificationSessionActivity.selectEligibleHouseholds(
+                        requireActivity(),
+                        item
+                );
             }
 
             @Override
@@ -215,40 +219,6 @@ public class CommunityMeetingFragment extends BindableFragment {
                 }
             } while (++page < pageCount.get());
         }
-
-
-        /*getService(TargetingService.class)
-                .getHouseholdsFromPreEligibilitySession(sessions.remove(0).getId(), householdRequestPage)
-                .beforeCall(() -> progressDialog.show())
-                .afterCall(() -> progressDialog.dismiss())
-                .onSuccess(data -> {
-                    List<HouseholdDetails> householdDetailsList = data.getItems();
-                    Runnable onHouseholdsDownloaded = () -> {
-                        if (!isLastRequestForSessions) {
-                            downloadSessions(nextPage);
-                        } else {
-                            progressDialog.dismiss();
-                            UiUtils.toast(requireContext(), R.string.download_successful);
-                        }
-                    };
-                    if (!householdDetailsList.isEmpty()) {
-                        for (HouseholdDetails householdDetails : householdDetailsList) {
-                            individualViewModel.save(householdDetails.getMembers());
-                            householdViewModel.save(householdDetails.getHousehold());
-                        }
-                    }
-                    if (!data.isLastPage()) {
-                        if (sessions.isEmpty()) {
-                            onHouseholdsDownloaded.run();
-                        } else {
-                            downloadSessionHouseholds(sessions, nextPage, isLastRequestForSessions, householdRequestPage + 1);
-                        }
-                    } else {
-                        onHouseholdsDownloaded.run();
-                    }
-                })
-                .onError(data -> UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_pev_sessions))
-                .execute();*/
     }
 
     private Long locationCode(GeoLocation geoLocation) {
