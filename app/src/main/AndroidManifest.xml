@@ -35,9 +35,10 @@
         <activity
             android:name=".MainActivity"
             android:parentActivityName=".LoginActivity" />
+
+        <!-- android:excludeFromRecents="true" -->
         <activity
             android:name=".LoginActivity"
-            android:excludeFromRecents="true"
             android:parentActivityName=".StartupActivity" />
 
         <activity
@@ -47,12 +48,22 @@
 
         <activity
             android:name=".targeting.ui.activities.TargetingModuleActivity"
-            android:label="@string/label_targeting"
+            android:label="@string/label_targeting_and_enrollment"
             android:theme="@style/Theme.SCTP.Windowed" />
 
         <activity
             android:name=".targeting.ui.activities.PreEligibilityVerificationSessionActivity"
             android:label="@string/label_community_meeting"
+            android:theme="@style/Theme.SCTP.Windowed" />
+
+        <activity
+            android:name=".targeting.ui.activities.HouseholdReviewActivity"
+            android:label="@string/title_household_review"
+            android:theme="@style/Theme.SCTP.Windowed" />
+
+        <activity
+            android:name=".targeting.ui.activities.HouseholdMemberListActivity"
+            android:label="@string/title_household_composition"
             android:theme="@style/Theme.SCTP.Windowed" />
 
     </application>

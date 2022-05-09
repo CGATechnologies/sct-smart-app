@@ -1,57 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    android:orientation="vertical"
-    android:padding="0dp">
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
-        android:text="@string/targeting_home_summary"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp">
 
         <app.sctp.core.ui.views.CardViewMenuItem
             android:id="@+id/targeting_community_meeting_card"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/gap1"
             app:labelText="@string/community_meeting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:menuIcon="@drawable/ic_targeting"
             app:targetAction="@+id/action_home_to_targeting" />
 
-        <View
-            android:id="@+id/gap1"
-            android:layout_width="1dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp" />
-
         <app.sctp.core.ui.views.CardViewMenuItem
             android:id="@+id/targeting_district_meeting_card"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/gap1"
             app:labelText="@string/district_meeting"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/targeting_community_meeting_card"
+            app:layout_constraintTop_toTopOf="parent"
             app:menuIcon="@drawable/ic_baseline_location_city_24" />
 
-    </RelativeLayout>
+        <app.sctp.core.ui.views.CardViewMenuItem
+            android:id="@+id/targeting_enrollment_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:labelText="@string/enrollment"
+            app:layout_constraintEnd_toEndOf="@id/targeting_community_meeting_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/targeting_community_meeting_card"
+            app:menuIcon="@drawable/ic_round_menu_book_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </LinearLayout>

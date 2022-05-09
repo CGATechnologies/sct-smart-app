@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -13,8 +15,12 @@ import androidx.annotation.StringRes;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
 import app.sctp.LoginActivity;
 import app.sctp.R;
+import app.sctp.targeting.models.SelectionStatus;
 
 public final class UiUtils {
     public static void setViewRippleEffect(View view) {
@@ -40,7 +46,7 @@ public final class UiUtils {
     }
 
     public static void snackbar(View view, @StringRes int message, boolean dismissible) {
-        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(view, message, (int) TimeUnit.SECONDS.toMillis(15));
         if (dismissible) {
             snackbar.setAction(android.R.string.ok, v -> snackbar.dismiss());
         }
@@ -54,6 +60,25 @@ public final class UiUtils {
             return null;
         }
         return text;
+    }
+
+    public static Integer getInteger(EditText editText, boolean optional) {
+        String text = editText.getText().toString();
+        if (!LocaleUtils.hasText(text)) {
+            if (!optional) {
+                editText.setError("Field is required.");
+            }
+            return null;
+        }
+        return Integer.valueOf(text);
+    }
+
+    public static Integer getInteger(EditText editText, Integer defaultValue) {
+        String text = editText.getText().toString();
+        if (!LocaleUtils.hasText(text)) {
+            return defaultValue;
+        }
+        return Integer.valueOf(text);
     }
 
     public static ProgressDialog progressDialog(Context context) {
@@ -85,6 +110,21 @@ public final class UiUtils {
                 .setMessage(resId)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                 .create();
+    }
+
+    /**
+     * @param adapter   Adapter containing items.
+     * @param selection Item whose index to look for
+     * @return Returns the index of the item in the given adapter
+     */
+    public static int itemAdapterPosition(Adapter adapter, Object selection) {
+        for (int position = 0; position < adapter.getCount(); position++) {
+            final Object item = adapter.getItem(position);
+            if (Objects.equals(item, selection)) {
+                return position;
+            }
+        }
+        return -1;
     }
 
     public interface DialogCall {

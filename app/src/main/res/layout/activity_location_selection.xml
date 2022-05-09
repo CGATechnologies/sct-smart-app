@@ -10,13 +10,12 @@
 
     android:orientation="vertical">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/info_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/select_location_of_operations"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="?attr/colorPrimarySurface" />
+        android:text="@string/select_location_of_operations" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"

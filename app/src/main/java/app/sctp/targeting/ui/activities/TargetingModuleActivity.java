@@ -24,6 +24,7 @@ public class TargetingModuleActivity extends BindableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupToolBar();
+        setSubTitle(getText(R.string.label_targeting_and_enrollment));
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.host_fragment);
@@ -31,7 +32,7 @@ public class TargetingModuleActivity extends BindableActivity {
         //noinspection ConstantConditions
         navController = navHostFragment.getNavController();
 
-        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> setSubTitle(navDestination.getLabel()));
+        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> setTitle(navDestination.getLabel()));
     }
 
     public static void launch(Context context) {

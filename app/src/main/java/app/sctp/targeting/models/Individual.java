@@ -6,12 +6,10 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import app.sctp.core.model.Diffable;
 
 @Entity
-public class Individual {
+public class Individual implements Diffable {
     @SerializedName("education_level")
     @ColumnInfo(name = "highestEducationLevel")
     private EducationLevel educationLevel;
@@ -97,7 +95,7 @@ public class Individual {
     @ColumnInfo
     private int status;
 
-    @ColumnInfo(defaultValue = "")
+    @ColumnInfo
     private String sourcedFrom;
 
     @ColumnInfo
@@ -150,7 +148,7 @@ public class Individual {
         this.middleName = middleName;
     }
 
-    @ColumnInfo(name = "ubr_household_member_id", defaultValue = "0")
+    @ColumnInfo(name = "ubr_household_member_id")
     private Long ubrId;
 
 
@@ -367,5 +365,14 @@ public class Individual {
 
     public void setUbrId(Long ubrId) {
         this.ubrId = ubrId;
+    }
+
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
+
+    @Override
+    public Long getDiffValue() {
+        return getId();
     }
 }

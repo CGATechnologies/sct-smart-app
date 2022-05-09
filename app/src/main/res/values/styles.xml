@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="info_textview">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="android:textColor">@color/info_color</item>
+        <item name="android:textSize">13sp</item>
+        <item name="drawableTint">@color/info_color</item>
+    </style>
+
+    <style name="info_textview.with_icon">
+        <item name="android:drawableStart">@drawable/ic_round_info_24</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Caption</item>
+        <item name="android:textColor">@color/info_color</item>
+        <item name="android:textSize">13sp</item>
+        <item name="drawableTint">@color/info_color</item>
+    </style>
+</resources>

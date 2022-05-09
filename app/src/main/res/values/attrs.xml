@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CardViewMenuItem">
+        <!-- Label to show under icon -->
         <attr name="labelText" format="string|reference" localization="suggested" />
         <attr name="menuIcon" format="reference" />
         <attr name="CardViewMenuItemStatus" />

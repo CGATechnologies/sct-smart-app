@@ -42,7 +42,7 @@
     <string name="select_zone">Select zone</string>
     <string name="zone">Zone</string>
     <string name="community_meeting">Community Meeting</string>
-    <string name="district_meeting">District\nMeeting</string>
+    <string name="district_meeting">District Meeting</string>
     <string name="location_information">Selected location</string>
     <string name="label_community_meeting">Community Meeting</string>
     <string name="targeting_home_summary">Select type of meeting</string>
@@ -61,4 +61,41 @@
     <string name="download_successful">Updated successfully!</string>
     <string name="community_meeting_pev_results">Eligibility selection</string>
     <string name="empty_households">There are no households to show.</string>
+    <string name="household_selection_info">
+        <![CDATA[
+        1. Click on a household below to open it.\n\n2. When all households have been selected, select \"Upload selection results\" to synchronize.
+        ]]>
+    </string>
+    <string name="label_household_status">Status</string>
+    <string name="label_household_rank">Rank</string>
+    <string name="label_household_head">Head</string>
+    <string name="label_household_information">Household Information</string>
+    <string name="title_household_review">Review Household</string>
+    <string name="ml_code">ML-Code</string>
+    <string name="head_of_household">Head of Household</string>
+    <string name="label_traditional_authority">Traditional Authority</string>
+    <string name="label_group_village_head">Group Village Head</string>
+    <string name="label_cluster">Cluster</string>
+    <string name="label_zone">Zone</string>
+    <string name="label_pre_printed_number">Pre-Printed Number</string>
+    <string name="label_ranking">Ranking</string>
+    <string name="label_new_rank">New Rank</string>
+    <string name="label_save">Save</string>
+    <string name="label_view_composition">View Composition</string>
+    <string name="label_new_selection">New selection</string>
+    <string name="updates_saved">Updates saved</string>
+    <string name="label_targeting_and_enrollment"><![CDATA[Targeting\n&\nEnrollment]]></string>
+    <string name="label_case_management2">\nCase\nManagement</string>
+    <string name="gender">Gender</string>
+    <string name="age">Age</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="relationship">Relationship</string>
+    <string name="title_household_composition">Household composition</string>
+    <string name="name">Name</string>
+    <string name="targeting_session_info"><![CDATA[1. Select a session below to manage households.\n\n2. To download new data, select \"Download new data\" under the menu options]]></string>
+    <string name="enrollment">Enrollment</string>
+    <string name="sync_households">Upload selection results</string>
+    <string name="household_selection_incomplete">You must select all households before uploading the results to the MIS</string>
+    <string name="household_updates_sent">Updates successfully sent</string>
+    <string name="household_updates_failed">Error uploading updates</string>
 </resources>

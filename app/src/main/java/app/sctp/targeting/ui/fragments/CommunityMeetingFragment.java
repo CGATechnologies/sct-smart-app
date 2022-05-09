@@ -31,6 +31,8 @@ import app.sctp.targeting.models.HouseholdDetails;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.PreEligibilityVerificationSession;
 import app.sctp.targeting.models.PreEligibilityVerificationSessionResponse;
+import app.sctp.targeting.models.SelectionStatus;
+import app.sctp.targeting.models.SessionView;
 import app.sctp.targeting.services.TargetingService;
 import app.sctp.targeting.ui.activities.PreEligibilityVerificationSessionActivity;
 import app.sctp.targeting.ui.viewholders.PreEligibilityVerificationSessionViewHolderCreator;
@@ -51,12 +53,11 @@ public class CommunityMeetingFragment extends BindableFragment {
     private ProgressDialog progressDialog;
     private LocationSelection locationSelection;
     private HouseholdViewModel householdViewModel;
-    private LocationInfoBinding locationInfoBinding;
     private IndividualViewModel individualViewModel;
     private FragmentTargetingCommunityMeetingBinding binding;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private PreEligibilityVerificationSessionViewModel sessionViewModel;
-    private GenericAdapter<PreEligibilityVerificationSession> sessionAdapter;
+    private GenericAdapter<SessionView> sessionAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,16 +70,13 @@ public class CommunityMeetingFragment extends BindableFragment {
         super.onViewCreated(view, savedInstanceState);
         locationSelection = CommunityMeetingFragmentArgs.fromBundle(getArguments())
                 .getSelectedLocation();
-        locationInfoBinding = binding.locationInformation
-                .getContentViewBinding(LocationInfoBinding::bind);
-        locationInfoBinding.setLocation(locationSelection);
 
         progressDialog = UiUtils.progressDialog(requireContext());
 
         sessionAdapter = new GenericAdapter<>(new PreEligibilityVerificationSessionViewHolderCreator());
-        sessionAdapter.setItemSelectionListener(new ItemSelectionListener<PreEligibilityVerificationSession>() {
+        sessionAdapter.setItemSelectionListener(new ItemSelectionListener<SessionView>() {
             @Override
-            public void onItemSelected(PreEligibilityVerificationSession item) {
+            public void onItemSelected(SessionView item) {
                 PreEligibilityVerificationSessionActivity.selectEligibleHouseholds(
                         requireActivity(),
                         item
@@ -86,7 +84,7 @@ public class CommunityMeetingFragment extends BindableFragment {
             }
 
             @Override
-            public void onItemLongSelected(PreEligibilityVerificationSession item) {
+            public void onItemLongSelected(SessionView item) {
 
             }
         });
@@ -101,12 +99,12 @@ public class CommunityMeetingFragment extends BindableFragment {
     }
 
     private void loadSessions() {
-        sessionViewModel.getAll(locationSelection)
+        sessionViewModel.getSessionViewsByLocation(locationSelection)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSubscriber<List<PreEligibilityVerificationSession>>() {
+                .subscribe(new DisposableSubscriber<List<SessionView>>() {
                     @Override
-                    public void onNext(List<PreEligibilityVerificationSession> sessions) {
+                    public void onNext(List<SessionView> sessions) {
                         sessionAdapter.submitList(sessions);
                     }
 
@@ -208,6 +206,8 @@ public class CommunityMeetingFragment extends BindableFragment {
 
                     if (!detailResponse.getItems().isEmpty()) {
                         for (HouseholdDetails householdDetails : detailResponse.getItems()) {
+                            // TODO default to eligible
+                            householdDetails.getHousehold().setSelection(SelectionStatus.Eligible);
                             householdViewModel.save(householdDetails.getHousehold());
                             if (!householdDetails.getMemberDetails().isEmpty()) {
                                 individualViewModel.save(householdDetails.getMemberDetails());

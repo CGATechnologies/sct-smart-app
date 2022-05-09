@@ -4,8 +4,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.sql.Date;
-
 import app.sctp.core.model.Diffable;
 
 @Entity(tableName = "households")
@@ -16,201 +14,84 @@ public class Household implements Diffable {
     private Long householdId;
 
     @ColumnInfo
-    private String createdAt;
+    private String mlCode;
 
     @ColumnInfo
-    private String modifiedAt;
+    private Long sessionId;
 
     @ColumnInfo
-    private String deletedAt;
+    private String formNumber;
 
     @ColumnInfo
-    private String locationCode;
+    private Integer members;
+
+    @ColumnInfo
+    private String district;
+
+    @ColumnInfo
+    private Long districtCode;
+
+    @ColumnInfo
+    private String ta;
 
     @ColumnInfo
     private Long taCode;
 
     @ColumnInfo
+    private String cluster;
+
+    @ColumnInfo
     private Long clusterCode;
+
+    @ColumnInfo
+    private String zone;
 
     @ColumnInfo
     private Long zoneCode;
 
     @ColumnInfo
+    private String village;
+
+    @ColumnInfo
     private Long villageCode;
 
     @ColumnInfo
-    private String villageName;
+    private String villageHead;
 
     @ColumnInfo
-    private Long groupVillageHeadCode;
+    private String householdHead;
 
     @ColumnInfo
-    private String groupVillageHeadName;
+    private Integer ranking;
 
     @ColumnInfo
-    private String mlCode;
+    private String lastRankingDate;
 
     @ColumnInfo
-    private String ubrCode;
+    private SelectionStatus selection;
 
-    @ColumnInfo
-    private String accountNumber;
-
-    @ColumnInfo
-    private Long ubrCsvBatchNumber;
-
-    @ColumnInfo
-    private Integer cbtRank;
-
-    @ColumnInfo
-    private Integer generalRank;
-
-    @ColumnInfo
-    private String lastCbtRanking;
-
-    @ColumnInfo
-    private String lastGeneralRanking;
-
-    @ColumnInfo
-    private Boolean cbtSelection;
-
-    @ColumnInfo(index = true)
-    private Long cbtSessionId;
-
-    @ColumnInfo
-    private Long cbtPmt;
-
-    @ColumnInfo
-    private String cbtStatus;
-
-    @ColumnInfo
-    private double dependencyRatio;
-
-    @ColumnInfo
-    private String floorType;
-
-    @ColumnInfo
-    private String roofType;
-
-    @ColumnInfo
-    private String wallType;
-
-    @ColumnInfo
-    private String latrineType;
-
-    @ColumnInfo
-    private String houseCondition;
-
-    @ColumnInfo
-    private String fuelSource;
-
-    @ColumnInfo
-    private String maizeHarvestLasted;
-
-    @ColumnInfo
-    private String maizeInGranaryWillLast;
-
-    @ColumnInfo
-    private String mealsEatenLastWeek;
-
-    @ColumnInfo
-    private Boolean receivesMonetaryAssistance;
-
-    public Long getHouseholdId() {
-        return householdId;
+    public Integer getRanking() {
+        return ranking;
     }
 
-    public void setHouseholdId(Long householdId) {
-        this.householdId = householdId;
+    public void setRanking(Integer ranking) {
+        this.ranking = ranking;
     }
 
-    public String getCreatedAt() {
-        return createdAt;
+    public String getLastRankingDate() {
+        return lastRankingDate;
     }
 
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
+    public void setLastRankingDate(String lastRankingDate) {
+        this.lastRankingDate = lastRankingDate;
     }
 
-    public String getModifiedAt() {
-        return modifiedAt;
+    public SelectionStatus getSelection() {
+        return selection;
     }
 
-    public void setModifiedAt(String modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public String getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(String deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public String getLocationCode() {
-        return locationCode;
-    }
-
-    public void setLocationCode(String locationCode) {
-        this.locationCode = locationCode;
-    }
-
-    public Long getTaCode() {
-        return taCode;
-    }
-
-    public void setTaCode(Long taCode) {
-        this.taCode = taCode;
-    }
-
-    public Long getClusterCode() {
-        return clusterCode;
-    }
-
-    public void setClusterCode(Long clusterCode) {
-        this.clusterCode = clusterCode;
-    }
-
-    public Long getZoneCode() {
-        return zoneCode;
-    }
-
-    public void setZoneCode(Long zoneCode) {
-        this.zoneCode = zoneCode;
-    }
-
-    public Long getVillageCode() {
-        return villageCode;
-    }
-
-    public void setVillageCode(Long villageCode) {
-        this.villageCode = villageCode;
-    }
-
-    public String getVillageName() {
-        return villageName;
-    }
-
-    public void setVillageName(String villageName) {
-        this.villageName = villageName;
-    }
-
-    public Long getGroupVillageHeadCode() {
-        return groupVillageHeadCode;
-    }
-
-    public void setGroupVillageHeadCode(Long groupVillageHeadCode) {
-        this.groupVillageHeadCode = groupVillageHeadCode;
-    }
-
-    public String getGroupVillageHeadName() {
-        return groupVillageHeadName;
-    }
-
-    public void setGroupVillageHeadName(String groupVillageHeadName) {
-        this.groupVillageHeadName = groupVillageHeadName;
+    public void setSelection(SelectionStatus selection) {
+        this.selection = selection;
     }
 
     public String getMlCode() {
@@ -221,180 +102,132 @@ public class Household implements Diffable {
         this.mlCode = mlCode;
     }
 
-    public String getUbrCode() {
-        return ubrCode;
+    public Long getHouseholdId() {
+        return householdId;
     }
 
-    public void setUbrCode(String ubrCode) {
-        this.ubrCode = ubrCode;
+    public void setHouseholdId(Long householdId) {
+        this.householdId = householdId;
     }
 
-    public String getAccountNumber() {
-        return accountNumber;
+    public Long getSessionId() {
+        return sessionId;
     }
 
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setSessionId(Long sessionId) {
+        this.sessionId = sessionId;
     }
 
-    public Long getUbrCsvBatchNumber() {
-        return ubrCsvBatchNumber;
+    public String getFormNumber() {
+        return formNumber;
     }
 
-    public void setUbrCsvBatchNumber(Long ubrCsvBatchNumber) {
-        this.ubrCsvBatchNumber = ubrCsvBatchNumber;
+    public void setFormNumber(String formNumber) {
+        this.formNumber = formNumber;
     }
 
-    public Integer getCbtRank() {
-        return cbtRank;
+    public Integer getMembers() {
+        return members;
     }
 
-    public void setCbtRank(Integer cbtRank) {
-        this.cbtRank = cbtRank;
+    public void setMembers(Integer members) {
+        this.members = members;
     }
 
-    public Integer getGeneralRank() {
-        return generalRank;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setGeneralRank(Integer generalRank) {
-        this.generalRank = generalRank;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
-    public String getLastCbtRanking() {
-        return lastCbtRanking;
+    public Long getDistrictCode() {
+        return districtCode;
     }
 
-    public void setLastCbtRanking(String lastCbtRanking) {
-        this.lastCbtRanking = lastCbtRanking;
+    public void setDistrictCode(Long districtCode) {
+        this.districtCode = districtCode;
     }
 
-    public String getLastGeneralRanking() {
-        return lastGeneralRanking;
+    public String getTa() {
+        return ta;
     }
 
-    public void setLastGeneralRanking(String lastGeneralRanking) {
-        this.lastGeneralRanking = lastGeneralRanking;
+    public void setTa(String ta) {
+        this.ta = ta;
     }
 
-    public Boolean getCbtSelection() {
-        return cbtSelection;
+    public Long getTaCode() {
+        return taCode;
     }
 
-    public void setCbtSelection(Boolean cbtSelection) {
-        this.cbtSelection = cbtSelection;
+    public void setTaCode(Long taCode) {
+        this.taCode = taCode;
     }
 
-    public Long getCbtSessionId() {
-        return cbtSessionId;
+    public String getCluster() {
+        return cluster;
     }
 
-    public void setCbtSessionId(Long cbtSessionId) {
-        this.cbtSessionId = cbtSessionId;
+    public void setCluster(String cluster) {
+        this.cluster = cluster;
     }
 
-    public Long getCbtPmt() {
-        return cbtPmt;
+    public Long getClusterCode() {
+        return clusterCode;
     }
 
-    public void setCbtPmt(Long cbtPmt) {
-        this.cbtPmt = cbtPmt;
+    public void setClusterCode(Long clusterCode) {
+        this.clusterCode = clusterCode;
     }
 
-    public String getCbtStatus() {
-        return cbtStatus;
+    public String getZone() {
+        return zone;
     }
 
-    public void setCbtStatus(String cbtStatus) {
-        this.cbtStatus = cbtStatus;
+    public void setZone(String zone) {
+        this.zone = zone;
     }
 
-    public double getDependencyRatio() {
-        return dependencyRatio;
+    public Long getZoneCode() {
+        return zoneCode;
     }
 
-    public void setDependencyRatio(double dependencyRatio) {
-        this.dependencyRatio = dependencyRatio;
+    public void setZoneCode(Long zoneCode) {
+        this.zoneCode = zoneCode;
     }
 
-    public String getFloorType() {
-        return floorType;
+    public String getVillage() {
+        return village;
     }
 
-    public void setFloorType(String floorType) {
-        this.floorType = floorType;
+    public void setVillage(String village) {
+        this.village = village;
     }
 
-    public String getRoofType() {
-        return roofType;
+    public Long getVillageCode() {
+        return villageCode;
     }
 
-    public void setRoofType(String roofType) {
-        this.roofType = roofType;
+    public void setVillageCode(Long villageCode) {
+        this.villageCode = villageCode;
     }
 
-    public String getWallType() {
-        return wallType;
+    public String getVillageHead() {
+        return villageHead;
     }
 
-    public void setWallType(String wallType) {
-        this.wallType = wallType;
+    public void setVillageHead(String villageHead) {
+        this.villageHead = villageHead;
     }
 
-    public String getLatrineType() {
-        return latrineType;
+    public String getHouseholdHead() {
+        return householdHead;
     }
 
-    public void setLatrineType(String latrineType) {
-        this.latrineType = latrineType;
-    }
-
-    public String getHouseCondition() {
-        return houseCondition;
-    }
-
-    public void setHouseCondition(String houseCondition) {
-        this.houseCondition = houseCondition;
-    }
-
-    public String getFuelSource() {
-        return fuelSource;
-    }
-
-    public void setFuelSource(String fuelSource) {
-        this.fuelSource = fuelSource;
-    }
-
-    public String getMaizeHarvestLasted() {
-        return maizeHarvestLasted;
-    }
-
-    public void setMaizeHarvestLasted(String maizeHarvestLasted) {
-        this.maizeHarvestLasted = maizeHarvestLasted;
-    }
-
-    public String getMaizeInGranaryWillLast() {
-        return maizeInGranaryWillLast;
-    }
-
-    public void setMaizeInGranaryWillLast(String maizeInGranaryWillLast) {
-        this.maizeInGranaryWillLast = maizeInGranaryWillLast;
-    }
-
-    public String getMealsEatenLastWeek() {
-        return mealsEatenLastWeek;
-    }
-
-    public void setMealsEatenLastWeek(String mealsEatenLastWeek) {
-        this.mealsEatenLastWeek = mealsEatenLastWeek;
-    }
-
-    public Boolean getReceivesMonetaryAssistance() {
-        return receivesMonetaryAssistance;
-    }
-
-    public void setReceivesMonetaryAssistance(Boolean receivesMonetaryAssistance) {
-        this.receivesMonetaryAssistance = receivesMonetaryAssistance;
+    public void setHouseholdHead(String householdHead) {
+        this.householdHead = householdHead;
     }
 
     @Override
@@ -404,6 +237,10 @@ public class Household implements Diffable {
 
     @Override
     public boolean contentsSameAs(Diffable diffable) {
-        return false;
+        return diffable.getDiffValue().equals(getDiffValue());
+    }
+
+    public String getMlCodeForPrint() {
+        return "ML-" + getMlCode();
     }
 }

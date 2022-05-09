@@ -79,4 +79,12 @@ public class LocationSelection implements Serializable {
     public String getVillageName() {
         return locationName(village);
     }
+
+    public boolean allLocationsSet() {
+        return getDistrictCode() != null
+                && getTraditionalAuthority() != null
+                && getZone() != null
+                && getVillage() != null
+                && getCluster() != null;
+    }
 }

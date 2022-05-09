@@ -8,7 +8,7 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <app.sctp.core.ui.views.ExpandablePanel
+   <!-- <app.sctp.core.ui.views.ExpandablePanel
         android:id="@+id/location_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,15 @@
         app:content_background_color="@color/background_color"
         app:layout="@layout/location_info"
         app:panel_summary="@string/location_information_summary"
-        app:panel_title="@string/location_information" />
+        app:panel_title="@string/location_information" />-->
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/info"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/targeting_session_info"
+        style="@style/info_textview" />
 
    <!-- <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"

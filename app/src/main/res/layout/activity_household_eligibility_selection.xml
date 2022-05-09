@@ -8,6 +8,14 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/household_selection_info"
+        style="@style/info_textview" />
+
     <app.sctp.core.ui.views.StandardRecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"

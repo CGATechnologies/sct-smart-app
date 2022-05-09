@@ -4,9 +4,12 @@ package app.sctp.targeting.services;
 import app.sctp.core.net.api.ext.ApiCall;
 import app.sctp.targeting.models.HouseholdDetailResponse;
 import app.sctp.targeting.models.PreEligibilityVerificationSessionResponse;
+import app.sctp.targeting.models.UpdateHouseholdRankRequest;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -33,7 +36,6 @@ public interface TargetingService {
     @GET("/targeting/pre-eligibility/sessions/{sessionId}/households")
     Call<HouseholdDetailResponse> getHouseholdsFromPreEligibilitySession(@Path("sessionId") Long sessionId, @Query("page") int page);
 
-    /*
-    @GET("/targeting/pre-eligibility/sessions/{sessionId}/households")
-    ApiCall<HouseholdDetailResponse> getHouseholdsFromPreEligibilitySession(@Path("sessionId") Long sessionId, @Query("page") int page);*/
+    @POST("/targeting/pre-eligibility/sessions/{session-id}/households/update-ranks")
+    Call<Void> uploadHouseholdSelectionResults(@Path("session-id") Long sessionId, @Body UpdateHouseholdRankRequest request);
 }

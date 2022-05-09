@@ -3,7 +3,6 @@ package app.sctp.targeting.viewmodels;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -14,10 +13,13 @@ import java.util.List;
 
 import app.sctp.persistence.BaseViewModel;
 import app.sctp.targeting.models.Household;
+import app.sctp.targeting.models.HouseholdSelectionResults;
+import app.sctp.targeting.models.SelectionStatus;
 import app.sctp.targeting.repositories.HouseholdRepository;
 import app.sctp.utils.LocaleUtils;
 
 public class HouseholdViewModel extends BaseViewModel {
+
     static class HouseholdListingKey {
         private String search;
         private Long sessionId;
@@ -47,9 +49,9 @@ public class HouseholdViewModel extends BaseViewModel {
         }
     }
 
-    private MutableLiveData<HouseholdListingKey> searchLiveData;
     private final HouseholdRepository householdRepository;
     private LiveData<PagedList<Household>> householdsLiveData;
+    private MutableLiveData<HouseholdListingKey> searchLiveData;
 
     public HouseholdViewModel(@NonNull Application application) {
         super(application);
@@ -61,7 +63,7 @@ public class HouseholdViewModel extends BaseViewModel {
                 input -> {
                     if (!LocaleUtils.hasText(input.search)) {
                         return new LivePagedListBuilder<>(
-                                householdRepository.getBySessionId(input.sessionId),
+                                householdRepository.getSessionHouseholds(input.sessionId),
                                 PAGE_SIZE
                         ).build();
                     } else {
@@ -88,5 +90,25 @@ public class HouseholdViewModel extends BaseViewModel {
 
     public LiveData<PagedList<Household>> getHouseholdsLiveData() {
         return householdsLiveData;
+    }
+
+    public void setSessionId(Long sessionId) {
+        searchLiveData.postValue(new HouseholdListingKey(sessionId, null));
+    }
+
+    public LiveData<PagedList<Household>> getSessionHouseholds() {
+        return householdsLiveData;
+    }
+
+    public List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId) {
+        return householdRepository.getHouseholdSelectionResultsForSession(sessionId);
+    }
+
+    public boolean sessionHouseholdsSelected(Long sessionId) {
+        return householdRepository.sessionHouseholdsSelected(sessionId);
+    }
+
+    public void updateHouseholdStatus(Long sessionId, SelectionStatus selectionStatus) {
+        householdRepository.updateHouseholdStatus(sessionId, selectionStatus);
     }
 }

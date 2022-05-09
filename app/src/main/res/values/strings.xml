@@ -3,4 +3,5 @@
     <string name="login">Login</string>
     <string name="error_loading_data">Error loading data</string>
     <string name="error_downloading_data">Error downloading data</string>
+    <string name="label_status">Status</string>
 </resources>

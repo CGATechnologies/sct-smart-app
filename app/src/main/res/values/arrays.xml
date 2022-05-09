@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="selection_statuses">
+        <item>PreEligible</item>
+        <item>Selected</item>
+    </string-array>
+</resources>

@@ -1,5 +1,6 @@
 package app.sctp.core.ui.adapter;
 
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,14 +12,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import app.sctp.R;
 import app.sctp.core.model.Diffable;
 
 public class GenericPagedAdapter<T extends Diffable> extends PagedListAdapter<T, ItemViewHolder<T>> implements ItemAdapter<T> {
+    private final boolean allowItemSelection;
+    private final View.OnClickListener onClickListener;
     private final ItemViewHolderCreator<T> viewHolderCreator;
     private ItemSelectionListener<T> delegateSelectionListener;
     private final ItemSelectionListener<T> itemSelectionListener;
 
     public GenericPagedAdapter(@NonNull ItemViewHolderCreator<T> viewHolderCreator) {
+        this(viewHolderCreator, true);
+    }
+
+    public GenericPagedAdapter(@NonNull ItemViewHolderCreator<T> viewHolderCreator, boolean allowItemSelection) {
         super(new DiffUtil.ItemCallback<T>() {
             @Override
             public boolean areItemsTheSame(@NonNull T oldItem, @NonNull T newItem) {
@@ -36,6 +44,7 @@ public class GenericPagedAdapter<T extends Diffable> extends PagedListAdapter<T,
                 return super.getChangePayload(oldItem, newItem);
             }
         });
+        this.allowItemSelection = allowItemSelection;
         this.viewHolderCreator = viewHolderCreator;
         this.itemSelectionListener = new ItemSelectionListener<T>() {
             @Override
@@ -51,6 +60,10 @@ public class GenericPagedAdapter<T extends Diffable> extends PagedListAdapter<T,
                     delegateSelectionListener.onItemLongSelected(item);
                 }
             }
+        };
+        this.onClickListener = v -> {
+            ItemViewHolder<?> itemViewHolder = (ItemViewHolder<?>) v.getTag(R.id.view_holder_self_reference_tag);
+            itemSelectionListener.onItemSelected(getItemAt(itemViewHolder.getAdapterPosition()));
         };
     }
 
@@ -75,6 +88,13 @@ public class GenericPagedAdapter<T extends Diffable> extends PagedListAdapter<T,
 
     @Override
     public final void onBindViewHolder(@NonNull ItemViewHolder<T> holder, int position, @NonNull List<Object> payloads) {
+        if (allowItemSelection) {
+            holder.itemView.setOnClickListener(this.onClickListener);
+            holder.itemView.setTag(R.id.view_holder_self_reference_tag, holder);
+        } else {
+            holder.itemView.setOnClickListener(null);
+            holder.itemView.setTag(R.id.view_holder_self_reference_tag, null);
+        }
         if (payloads.isEmpty()) {
             onBindViewHolder(holder, position);
         } else {

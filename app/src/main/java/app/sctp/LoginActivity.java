@@ -50,67 +50,11 @@ public class LoginActivity extends BindableActivity {
         binding = getViewBinding();
         binding.version.setText(format("v%s", BuildConfig.VERSION_NAME));
 
-        binding.btnLogin.setOnClickListener(v -> doAuthenticate2());
+        binding.btnLogin.setOnClickListener(v -> doAuthenticate());
         authenticationRequest = new AuthenticationRequest();
     }
 
     private void doAuthenticate() {
-        authenticationRequest.setUserName(UiUtils.getNonEmptyText(binding.username));
-        authenticationRequest.setPassword(UiUtils.getNonEmptyText(binding.password));
-
-        if (authenticationRequest.getUserName() == null
-                || authenticationRequest.getPassword() == null) {
-            return;
-        }
-
-        ProgressDialog progressDialog = UiUtils.progressDialog(this);
-
-        progressDialog.show();
-
-        getApplicationConfiguration().getService(AuthenticationService.class)
-                .auth(authenticationRequest)
-                .enqueue(new ApiResponseCallback<AuthenticationResponse>() {
-                    @Override
-                    public void onSuccess(@NonNull Call<AuthenticationResponse> call, @NonNull Response<AuthenticationResponse> response) {
-                        getApplicationConfiguration().sharedPreferenceAccessor()
-                                .setAccessToken(response.body().getAccessToken());
-                        getApplicationConfiguration().refreshUserDetailsIfAvailable();
-                        navigateToDashboardActivity();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onError(@NonNull Call<AuthenticationResponse> call, @NonNull Throwable throwable) {
-
-                        String message = "Error connecting to server.";
-                        throwable.printStackTrace();
-                        if (throwable instanceof HttpException) {
-                            HttpException exception = (HttpException) throwable;
-                            switch (exception.code()) {
-                                case HttpURLConnection.HTTP_UNAUTHORIZED:
-                                    message = getString(R.string.auth_invalid_credentials);
-                                    break;
-                                case HttpURLConnection.HTTP_FORBIDDEN:
-                                    message = getString(R.string.auth_account_locked);
-                                    break;
-                                case HttpURLConnection.HTTP_PRECON_FAILED:
-                                    message = getString(R.string.app_outdated_version);
-                                    break;
-                            }
-                        } else if (throwable instanceof ConnectException) {
-                            message = getString(R.string.app_network_fail);
-                        }
-                        // TODO log
-                        UiUtils.snackbar(getRootView(), message);
-                    }
-                });
-    }
-
-    private void doAuthenticate2() {
         authenticationRequest.setUserName(UiUtils.getNonEmptyText(binding.username));
         authenticationRequest.setPassword(UiUtils.getNonEmptyText(binding.password));
 

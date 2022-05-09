@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_toStartOf="@+id/gap1"
-                    app:labelText="@string/label_targeting"
+                    app:labelText="@string/label_targeting_and_enrollment"
                     app:menuIcon="@drawable/ic_targeting"
                     app:targetAction="@+id/action_home_to_targeting" />
 
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_toEndOf="@+id/gap1"
-                    app:labelText="Case Mgmt"
+                    app:labelText="@string/label_case_management2"
                     app:menuIcon="@drawable/ic_case_management" />
 
             </RelativeLayout>
@@ -144,11 +144,11 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/logout_button"
-                android:layout_marginTop="4dp"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:text="@string/logout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/logout" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/info"

@@ -7,7 +7,7 @@
 
         <variable
             name="session"
-            type="app.sctp.targeting.models.PreEligibilityVerificationSession" />
+            type="app.sctp.targeting.models.SessionView" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

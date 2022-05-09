@@ -2,7 +2,7 @@ package app.sctp.targeting.repositories;
 
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PagingData;
+import androidx.paging.PagedList;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -19,7 +19,7 @@ import io.reactivex.Flowable;
 public class LocationRepository extends BaseRepository {
     private LocationDao locationDao;
     private TargetingService targetingService;
-    private MutableLiveData<PagingData<GeoLocation>> locationLiveData;
+    private MutableLiveData<PagedList<GeoLocation>> locationLiveData;
 
 
     public LocationRepository(SctpAppDatabase appDatabase) {

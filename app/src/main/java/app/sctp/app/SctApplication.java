@@ -3,7 +3,6 @@ package app.sctp.app;
 import android.app.Application;
 
 import androidx.room.Room;
-import androidx.room.migration.AutoMigrationSpec;
 
 import app.sctp.core.ApplicationConfiguration;
 import app.sctp.persistence.Migrations;

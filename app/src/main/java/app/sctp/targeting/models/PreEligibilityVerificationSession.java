@@ -1,5 +1,6 @@
 package app.sctp.targeting.models;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -16,9 +17,13 @@ public class PreEligibilityVerificationSession implements Diffable {
     private Long id;
     private String taName;
     private Long programId;
+
+    @ColumnInfo(index = true)
     private Long taCode;
     private Long userId;
     private Long criterionId;
+
+    @ColumnInfo(index = true)
     private Long districtCode;
     private int households;
     private String createdAt;
@@ -156,11 +161,6 @@ public class PreEligibilityVerificationSession implements Diffable {
 
     public void setOpen(boolean open) {
         this.open = open;
-    }
-
-    public String getHouseholdCountSummary() {
-        return String.format(Locale.US, "0/%,d household%s selected",
-                households, households != 1 ? 's' : "");
     }
 
     public String getCreationSummary() {

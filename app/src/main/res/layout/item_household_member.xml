@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="individual"
+            type="app.sctp.targeting.models.Individual" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/householdCardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="2dp">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/name"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{individual.fullName}"
+                    tools:text="Jane Doe" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/gender"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/household_head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{individual.gender.name()}"
+                    tools:text="Female" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/date_of_birth"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/ranking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{individual.dateOfBirth}"
+                    tools:text="yyyy-MM-dd" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/relationship"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{individual.relationship.description}"
+                    tools:text="PreEligible" />
+            </TableRow>
+
+        </TableLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

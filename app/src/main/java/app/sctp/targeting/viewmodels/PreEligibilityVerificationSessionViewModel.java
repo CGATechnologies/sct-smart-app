@@ -12,6 +12,7 @@ import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.LocationType;
 import app.sctp.targeting.models.PreEligibilityVerificationSession;
+import app.sctp.targeting.models.SessionView;
 import app.sctp.targeting.repositories.LocationRepository;
 import app.sctp.targeting.repositories.PreEligibilityVerificationSessionRepository;
 import io.reactivex.Flowable;
@@ -26,6 +27,10 @@ public class PreEligibilityVerificationSessionViewModel extends BaseViewModel {
 
     public Flowable<List<PreEligibilityVerificationSession>> getAll(LocationSelection locationSelection) {
         return repository.getAll(locationSelection);
+    }
+
+    public Flowable<List<SessionView>> getSessionViewsByLocation(LocationSelection locationSelection) {
+        return repository.getSessionViewsByLocation(locationSelection);
     }
 
     public void save(List<PreEligibilityVerificationSession> locations) {

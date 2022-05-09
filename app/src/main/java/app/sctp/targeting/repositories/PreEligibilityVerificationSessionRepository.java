@@ -1,7 +1,7 @@
 package app.sctp.targeting.repositories;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PagingData;
+import androidx.paging.PagedList;
 
 import java.util.List;
 
@@ -11,11 +11,12 @@ import app.sctp.targeting.dao.PreEligibilityVerificationSessionDao;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.PreEligibilityVerificationSession;
+import app.sctp.targeting.models.SessionView;
 import io.reactivex.Flowable;
 
 public class PreEligibilityVerificationSessionRepository extends BaseRepository {
     private PreEligibilityVerificationSessionDao pevSessionDao;
-    private MutableLiveData<PagingData<GeoLocation>> locationLiveData;
+    private MutableLiveData<PagedList<GeoLocation>> locationLiveData;
 
     public PreEligibilityVerificationSessionRepository(SctpAppDatabase appDatabase) {
         super(appDatabase);
@@ -23,14 +24,14 @@ public class PreEligibilityVerificationSessionRepository extends BaseRepository 
     }
 
     public Flowable<List<PreEligibilityVerificationSession>> getAll(LocationSelection locationSelection) {
-        if(locationSelection.getCluster() != null){
+        if (locationSelection.getCluster() != null) {
             return pevSessionDao.getAll(
                     locationSelection.getDistrictCode(),
                     locationSelection.getTraditionalAuthority().getCode(),
                     locationSelection.getCluster().getCode()
             );
         }
-        if (locationSelection.getTraditionalAuthority() != null){
+        if (locationSelection.getTraditionalAuthority() != null) {
             return pevSessionDao.getAll(
                     locationSelection.getDistrictCode(),
                     locationSelection.getTraditionalAuthority().getCode()
@@ -41,5 +42,9 @@ public class PreEligibilityVerificationSessionRepository extends BaseRepository 
 
     public void save(List<PreEligibilityVerificationSession> sessionList) {
         post(() -> pevSessionDao.save(sessionList));
+    }
+
+    public Flowable<List<SessionView>> getSessionViewsByLocation(LocationSelection locationSelection) {
+        return pevSessionDao.getSessionViewsByLocation(locationSelection);
     }
 }

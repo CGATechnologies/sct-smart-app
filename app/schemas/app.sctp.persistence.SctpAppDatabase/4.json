@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "90b44797c4c1776e21cb524783b6bb29",
+    "identityHash": "91f0d49cce4a1399c3ebb27876e1507c",
     "entities": [
       {
         "tableName": "locations",
@@ -52,15 +52,14 @@
             "columnNames": [
               "code"
             ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_locations_code` ON `${TABLE_NAME}` (`code`)"
+            "createSql": "CREATE  INDEX `index_locations_code` ON `${TABLE_NAME}` (`code`)"
           }
         ],
         "foreignKeys": []
       },
       {
         "tableName": "households",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`householdId` INTEGER, `createdAt` TEXT, `modifiedAt` TEXT, `deletedAt` TEXT, `locationCode` TEXT, `taCode` INTEGER, `clusterCode` INTEGER, `zoneCode` INTEGER, `villageCode` INTEGER, `villageName` TEXT, `groupVillageHeadCode` INTEGER, `groupVillageHeadName` TEXT, `mlCode` TEXT, `ubrCode` TEXT, `accountNumber` TEXT, `ubrCsvBatchNumber` INTEGER, `cbtRank` INTEGER, `generalRank` INTEGER, `lastCbtRanking` TEXT, `lastGeneralRanking` TEXT, `cbtSelection` INTEGER, `cbtSessionId` INTEGER, `cbtPmt` INTEGER, `cbtStatus` TEXT, `dependencyRatio` REAL NOT NULL, `floorType` TEXT, `roofType` TEXT, `wallType` TEXT, `latrineType` TEXT, `houseCondition` TEXT, `fuelSource` TEXT, `maizeHarvestLasted` TEXT, `maizeInGranaryWillLast` TEXT, `mealsEatenLastWeek` TEXT, `receivesMonetaryAssistance` INTEGER, PRIMARY KEY(`householdId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`householdId` INTEGER, `mlCode` TEXT, `sessionId` INTEGER, `formNumber` TEXT, `members` INTEGER, `district` TEXT, `districtCode` INTEGER, `ta` TEXT, `taCode` INTEGER, `cluster` TEXT, `clusterCode` INTEGER, `zone` TEXT, `zoneCode` INTEGER, `village` TEXT, `villageCode` INTEGER, `villageHead` TEXT, `householdHead` TEXT, PRIMARY KEY(`householdId`))",
         "fields": [
           {
             "fieldPath": "householdId",
@@ -69,26 +68,44 @@
             "notNull": false
           },
           {
-            "fieldPath": "createdAt",
-            "columnName": "createdAt",
+            "fieldPath": "mlCode",
+            "columnName": "mlCode",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "modifiedAt",
-            "columnName": "modifiedAt",
+            "fieldPath": "sessionId",
+            "columnName": "sessionId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "formNumber",
+            "columnName": "formNumber",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "deletedAt",
-            "columnName": "deletedAt",
+            "fieldPath": "members",
+            "columnName": "members",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "district",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "locationCode",
-            "columnName": "locationCode",
+            "fieldPath": "districtCode",
+            "columnName": "districtCode",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ta",
+            "columnName": "ta",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -99,9 +116,21 @@
             "notNull": false
           },
           {
+            "fieldPath": "cluster",
+            "columnName": "cluster",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "clusterCode",
             "columnName": "clusterCode",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "zone",
+            "columnName": "zone",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -111,165 +140,27 @@
             "notNull": false
           },
           {
+            "fieldPath": "village",
+            "columnName": "village",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "villageCode",
             "columnName": "villageCode",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "villageName",
-            "columnName": "villageName",
+            "fieldPath": "villageHead",
+            "columnName": "villageHead",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "groupVillageHeadCode",
-            "columnName": "groupVillageHeadCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "groupVillageHeadName",
-            "columnName": "groupVillageHeadName",
+            "fieldPath": "householdHead",
+            "columnName": "householdHead",
             "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "mlCode",
-            "columnName": "mlCode",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "ubrCode",
-            "columnName": "ubrCode",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "accountNumber",
-            "columnName": "accountNumber",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "ubrCsvBatchNumber",
-            "columnName": "ubrCsvBatchNumber",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "cbtRank",
-            "columnName": "cbtRank",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "generalRank",
-            "columnName": "generalRank",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "lastCbtRanking",
-            "columnName": "lastCbtRanking",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "lastGeneralRanking",
-            "columnName": "lastGeneralRanking",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "cbtSelection",
-            "columnName": "cbtSelection",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "cbtSessionId",
-            "columnName": "cbtSessionId",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "cbtPmt",
-            "columnName": "cbtPmt",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "cbtStatus",
-            "columnName": "cbtStatus",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "dependencyRatio",
-            "columnName": "dependencyRatio",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "floorType",
-            "columnName": "floorType",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "roofType",
-            "columnName": "roofType",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "wallType",
-            "columnName": "wallType",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "latrineType",
-            "columnName": "latrineType",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "houseCondition",
-            "columnName": "houseCondition",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "fuelSource",
-            "columnName": "fuelSource",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "maizeHarvestLasted",
-            "columnName": "maizeHarvestLasted",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "maizeInGranaryWillLast",
-            "columnName": "maizeInGranaryWillLast",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "mealsEatenLastWeek",
-            "columnName": "mealsEatenLastWeek",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "receivesMonetaryAssistance",
-            "columnName": "receivesMonetaryAssistance",
-            "affinity": "INTEGER",
             "notNull": false
           }
         ],
@@ -279,22 +170,12 @@
           ],
           "autoGenerate": false
         },
-        "indices": [
-          {
-            "name": "index_households_cbtSessionId",
-            "unique": false,
-            "columnNames": [
-              "cbtSessionId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_households_cbtSessionId` ON `${TABLE_NAME}` (`cbtSessionId`)"
-          }
-        ],
+        "indices": [],
         "foreignKeys": []
       },
       {
         "tableName": "Individual",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`highestEducationLevel` TEXT, `chronicIllness` TEXT, `maritalStatus` TEXT, `householdCode` TEXT, `orphanStatus` TEXT, `individualId` TEXT, `idIssueDate` TEXT, `idExpiryDate` TEXT, `dateOfBirth` TEXT, `relationshipToHead` TEXT, `phoneNumber` TEXT, `householdId` INTEGER, `fitForWork` INTEGER, `schoolName` TEXT, `modifiedAt` TEXT, `gradeLevel` TEXT, `disability` TEXT, `deletedAt` TEXT, `createdAt` TEXT, `firstName` TEXT, `lastName` TEXT, `status` INTEGER NOT NULL, `sourcedFrom` TEXT DEFAULT '', `isEstimatedDob` INTEGER NOT NULL, `locationCode` INTEGER, `ubrCsvBatchNumber` INTEGER, `middleName` TEXT, `ubr_household_member_id` INTEGER DEFAULT 0, `gender` TEXT, `id` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`highestEducationLevel` TEXT, `chronicIllness` TEXT, `maritalStatus` TEXT, `householdCode` TEXT, `orphanStatus` TEXT, `individualId` TEXT, `idIssueDate` TEXT, `idExpiryDate` TEXT, `dateOfBirth` TEXT, `relationshipToHead` TEXT, `phoneNumber` TEXT, `householdId` INTEGER, `fitForWork` INTEGER, `schoolName` TEXT, `modifiedAt` TEXT, `gradeLevel` TEXT, `disability` TEXT, `deletedAt` TEXT, `createdAt` TEXT, `firstName` TEXT, `lastName` TEXT, `status` INTEGER NOT NULL, `sourcedFrom` TEXT, `isEstimatedDob` INTEGER NOT NULL, `locationCode` INTEGER, `ubrCsvBatchNumber` INTEGER, `middleName` TEXT, `ubr_household_member_id` INTEGER, `gender` TEXT, `id` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "educationLevel",
@@ -432,8 +313,7 @@
             "fieldPath": "sourcedFrom",
             "columnName": "sourcedFrom",
             "affinity": "TEXT",
-            "notNull": false,
-            "defaultValue": "''"
+            "notNull": false
           },
           {
             "fieldPath": "isEstimatedDob",
@@ -463,8 +343,7 @@
             "fieldPath": "ubrId",
             "columnName": "ubr_household_member_id",
             "affinity": "INTEGER",
-            "notNull": false,
-            "defaultValue": "0"
+            "notNull": false
           },
           {
             "fieldPath": "gender",
@@ -492,8 +371,7 @@
             "columnNames": [
               "householdId"
             ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_Individual_householdId` ON `${TABLE_NAME}` (`householdId`)"
+            "createSql": "CREATE  INDEX `index_Individual_householdId` ON `${TABLE_NAME}` (`householdId`)"
           }
         ],
         "foreignKeys": []
@@ -609,10 +487,9 @@
         "foreignKeys": []
       }
     ],
-    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '90b44797c4c1776e21cb524783b6bb29')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"91f0d49cce4a1399c3ebb27876e1507c\")"
     ]
   }
 }
