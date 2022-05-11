@@ -93,6 +93,7 @@
     <string name="title_household_composition">Household composition</string>
     <string name="name">Name</string>
     <string name="targeting_session_info"><![CDATA[1. Select a session below to manage households.\n\n2. To download new data, select \"Download new data\" under the menu options]]></string>
+    <string name="targeting_dcm_session_info"><![CDATA[1. Select a session below to manage households.\n\n2. To download new data, select \"Download new data\" under the menu options]]></string>
     <string name="enrollment">Enrollment</string>
     <string name="sync_households">Upload selection results</string>
     <string name="household_selection_incomplete">You must select all households before uploading the results to the MIS</string>
