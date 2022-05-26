@@ -26,8 +26,11 @@ public abstract class TargetedHouseholdDao {
     @Query("select * from targeted_households where targeting_session = :sessionId")
     public abstract DataSource.Factory<Integer, TargetedHousehold> getBySessionId(Long sessionId);
 
-    @Query("select household_id householdId, status selection, ranking from targeted_households where targeting_session = :sessionId")
-    public abstract List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId);
+    @Query("select count(household_id) from targeted_households where targeting_session = :sessionId")
+    public abstract int countSessionHouseholds(long sessionId);
+
+    @Query("select household_id householdId, status, ranking rank from targeted_households where targeting_session = :sessionId LIMIT :offset, :count")
+    public abstract List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId, int offset, int count);
 
     @Deprecated
     @Query("select selected.c as selected, unselected.c as unselected from (select count(household_id) c from targeted_households where targeting_session = :sessionId and status = 'Eligible') selected, (select count(household_id) c from targeted_households where targeting_session = :sessionId and status != 'Eligible') as unselected")

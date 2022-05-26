@@ -3,7 +3,7 @@ package app.sctp.targeting.services;
 
 import app.sctp.targeting.models.GetTargetingSessionsResponse;
 import app.sctp.targeting.models.TargetedHouseholdsResponse;
-import app.sctp.targeting.models.UpdateHouseholdRankRequest;
+import app.sctp.targeting.models.TargetedHouseholdUpdateRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -15,7 +15,7 @@ public interface TargetingService {
 
     @Deprecated
     @POST("/targeting/pre-eligibility/sessions/{session-id}/households/update-ranks")
-    Call<Void> uploadHouseholdSelectionResults(@Path("session-id") Long sessionId, @Body UpdateHouseholdRankRequest request);
+    Call<Void> uploadHouseholdSelectionResults(@Path("session-id") Long sessionId, @Body TargetedHouseholdUpdateRequest request);
 
 
     @GET("/targeting/meetings/second-community-meeting")
@@ -51,4 +51,22 @@ public interface TargetingService {
             @Query("page") int page
             // pageSize = 1000
     );
+
+    @POST("/targeting/meetings/district-meeting-households-update")
+    Call<Void> updateDistrictMeetingHouseholds(
+            @Query("targeting-session-id") long sessionId,
+            @Body TargetedHouseholdUpdateRequest request
+    );
+
+    @POST("/targeting/meetings/second-community-meeting-households-update")
+    Call<Void> updateSecondCommunityMeetingHouseholds(
+            @Query("targeting-session-id") long sessionId,
+            @Body TargetedHouseholdUpdateRequest request
+    );
+
+    @POST("/targeting/meetings/second-community-meeting-done")
+    Call<Void> markSessionSecondCommunityMeetingAsDone(@Query("targeting-session-id") Long sessionId);
+
+    @POST("/targeting/meetings/district-meeting-done")
+    Call<Void> markSessionDistrictMeetingAsDone(@Query("targeting-session-id") Long sessionId);
 }

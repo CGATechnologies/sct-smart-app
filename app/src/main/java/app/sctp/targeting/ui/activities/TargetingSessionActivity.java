@@ -10,23 +10,20 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import app.sctp.R;
 import app.sctp.core.ui.BaseActivity;
 import app.sctp.core.ui.adapter.GenericPagedAdapter;
 import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.ActivityHouseholdEligibilitySelectionBinding;
-import app.sctp.targeting.models.HouseholdSelectionResults;
 import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.targeting.models.TargetingSession;
-import app.sctp.targeting.models.UpdateHouseholdRankRequest;
+import app.sctp.targeting.repositories.HouseholdRepository;
 import app.sctp.targeting.services.TargetingService;
 import app.sctp.targeting.ui.viewholders.HouseholdViewHolderCreator;
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
 import app.sctp.utils.PlatformUtils;
 import app.sctp.utils.UiUtils;
+import retrofit2.Call;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
@@ -76,7 +73,7 @@ public class TargetingSessionActivity extends BaseActivity {
         householdViewModel.setSessionId(session.getId());*/
         //refreshHouseholds();
 
-        progressDialog = UiUtils.progressDialog(this);
+        progressDialog = UiUtils.progressDialogWithProgress(this);
     }
 
     @Override
@@ -115,49 +112,92 @@ public class TargetingSessionActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.cmo_send_households) {
-            synchronizeHouseholds();
+            // TODO Show dialog to ask whether to move to next phase or not
+            synchronizeHouseholds(true);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void synchronizeHouseholds() {
-        progressDialog.setMessage("Processing...");
-        progressDialog.show();
-        getApplicationConfiguration().postBackgroundWork(() -> {
-            progressDialog.setMessage("Uploading selection results...");
+    /**
+     * @param moveToNextPhase whether to mark the session as being complete in the current phase.
+     */
+    private void synchronizeHouseholds(boolean moveToNextPhase) {
+        TargetingService service = getApplicationConfiguration().getService(TargetingService.class);
+        householdViewModel.synchronizeHouseholds(
+                session.getId(),
+                service,
+                session.getMeetingPhase(),
+                new HouseholdRepository.SyncListener() {
+                    @Override
+                    public void onMessage(String message) {
+                        progressDialog.setMessage(message);
+                    }
 
-            // TODO Make the requests to the server are batched
-            // https://github.com/CGATechnologies/sct-smart-app/issues/1
-            List<HouseholdSelectionResults> resultsList = householdViewModel
-                    .getHouseholdSelectionResultsForSession(session.getId());
+                    @Override
+                    public void onComplete() {
+                        if (moveToNextPhase) {
+                            markSessionMeetingAsDone(service);
+                        } else {
+                            progressDialog.dismiss();
+                            UiUtils.snackbar(binding.getRoot(), R.string.household_updates_sent);
+                        }
+                    }
 
-            UpdateHouseholdRankRequest request = new UpdateHouseholdRankRequest(resultsList);
+                    @Override
+                    public void onStart() {
+                        progressDialog.setMessage("Please wait...");
+                        progressDialog.show();
+                    }
 
-            Response<Void> response;
-            AtomicBoolean success = new AtomicBoolean(false);
-
-            try {
-                response = getApplicationConfiguration()
-                        .getService(TargetingService.class)
-                        .uploadHouseholdSelectionResults(session.getId(), request).execute();
-                if (response.isSuccessful()) {
-                    success.set(true);
-                    // TODO Set session as Closed ?
-                } else {
-                    throw new HttpException(response);
-                }
-            } catch (Exception e) {
-                PlatformUtils.printStackTrace(e);
-            } finally {
-                runOnUiThread(() -> {
-                    progressDialog.dismiss();
-                    if (success.get()) {
-                        UiUtils.snackbar(binding.getRoot(), R.string.household_updates_sent);
-                    } else {
+                    @Override
+                    public void onError(Exception exception) {
+                        progressDialog.dismiss();
                         UiUtils.snackbar(binding.getRoot(), R.string.household_updates_failed, true);
                     }
-                });
+
+                    @Override
+                    public void onInitializeProgress(int max) {
+                        progressDialog.setMax(max);
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+                        progressDialog.setProgress(progress);
+                    }
+                }
+        );
+    }
+
+    private void markSessionMeetingAsDone(TargetingService service) {
+        getApplicationConfiguration().postBackgroundWork(() -> {
+            try {
+                Call<Void> call;
+                Response<Void> response;
+
+                switch (session.getMeetingPhase()) {
+                    case second_community_meeting:
+                        call = service.markSessionSecondCommunityMeetingAsDone(session.getId());
+                        break;
+                    case district_meeting:
+                        call = service.markSessionDistrictMeetingAsDone(session.getId());
+                        break;
+                    default:
+                        throw new UnsupportedOperationException("operation not unsupported for " + session.getMeetingPhase());
+                }
+
+                response = call.execute();
+                if (!response.isSuccessful()) {
+                    throw new HttpException(response);
+                }
+
+                progressDialog.dismiss();
+                UiUtils.snackbar(binding.getRoot(), R.string.household_updates_sent);
+
+            } catch (Exception e) {
+                PlatformUtils.printStackTrace(e);
+                progressDialog.dismiss();
+                UiUtils.snackbar(binding.getRoot(), R.string.session_meeting_close_error, true);
             }
         });
     }

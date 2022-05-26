@@ -14,7 +14,9 @@ import java.util.List;
 import app.sctp.persistence.BaseViewModel;
 import app.sctp.targeting.models.HouseholdSelectionResults;
 import app.sctp.targeting.models.TargetedHousehold;
+import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.repositories.HouseholdRepository;
+import app.sctp.targeting.services.TargetingService;
 
 public class HouseholdViewModel extends BaseViewModel {
 
@@ -79,8 +81,19 @@ public class HouseholdViewModel extends BaseViewModel {
         return householdsLiveData;
     }
 
-    public List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId) {
-        return householdRepository.getHouseholdSelectionResultsForSession(sessionId);
+    public int getHouseholdCount(long sessionId) {
+        return householdRepository.getHouseholdCount(sessionId);
     }
 
+    public List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId, int offset, int count) {
+        return householdRepository.getHouseholdSelectionResultsForSession(sessionId, offset, count);
+    }
+
+    public void synchronizeHouseholds(
+            Long sessionId,
+            TargetingService service,
+            TargetingSession.MeetingPhase phase,
+            HouseholdRepository.SyncListener listener) {
+        householdRepository.synchronizeHouseholds(sessionId, service, phase, listener);
+    }
 }
