@@ -10,9 +10,7 @@ import java.util.List;
 import app.sctp.core.ui.adapter.ItemAdapter;
 import app.sctp.core.ui.adapter.ItemViewHolder;
 import app.sctp.core.ui.adapter.ItemViewHolderCreator;
-import app.sctp.databinding.ItemHouseholdBinding;
 import app.sctp.databinding.ItemHouseholdMemberBinding;
-import app.sctp.targeting.models.Household;
 import app.sctp.targeting.models.Individual;
 
 public class IndividualViewHolderCreator implements ItemViewHolderCreator<Individual> {

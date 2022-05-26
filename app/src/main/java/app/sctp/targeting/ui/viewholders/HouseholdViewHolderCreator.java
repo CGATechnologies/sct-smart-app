@@ -11,17 +11,17 @@ import app.sctp.core.ui.adapter.ItemAdapter;
 import app.sctp.core.ui.adapter.ItemViewHolder;
 import app.sctp.core.ui.adapter.ItemViewHolderCreator;
 import app.sctp.databinding.ItemHouseholdBinding;
-import app.sctp.targeting.models.Household;
+import app.sctp.targeting.models.TargetedHousehold;
 
-public class HouseholdViewHolderCreator implements ItemViewHolderCreator<Household> {
+public class HouseholdViewHolderCreator implements ItemViewHolderCreator<TargetedHousehold> {
     @Override
-    public ItemViewHolder<Household> createViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolder<TargetedHousehold> createViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new HouseholdViewHolder(ItemHouseholdBinding.inflate(inflater, parent, false));
     }
 
-    public static class HouseholdViewHolder extends ItemViewHolder<Household> {
-        private ItemHouseholdBinding binding;
+    public static class HouseholdViewHolder extends ItemViewHolder<TargetedHousehold> {
+        private final ItemHouseholdBinding binding;
 
         public HouseholdViewHolder(@NonNull ItemHouseholdBinding binding) {
             super(binding.getRoot());
@@ -29,7 +29,7 @@ public class HouseholdViewHolderCreator implements ItemViewHolderCreator<Househo
         }
 
         @Override
-        protected void bind(ItemAdapter<Household> adapter, int position, List<Object> changePayload) {
+        protected void bind(ItemAdapter<TargetedHousehold> adapter, int position, List<Object> changePayload) {
             binding.setHousehold(adapter.getItemAt(position));
         }
     }

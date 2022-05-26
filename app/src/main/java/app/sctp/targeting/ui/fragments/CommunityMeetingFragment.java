@@ -15,32 +15,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import app.sctp.R;
 import app.sctp.core.ui.BindableFragment;
 import app.sctp.core.ui.adapter.GenericAdapter;
 import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.FragmentTargetingCommunityMeetingBinding;
-import app.sctp.targeting.models.GeoLocation;
-import app.sctp.targeting.models.HouseholdDetailResponse;
-import app.sctp.targeting.models.HouseholdDetails;
 import app.sctp.targeting.models.LocationSelection;
-import app.sctp.targeting.models.PreEligibilityVerificationSession;
-import app.sctp.targeting.models.SelectionStatus;
-import app.sctp.targeting.models.TargetedCluster;
 import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.repositories.TargetingSessionRepository;
 import app.sctp.targeting.services.TargetingService;
+import app.sctp.targeting.ui.activities.TargetingSessionActivity;
 import app.sctp.targeting.ui.viewholders.TargetingSessionViewHolderCreator;
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
 import app.sctp.targeting.viewmodels.IndividualViewModel;
 import app.sctp.targeting.viewmodels.TargetingSessionViewModel;
 import app.sctp.utils.UiUtils;
-import retrofit2.HttpException;
-import retrofit2.Response;
 
 public class CommunityMeetingFragment extends BindableFragment {
 
@@ -70,11 +59,11 @@ public class CommunityMeetingFragment extends BindableFragment {
         sessionAdapter = new GenericAdapter<>(new TargetingSessionViewHolderCreator());
         sessionAdapter.setItemSelectionListener(new ItemSelectionListener<TargetingSession>() {
             @Override
-            public void onItemSelected(TargetingSession item) {
-                /*PreEligibilityVerificationSessionActivity.selectEligibleHouseholds(
+            public void onItemSelected(TargetingSession session) {
+                TargetingSessionActivity.selectEligibleHouseholds(
                         requireActivity(),
-                        item
-                );*/
+                        session
+                );
             }
 
             @Override
@@ -160,9 +149,5 @@ public class CommunityMeetingFragment extends BindableFragment {
                     }
                 }
         );
-    }
-
-    private Long locationCode(GeoLocation geoLocation) {
-        return geoLocation != null ? geoLocation.getCode() : 0L;
     }
 }

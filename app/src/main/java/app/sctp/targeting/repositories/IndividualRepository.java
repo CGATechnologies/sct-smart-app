@@ -1,16 +1,13 @@
 package app.sctp.targeting.repositories;
 
 import androidx.annotation.NonNull;
-import androidx.paging.DataSource;
 import androidx.room.Transaction;
 
 import java.util.List;
 
 import app.sctp.persistence.BaseRepository;
 import app.sctp.persistence.SctpAppDatabase;
-import app.sctp.targeting.dao.HouseholdDao;
 import app.sctp.targeting.dao.IndividualDao;
-import app.sctp.targeting.models.Household;
 import app.sctp.targeting.models.Individual;
 import io.reactivex.Flowable;
 

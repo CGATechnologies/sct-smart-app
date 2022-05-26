@@ -12,19 +12,20 @@ import androidx.annotation.Nullable;
 import app.sctp.R;
 import app.sctp.core.ui.BaseActivity;
 import app.sctp.databinding.ActivityTargetingHouseholdSelectionBinding;
-import app.sctp.targeting.models.Household;
 import app.sctp.targeting.models.SelectionStatus;
+import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
 import app.sctp.utils.UiUtils;
 
 public class HouseholdReviewActivity extends BaseActivity {
     private static final String KEY_HOUSEHOLD = "sctp.targeting.pev.session.household";
 
-    private Household household;
+    private TargetedHousehold household;
     private ArrayAdapter<SelectionStatus> spinnerAdapter;
     private HouseholdViewModel householdViewModel;
     private ActivityTargetingHouseholdSelectionBinding binding;
     private static final SelectionStatus[] SELECTION_STATUSES = {
+            SelectionStatus.PreEligible,
             SelectionStatus.Eligible,
             SelectionStatus.Ineligible
     };
@@ -37,7 +38,7 @@ public class HouseholdReviewActivity extends BaseActivity {
         setupToolBar();
         setSubTitle(getText(R.string.title_household_review));
 
-        household = (Household) getIntent().getSerializableExtra(KEY_HOUSEHOLD);
+        household = (TargetedHousehold) getIntent().getSerializableExtra(KEY_HOUSEHOLD);
         binding.getRoot().post(() -> binding.setHousehold(household));
         householdViewModel = getViewModel(HouseholdViewModel.class);
 
@@ -48,11 +49,11 @@ public class HouseholdReviewActivity extends BaseActivity {
         );
         binding.selection.setAdapter(spinnerAdapter);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        binding.selection.setSelection(UiUtils.itemAdapterPosition(spinnerAdapter, household.getSelection()));
+        binding.selection.setSelection(UiUtils.itemAdapterPosition(spinnerAdapter, household.getStatus()));
         binding.selection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                household.setSelection(spinnerAdapter.getItem(position));
+                household.setStatus(spinnerAdapter.getItem(position));
             }
 
             @Override
@@ -70,7 +71,7 @@ public class HouseholdReviewActivity extends BaseActivity {
         });
     }
 
-    public static void reviewHousehold(Activity activity, Household household, int requestCode) {
+    public static void reviewHousehold(Activity activity, TargetedHousehold household, int requestCode) {
         activity.startActivityForResult(new Intent(activity, HouseholdReviewActivity.class)
                 .putExtra(KEY_HOUSEHOLD, household), requestCode);
     }

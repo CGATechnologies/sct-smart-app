@@ -18,9 +18,9 @@ import app.sctp.core.ui.BaseActivity;
 import app.sctp.core.ui.adapter.GenericPagedAdapter;
 import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.ActivityHouseholdEligibilitySelectionBinding;
-import app.sctp.targeting.models.Household;
 import app.sctp.targeting.models.HouseholdSelectionResults;
-import app.sctp.targeting.models.PreEligibilityVerificationSession;
+import app.sctp.targeting.models.TargetedHousehold;
+import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.models.UpdateHouseholdRankRequest;
 import app.sctp.targeting.services.TargetingService;
 import app.sctp.targeting.ui.viewholders.HouseholdViewHolderCreator;
@@ -30,14 +30,14 @@ import app.sctp.utils.UiUtils;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
-public class PreEligibilityVerificationSessionActivity extends BaseActivity {
+public class TargetingSessionActivity extends BaseActivity {
     private static final String KEY_SESSION = "sctp.targeting.pev.session";
     private static final int REVIEW_HOUSEHOLD_REQUEST_ID = 1001;
 
     private ProgressDialog progressDialog;
     private HouseholdViewModel householdViewModel;
-    private PreEligibilityVerificationSession session;
-    private GenericPagedAdapter<Household> householdAdapter;
+    private TargetingSession session;
+    private GenericPagedAdapter<TargetedHousehold> householdAdapter;
     private ActivityHouseholdEligibilitySelectionBinding binding;
 
     @Override
@@ -48,21 +48,21 @@ public class PreEligibilityVerificationSessionActivity extends BaseActivity {
         setupToolBar();
         setSubTitle(getText(R.string.community_meeting_pev_results));
 
-        session = (PreEligibilityVerificationSession) getIntent().getSerializableExtra(KEY_SESSION);
+        session = (TargetingSession) getIntent().getSerializableExtra(KEY_SESSION);
 
         householdAdapter = new GenericPagedAdapter<>(new HouseholdViewHolderCreator());
-        householdAdapter.setItemSelectionListener(new ItemSelectionListener<Household>() {
+        householdAdapter.setItemSelectionListener(new ItemSelectionListener<TargetedHousehold>() {
             @Override
-            public void onItemSelected(Household item) {
+            public void onItemSelected(TargetedHousehold item) {
                 HouseholdReviewActivity.reviewHousehold(
-                        PreEligibilityVerificationSessionActivity.this,
+                        TargetingSessionActivity.this,
                         item,
                         REVIEW_HOUSEHOLD_REQUEST_ID
                 );
             }
 
             @Override
-            public void onItemLongSelected(Household item) {
+            public void onItemLongSelected(TargetedHousehold item) {
 
             }
         });
@@ -88,12 +88,11 @@ public class PreEligibilityVerificationSessionActivity extends BaseActivity {
     private void refreshHouseholds() {
         // TODO Fix LiveDate update
         // noinspection NotifyDatasetChanged
-        householdViewModel.getSessionHouseholds().observe(this, householdAdapter::submitList);
-        householdViewModel.setSessionId(session.getId());
+        householdViewModel.getSessionHouseholds(session.getId()).observe(this, householdAdapter::submitList);
     }
 
-    public static void selectEligibleHouseholds(Activity activity, PreEligibilityVerificationSession session) {
-        activity.startActivity(new Intent(activity, PreEligibilityVerificationSessionActivity.class)
+    public static void selectEligibleHouseholds(Activity activity, TargetingSession session) {
+        activity.startActivity(new Intent(activity, TargetingSessionActivity.class)
                 .putExtra(KEY_SESSION, session));
     }
 

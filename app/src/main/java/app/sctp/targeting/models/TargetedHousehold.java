@@ -79,11 +79,11 @@ public class TargetedHousehold implements Diffable {
         return memberDetails;
     }
 
-    public void setTargetingSession(Long targetingSession) {
+    public void setTargetingSession(@NonNull Long targetingSession) {
         this.targetingSession = targetingSession;
     }
 
-    public void setHouseholdId(Long householdId) {
+    public void setHouseholdId(@NonNull Long householdId) {
         this.householdId = householdId;
     }
 
@@ -235,12 +235,18 @@ public class TargetedHousehold implements Diffable {
         return mlCode;
     }
 
+    @NonNull
     public Long getHouseholdId() {
         return householdId;
     }
 
+    @NonNull
     public Long getTargetingSession() {
         return targetingSession;
+    }
+
+    public String getMlCodeForPrint() {
+        return "ML-" + getMlCode();
     }
 
     @Override

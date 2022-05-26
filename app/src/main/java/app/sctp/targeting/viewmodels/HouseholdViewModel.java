@@ -12,20 +12,15 @@ import androidx.paging.PagedList;
 import java.util.List;
 
 import app.sctp.persistence.BaseViewModel;
-import app.sctp.targeting.models.Household;
 import app.sctp.targeting.models.HouseholdSelectionResults;
-import app.sctp.targeting.models.SelectionStatus;
+import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.targeting.repositories.HouseholdRepository;
-import app.sctp.utils.LocaleUtils;
 
 public class HouseholdViewModel extends BaseViewModel {
 
     static class HouseholdListingKey {
         private String search;
         private Long sessionId;
-
-        public HouseholdListingKey() {
-        }
 
         public HouseholdListingKey(Long sessionId, String search) {
             this.sessionId = sessionId;
@@ -50,8 +45,8 @@ public class HouseholdViewModel extends BaseViewModel {
     }
 
     private final HouseholdRepository householdRepository;
-    private LiveData<PagedList<Household>> householdsLiveData;
-    private MutableLiveData<HouseholdListingKey> searchLiveData;
+    private final MutableLiveData<HouseholdListingKey> searchLiveData;
+    private final LiveData<PagedList<TargetedHousehold>> householdsLiveData;
 
     public HouseholdViewModel(@NonNull Application application) {
         super(application);
@@ -60,43 +55,27 @@ public class HouseholdViewModel extends BaseViewModel {
 
         householdsLiveData = Transformations.switchMap(
                 searchLiveData,
-                input -> {
-                    if (!LocaleUtils.hasText(input.search)) {
-                        return new LivePagedListBuilder<>(
-                                householdRepository.getSessionHouseholds(input.sessionId),
-                                PAGE_SIZE
-                        ).build();
-                    } else {
-                        return new LivePagedListBuilder<>(
-                                householdRepository.search(input.sessionId, input.search),
-                                PAGE_SIZE
-                        ).build();
-                    }
-                }
+                input -> new LivePagedListBuilder<>(
+                        householdRepository.getSessionHouseholds(input.sessionId),
+                        PAGE_SIZE
+                ).build()
         );
     }
 
-    public void updateFilterParameters(Long sessionId, String search) {
-        searchLiveData.postValue(new HouseholdListingKey(sessionId, search));
-    }
-
-    public void save(List<Household> households) {
+    public void save(List<TargetedHousehold> households) {
         householdRepository.save(households);
     }
 
-    public void save(Household household) {
+    public void save(TargetedHousehold household) {
         householdRepository.save(household);
     }
 
-    public LiveData<PagedList<Household>> getHouseholdsLiveData() {
-        return householdsLiveData;
-    }
-
-    public void setSessionId(Long sessionId) {
+    private void setSessionId(Long sessionId) {
         searchLiveData.postValue(new HouseholdListingKey(sessionId, null));
     }
 
-    public LiveData<PagedList<Household>> getSessionHouseholds() {
+    public LiveData<PagedList<TargetedHousehold>> getSessionHouseholds(Long sessionId) {
+        setSessionId(sessionId);
         return householdsLiveData;
     }
 
@@ -104,11 +83,4 @@ public class HouseholdViewModel extends BaseViewModel {
         return householdRepository.getHouseholdSelectionResultsForSession(sessionId);
     }
 
-    public boolean sessionHouseholdsSelected(Long sessionId) {
-        return householdRepository.sessionHouseholdsSelected(sessionId);
-    }
-
-    public void updateHouseholdStatus(Long sessionId, SelectionStatus selectionStatus) {
-        householdRepository.updateHouseholdStatus(sessionId, selectionStatus);
-    }
 }

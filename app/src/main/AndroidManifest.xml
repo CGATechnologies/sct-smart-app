@@ -52,7 +52,7 @@
             android:theme="@style/Theme.SCTP.Windowed" />
 
         <activity
-            android:name=".targeting.ui.activities.PreEligibilityVerificationSessionActivity"
+            android:name=".targeting.ui.activities.TargetingSessionActivity"
             android:label="@string/label_community_meeting"
             android:theme="@style/Theme.SCTP.Windowed" />
 

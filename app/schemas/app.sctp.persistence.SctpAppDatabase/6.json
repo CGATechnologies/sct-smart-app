@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "7fbba1355d1b682bda441e2db1b56bf6",
+    "identityHash": "995aab8087ba3101669cbea6e09669cc",
     "entities": [
       {
         "tableName": "locations",
@@ -55,140 +55,6 @@
             "createSql": "CREATE  INDEX `index_locations_code` ON `${TABLE_NAME}` (`code`)"
           }
         ],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "households",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`householdId` INTEGER, `mlCode` TEXT, `sessionId` INTEGER, `formNumber` TEXT, `members` INTEGER, `district` TEXT, `districtCode` INTEGER, `ta` TEXT, `taCode` INTEGER, `cluster` TEXT, `clusterCode` INTEGER, `zone` TEXT, `zoneCode` INTEGER, `village` TEXT, `villageCode` INTEGER, `villageHead` TEXT, `householdHead` TEXT, `ranking` INTEGER, `lastRankingDate` TEXT, `selection` TEXT, PRIMARY KEY(`householdId`))",
-        "fields": [
-          {
-            "fieldPath": "householdId",
-            "columnName": "householdId",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "mlCode",
-            "columnName": "mlCode",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "sessionId",
-            "columnName": "sessionId",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "formNumber",
-            "columnName": "formNumber",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "members",
-            "columnName": "members",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "district",
-            "columnName": "district",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "districtCode",
-            "columnName": "districtCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "ta",
-            "columnName": "ta",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "taCode",
-            "columnName": "taCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "cluster",
-            "columnName": "cluster",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "clusterCode",
-            "columnName": "clusterCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "zone",
-            "columnName": "zone",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "zoneCode",
-            "columnName": "zoneCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "village",
-            "columnName": "village",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "villageCode",
-            "columnName": "villageCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "villageHead",
-            "columnName": "villageHead",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "householdHead",
-            "columnName": "householdHead",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "ranking",
-            "columnName": "ranking",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "lastRankingDate",
-            "columnName": "lastRankingDate",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "selection",
-            "columnName": "selection",
-            "affinity": "TEXT",
-            "notNull": false
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "householdId"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [],
         "foreignKeys": []
       },
       {
@@ -370,133 +236,6 @@
               "id"
             ],
             "createSql": "CREATE  INDEX `index_Individual_id` ON `${TABLE_NAME}` (`id`)"
-          }
-        ],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "pev_sessions",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `taName` TEXT, `programId` INTEGER, `taCode` INTEGER, `userId` INTEGER, `criterionId` INTEGER, `districtCode` INTEGER, `households` INTEGER NOT NULL, `createdAt` TEXT, `status` TEXT, `clusters` TEXT, `createdBy` TEXT, `programName` TEXT, `districtName` TEXT, `criterionName` TEXT, `open` INTEGER NOT NULL, PRIMARY KEY(`id`))",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "taName",
-            "columnName": "taName",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "programId",
-            "columnName": "programId",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "taCode",
-            "columnName": "taCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "userId",
-            "columnName": "userId",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "criterionId",
-            "columnName": "criterionId",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "districtCode",
-            "columnName": "districtCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "households",
-            "columnName": "households",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "createdAt",
-            "columnName": "createdAt",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "status",
-            "columnName": "status",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "clusters",
-            "columnName": "clusters",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "createdBy",
-            "columnName": "createdBy",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "programName",
-            "columnName": "programName",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "districtName",
-            "columnName": "districtName",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "criterionName",
-            "columnName": "criterionName",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "open",
-            "columnName": "open",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id"
-          ],
-          "autoGenerate": false
-        },
-        "indices": [
-          {
-            "name": "index_pev_sessions_taCode",
-            "unique": false,
-            "columnNames": [
-              "taCode"
-            ],
-            "createSql": "CREATE  INDEX `index_pev_sessions_taCode` ON `${TABLE_NAME}` (`taCode`)"
-          },
-          {
-            "name": "index_pev_sessions_districtCode",
-            "unique": false,
-            "columnNames": [
-              "districtCode"
-            ],
-            "createSql": "CREATE  INDEX `index_pev_sessions_districtCode` ON `${TABLE_NAME}` (`districtCode`)"
           }
         ],
         "foreignKeys": []
@@ -873,10 +612,6 @@
     ],
     "views": [
       {
-        "viewName": "SessionView",
-        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select p.*, (select coalesce(count(householdId), 0) from households where sessionId = p.id and selection = 'Selected') selectedHouseholds from pev_sessions p"
-      },
-      {
         "viewName": "targeted_zones",
         "createSql": "CREATE VIEW `${VIEW_NAME}` AS select zone.code, tc.targeting_session_id from locations zone join locations cluster on cluster.code = zone.parent_code join targeted_clusters tc on tc.cluster_code = cluster.code"
       },
@@ -887,7 +622,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7fbba1355d1b682bda441e2db1b56bf6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '995aab8087ba3101669cbea6e09669cc')"
     ]
   }
 }
