@@ -5,7 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.time.OffsetDateTime;
 import java.util.Set;
 
 @Entity(tableName = "targeting_sessions")
