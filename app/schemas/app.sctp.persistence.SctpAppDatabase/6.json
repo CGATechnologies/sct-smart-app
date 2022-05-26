@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 6,
-    "identityHash": "7c9d9a0e34e56813d4c2f0c3ef90002e",
+    "identityHash": "7fbba1355d1b682bda441e2db1b56bf6",
     "entities": [
       {
         "tableName": "locations",
@@ -193,11 +193,11 @@
       },
       {
         "tableName": "Individual",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`highestEducationLevel` TEXT, `chronicIllness` TEXT, `maritalStatus` TEXT, `householdCode` TEXT, `orphanStatus` TEXT, `individualId` TEXT, `idIssueDate` TEXT, `idExpiryDate` TEXT, `dateOfBirth` TEXT, `relationshipToHead` TEXT, `phoneNumber` TEXT, `householdId` INTEGER, `fitForWork` INTEGER, `schoolName` TEXT, `modifiedAt` TEXT, `gradeLevel` TEXT, `disability` TEXT, `deletedAt` TEXT, `createdAt` TEXT, `firstName` TEXT, `lastName` TEXT, `status` INTEGER NOT NULL, `sourcedFrom` TEXT, `isEstimatedDob` INTEGER NOT NULL, `locationCode` INTEGER, `ubrCsvBatchNumber` INTEGER, `middleName` TEXT, `ubr_household_member_id` INTEGER, `gender` TEXT, `id` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`educationLevel` TEXT, `chronicIllness` TEXT, `maritalStatus` TEXT, `householdCode` TEXT, `orphanStatus` TEXT, `individualId` TEXT, `idIssueDate` TEXT, `idExpiryDate` TEXT, `dateOfBirth` TEXT, `relationship` TEXT, `phoneNumber` TEXT, `householdId` INTEGER, `fitForWork` INTEGER, `schoolName` TEXT, `modifiedAt` TEXT, `gradeLevel` TEXT, `disability` TEXT, `deletedAt` TEXT, `createdAt` TEXT, `firstName` TEXT, `lastName` TEXT, `status` INTEGER NOT NULL, `gender` TEXT, `id` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "educationLevel",
-            "columnName": "highestEducationLevel",
+            "columnName": "educationLevel",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -251,7 +251,7 @@
           },
           {
             "fieldPath": "relationship",
-            "columnName": "relationshipToHead",
+            "columnName": "relationship",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -328,42 +328,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "sourcedFrom",
-            "columnName": "sourcedFrom",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "isEstimatedDob",
-            "columnName": "isEstimatedDob",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "locationCode",
-            "columnName": "locationCode",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "ubrCsvBatchNumber",
-            "columnName": "ubrCsvBatchNumber",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "middleName",
-            "columnName": "middleName",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "ubrId",
-            "columnName": "ubr_household_member_id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
             "fieldPath": "gender",
             "columnName": "gender",
             "affinity": "TEXT",
@@ -384,12 +348,28 @@
         },
         "indices": [
           {
-            "name": "index_Individual_householdId",
+            "name": "index_Individual_householdCode",
             "unique": false,
             "columnNames": [
-              "householdId"
+              "householdCode"
             ],
-            "createSql": "CREATE  INDEX `index_Individual_householdId` ON `${TABLE_NAME}` (`householdId`)"
+            "createSql": "CREATE  INDEX `index_Individual_householdCode` ON `${TABLE_NAME}` (`householdCode`)"
+          },
+          {
+            "name": "index_Individual_individualId",
+            "unique": false,
+            "columnNames": [
+              "individualId"
+            ],
+            "createSql": "CREATE  INDEX `index_Individual_individualId` ON `${TABLE_NAME}` (`individualId`)"
+          },
+          {
+            "name": "index_Individual_id",
+            "unique": false,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE  INDEX `index_Individual_id` ON `${TABLE_NAME}` (`id`)"
           }
         ],
         "foreignKeys": []
@@ -721,6 +701,174 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "targeted_households",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`targeting_session` INTEGER NOT NULL, `household_id` INTEGER NOT NULL, `ml_code` INTEGER, `form_number` INTEGER, `members` INTEGER, `district` TEXT, `district_code` INTEGER, `ta` TEXT, `ta_code` INTEGER, `cluster` TEXT, `cluster_code` INTEGER, `zone` TEXT, `zone_code` INTEGER, `village` TEXT, `village_code` INTEGER, `village_head` TEXT, `status` TEXT, `ranking` INTEGER, `created_at` TEXT, `household_head` TEXT, PRIMARY KEY(`targeting_session`, `household_id`))",
+        "fields": [
+          {
+            "fieldPath": "targetingSession",
+            "columnName": "targeting_session",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "householdId",
+            "columnName": "household_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mlCode",
+            "columnName": "ml_code",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "formNumber",
+            "columnName": "form_number",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "members",
+            "columnName": "members",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "district",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "districtCode",
+            "columnName": "district_code",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ta",
+            "columnName": "ta",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "taCode",
+            "columnName": "ta_code",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cluster",
+            "columnName": "cluster",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "clusterCode",
+            "columnName": "cluster_code",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "zone",
+            "columnName": "zone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "zoneCode",
+            "columnName": "zone_code",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "village",
+            "columnName": "village",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "villageCode",
+            "columnName": "village_code",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "villageHead",
+            "columnName": "village_head",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "ranking",
+            "columnName": "ranking",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "householdHead",
+            "columnName": "household_head",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "targeting_session",
+            "household_id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_targeted_households_targeting_session",
+            "unique": false,
+            "columnNames": [
+              "targeting_session"
+            ],
+            "createSql": "CREATE  INDEX `index_targeted_households_targeting_session` ON `${TABLE_NAME}` (`targeting_session`)"
+          },
+          {
+            "name": "index_targeted_households_household_id",
+            "unique": false,
+            "columnNames": [
+              "household_id"
+            ],
+            "createSql": "CREATE  INDEX `index_targeted_households_household_id` ON `${TABLE_NAME}` (`household_id`)"
+          },
+          {
+            "name": "index_targeted_households_ml_code",
+            "unique": false,
+            "columnNames": [
+              "ml_code"
+            ],
+            "createSql": "CREATE  INDEX `index_targeted_households_ml_code` ON `${TABLE_NAME}` (`ml_code`)"
+          },
+          {
+            "name": "index_targeted_households_form_number",
+            "unique": false,
+            "columnNames": [
+              "form_number"
+            ],
+            "createSql": "CREATE  INDEX `index_targeted_households_form_number` ON `${TABLE_NAME}` (`form_number`)"
+          }
+        ],
+        "foreignKeys": []
       }
     ],
     "views": [
@@ -739,7 +887,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7c9d9a0e34e56813d4c2f0c3ef90002e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7fbba1355d1b682bda441e2db1b56bf6')"
     ]
   }
 }

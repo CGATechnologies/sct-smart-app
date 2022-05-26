@@ -4,6 +4,7 @@ package app.sctp.targeting.services;
 import app.sctp.targeting.models.GetTargetingSessionsResponse;
 import app.sctp.targeting.models.HouseholdDetailResponse;
 import app.sctp.targeting.models.PreEligibilityVerificationSessionResponse;
+import app.sctp.targeting.models.TargetedHouseholdsResponse;
 import app.sctp.targeting.models.UpdateHouseholdRankRequest;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -60,5 +61,19 @@ public interface TargetingService {
             @Query("village-code") Long village,
             @Query("page") int page,
             @Query("pageSize") int pageSize
+    );
+
+    @GET("/targeting/meetings/second-community-meeting-households")
+    Call<TargetedHouseholdsResponse> getSecondCommunityMeetingTargetingSessionHouseholds(
+            @Query("targeting-session-id") Long sessionId,
+            @Query("page") int page
+            // pageSize = 1000
+    );
+
+    @GET("/targeting/meetings/district-meeting-households")
+    Call<TargetedHouseholdsResponse> getDistrictMeetingTargetingSessionHouseholds(
+            @Query("targeting-session-id") Long sessionId,
+            @Query("page") int page
+            // pageSize = 1000
     );
 }

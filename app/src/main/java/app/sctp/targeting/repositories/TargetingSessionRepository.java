@@ -12,11 +12,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import app.sctp.persistence.BaseRepository;
 import app.sctp.persistence.SctpAppDatabase;
+import app.sctp.targeting.dao.IndividualDao;
 import app.sctp.targeting.dao.TargetedClusterDao;
+import app.sctp.targeting.dao.TargetedHouseholdDao;
 import app.sctp.targeting.dao.TargetingSessionDao;
 import app.sctp.targeting.models.GetTargetingSessionsResponse;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.TargetedCluster;
+import app.sctp.targeting.models.TargetedHousehold;
+import app.sctp.targeting.models.TargetedHouseholdsResponse;
 import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.services.TargetingService;
 import app.sctp.utils.PlatformUtils;
@@ -29,12 +33,16 @@ public class TargetingSessionRepository extends BaseRepository {
 
     private final Handler handler;
     private final TargetingSessionDao dao;
+    private final IndividualDao individualDao;
     private final TargetedClusterDao clusterDao;
+    private final TargetedHouseholdDao householdDao;
 
     public TargetingSessionRepository(@NonNull SctpAppDatabase database) {
         super(database);
         dao = database.targetingSessionDao();
+        individualDao = database.individualDao();
         clusterDao = database.targetedClusterDao();
+        householdDao = database.targetedHouseholdDao();
         handler = new Handler(Looper.getMainLooper());
     }
 
@@ -125,34 +133,40 @@ public class TargetingSessionRepository extends BaseRepository {
                 handler.post(listener::onCompleted);
             } catch (Exception exception) {
                 PlatformUtils.printStackTrace(exception);
-                handler.post(() -> {
-                    listener.onError(exception);
-                });
+                handler.post(() -> listener.onError(exception));
             }
         });
     }
 
     private void downloadSessionHouseholds(List<TargetingSession> sessions, TargetingService service, SessionDownloadListener listener) throws IOException {
-        /*handler.post(() -> listener.onMessage("Downloading household data..."));
+        handler.post(() -> listener.onMessage("Downloading household data..."));
         for (TargetingSession session : sessions) {
             AtomicInteger page = new AtomicInteger(0);
             AtomicInteger pageCount = new AtomicInteger(0);
             do {
-                Response<HouseholdDetailResponse> response =
-                        service
-                                .getHouseholdsFromPreEligibilitySession(session.getId(), page.get())
-                                .execute();
+                Call<TargetedHouseholdsResponse> call;
+
+                switch (session.getMeetingPhase()) {
+                    case district_meeting:
+                        call = service.getDistrictMeetingTargetingSessionHouseholds(session.getId(), page.get());
+                        break;
+                    case second_community_meeting:
+                        call = service.getSecondCommunityMeetingTargetingSessionHouseholds(session.getId(), page.get());
+                        break;
+                    default:
+                        throw new IllegalArgumentException("invalid phase value " + session.getMeetingPhase());
+                }
+
+                Response<TargetedHouseholdsResponse> response = call.execute();
                 if (response.isSuccessful()) {
-                    HouseholdDetailResponse detailResponse = response.body();
+                    TargetedHouseholdsResponse detailResponse = response.body();
                     pageCount.compareAndSet(0, detailResponse.getTotalPages());
 
                     if (!detailResponse.getItems().isEmpty()) {
-                        for (HouseholdDetails householdDetails : detailResponse.getItems()) {
-                            // TODO default to eligible
-                            householdDetails.getHousehold().setSelection(SelectionStatus.Eligible);
-                            householdViewModel.save(householdDetails.getHousehold());
-                            if (!householdDetails.getMemberDetails().isEmpty()) {
-                                individualViewModel.save(householdDetails.getMemberDetails());
+                        for (TargetedHousehold household : detailResponse.getItems()) {
+                            householdDao.insert(household);
+                            if (!household.getMemberDetails().isEmpty()) {
+                                individualDao.saveAll(household.getMemberDetails());
                             }
                         }
                     }
@@ -160,7 +174,7 @@ public class TargetingSessionRepository extends BaseRepository {
                     throw new HttpException(response);
                 }
             } while (page.incrementAndGet() < pageCount.get());
-        }*/
+        }
     }
 
     public interface SessionDownloadListener {

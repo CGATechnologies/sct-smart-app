@@ -227,7 +227,6 @@ public class CommunityMeetingFragment extends BindableFragment {
 
                     if (!detailResponse.getItems().isEmpty()) {
                         for (HouseholdDetails householdDetails : detailResponse.getItems()) {
-                            // TODO default to eligible
                             householdDetails.getHousehold().setSelection(SelectionStatus.Eligible);
                             householdViewModel.save(householdDetails.getHousehold());
                             if (!householdDetails.getMemberDetails().isEmpty()) {

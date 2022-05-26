@@ -9,6 +9,7 @@ import app.sctp.targeting.dao.IndividualDao;
 import app.sctp.targeting.dao.LocationDao;
 import app.sctp.targeting.dao.PreEligibilityVerificationSessionDao;
 import app.sctp.targeting.dao.TargetedClusterDao;
+import app.sctp.targeting.dao.TargetedHouseholdDao;
 import app.sctp.targeting.dao.TargetingSessionDao;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.Household;
@@ -16,6 +17,7 @@ import app.sctp.targeting.models.Individual;
 import app.sctp.targeting.models.PreEligibilityVerificationSession;
 import app.sctp.targeting.models.SessionView;
 import app.sctp.targeting.models.TargetedCluster;
+import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.targeting.models.TargetedVillage;
 import app.sctp.targeting.models.TargetedZone;
 import app.sctp.targeting.models.TargetingSession;
@@ -27,7 +29,8 @@ import app.sctp.targeting.models.TargetingSession;
                 Individual.class,
                 PreEligibilityVerificationSession.class,
                 TargetingSession.class,
-                TargetedCluster.class
+                TargetedCluster.class,
+                TargetedHousehold.class
         },
         views = {
                 SessionView.class,
@@ -56,4 +59,6 @@ public abstract class SctpAppDatabase extends RoomDatabase {
     public abstract TargetedClusterDao targetedClusterDao();
 
     public abstract TargetingSessionDao targetingSessionDao();
+
+    public abstract TargetedHouseholdDao targetedHouseholdDao();
 }
