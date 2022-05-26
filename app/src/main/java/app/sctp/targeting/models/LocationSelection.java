@@ -1,5 +1,7 @@
 package app.sctp.targeting.models;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class LocationSelection implements Serializable {
@@ -86,5 +88,10 @@ public class LocationSelection implements Serializable {
                 && getZone() != null
                 && getVillage() != null
                 && getCluster() != null;
+    }
+
+    @Nullable
+    public static Long codeOrNull(GeoLocation geoLocation) {
+        return geoLocation != null ? geoLocation.getCode() : null;
     }
 }

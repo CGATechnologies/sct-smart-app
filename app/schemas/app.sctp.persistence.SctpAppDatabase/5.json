@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "fc65e247b76c93077d8280d409125f65",
+    "identityHash": "7c9d9a0e34e56813d4c2f0c3ef90002e",
     "entities": [
       {
         "tableName": "locations",
@@ -520,17 +520,226 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "targeting_sessions",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `closedAt` TEXT, `createdAt` TEXT, `closedBy` INTEGER, `createdBy` INTEGER, `districtCode` INTEGER, `programId` INTEGER, `taCode` INTEGER, `pevSession` INTEGER, `meetingPhase` TEXT, `communityMeetingTimestamp` TEXT, `districtMeetingTimestamp` TEXT, `districtMeetingUserId` INTEGER, `communityMeetingUserId` INTEGER, `status` TEXT, `taName` TEXT, `closerName` TEXT, `programName` TEXT, `creatorName` TEXT, `districtName` TEXT, `householdCount` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "closedAt",
+            "columnName": "closedAt",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "closedBy",
+            "columnName": "closedBy",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdBy",
+            "columnName": "createdBy",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "districtCode",
+            "columnName": "districtCode",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "programId",
+            "columnName": "programId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "taCode",
+            "columnName": "taCode",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "pevSession",
+            "columnName": "pevSession",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "meetingPhase",
+            "columnName": "meetingPhase",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "communityMeetingTimestamp",
+            "columnName": "communityMeetingTimestamp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "districtMeetingTimestamp",
+            "columnName": "districtMeetingTimestamp",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "districtMeetingUserId",
+            "columnName": "districtMeetingUserId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "communityMeetingUserId",
+            "columnName": "communityMeetingUserId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "taName",
+            "columnName": "taName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "closerName",
+            "columnName": "closerName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "programName",
+            "columnName": "programName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "creatorName",
+            "columnName": "creatorName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "districtName",
+            "columnName": "districtName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "householdCount",
+            "columnName": "householdCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_targeting_sessions_districtCode",
+            "unique": false,
+            "columnNames": [
+              "districtCode"
+            ],
+            "createSql": "CREATE  INDEX `index_targeting_sessions_districtCode` ON `${TABLE_NAME}` (`districtCode`)"
+          },
+          {
+            "name": "index_targeting_sessions_taCode",
+            "unique": false,
+            "columnNames": [
+              "taCode"
+            ],
+            "createSql": "CREATE  INDEX `index_targeting_sessions_taCode` ON `${TABLE_NAME}` (`taCode`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "targeted_clusters",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`targeting_session_id` INTEGER NOT NULL, `cluster_code` INTEGER NOT NULL, PRIMARY KEY(`targeting_session_id`, `cluster_code`))",
+        "fields": [
+          {
+            "fieldPath": "sessionId",
+            "columnName": "targeting_session_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "clusterCode",
+            "columnName": "cluster_code",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "targeting_session_id",
+            "cluster_code"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_targeted_clusters_targeting_session_id",
+            "unique": false,
+            "columnNames": [
+              "targeting_session_id"
+            ],
+            "createSql": "CREATE  INDEX `index_targeted_clusters_targeting_session_id` ON `${TABLE_NAME}` (`targeting_session_id`)"
+          },
+          {
+            "name": "index_targeted_clusters_cluster_code",
+            "unique": false,
+            "columnNames": [
+              "cluster_code"
+            ],
+            "createSql": "CREATE  INDEX `index_targeted_clusters_cluster_code` ON `${TABLE_NAME}` (`cluster_code`)"
+          }
+        ],
+        "foreignKeys": []
       }
     ],
     "views": [
       {
         "viewName": "SessionView",
         "createSql": "CREATE VIEW `${VIEW_NAME}` AS select p.*, (select coalesce(count(householdId), 0) from households where sessionId = p.id and selection = 'Selected') selectedHouseholds from pev_sessions p"
+      },
+      {
+        "viewName": "targeted_zones",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select zone.code, tc.targeting_session_id from locations zone join locations cluster on cluster.code = zone.parent_code join targeted_clusters tc on tc.cluster_code = cluster.code"
+      },
+      {
+        "viewName": "targeted_villages",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS select village.code, tz.targeting_session_id from locations village join targeted_zones tz on tz.code = village.parent_code"
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fc65e247b76c93077d8280d409125f65')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7c9d9a0e34e56813d4c2f0c3ef90002e')"
     ]
   }
 }
