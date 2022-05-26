@@ -89,6 +89,12 @@ public final class UiUtils {
         return dialog;
     }
 
+    public static ProgressDialog progressDialogWithProgress(Context context) {
+        ProgressDialog dialog = progressDialog(context);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        return dialog;
+    }
+
     public static void toast(Context context, @StringRes int resId, Object... args) {
         Toast.makeText(context, context.getString(resId, args), Toast.LENGTH_SHORT).show();
     }

@@ -16,6 +16,7 @@ import app.sctp.persistence.BaseViewModel;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.repositories.TargetingSessionRepository;
+import app.sctp.targeting.services.TargetingService;
 
 public class TargetingSessionViewModel extends BaseViewModel {
 
@@ -70,11 +71,28 @@ public class TargetingSessionViewModel extends BaseViewModel {
         return sessionLiveData;
     }
 
+    public LiveData<PagedList<TargetingSession>> get2ndCommunityMeetingTargetingSessions(LocationSelection location) {
+        updateFilterParameters(location, TargetingSession.MeetingPhase.second_community_meeting, null);
+        return sessionLiveData;
+    }
+
+    public LiveData<PagedList<TargetingSession>> getDistrictMeetingTargetingSessions(LocationSelection location) {
+        updateFilterParameters(location, TargetingSession.MeetingPhase.district_meeting, null);
+        return sessionLiveData;
+    }
+
     public LiveData<PagedList<TargetingSession>> getTargetingSessions() {
         return sessionLiveData;
     }
 
     public void save(List<TargetingSession> sessions) {
         repository.saveAll(sessions);
+    }
+
+    public void downloadTargetingSessions(LocationSelection location,
+                                          TargetingSession.MeetingPhase phase,
+                                          TargetingService service,
+                                          TargetingSessionRepository.SessionDownloadListener listener) {
+        repository.downloadTargetingSessions(location, phase, service, listener);
     }
 }

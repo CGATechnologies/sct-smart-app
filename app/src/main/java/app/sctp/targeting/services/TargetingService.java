@@ -1,7 +1,7 @@
 package app.sctp.targeting.services;
 
 
-import app.sctp.targeting.models.CommunityMeetingSessionResponse;
+import app.sctp.targeting.models.GetTargetingSessionsResponse;
 import app.sctp.targeting.models.HouseholdDetailResponse;
 import app.sctp.targeting.models.PreEligibilityVerificationSessionResponse;
 import app.sctp.targeting.models.UpdateHouseholdRankRequest;
@@ -43,8 +43,22 @@ public interface TargetingService {
 
 
     @GET("/targeting/meetings/second-community-meeting")
-    Call<CommunityMeetingSessionResponse> getSecondCommunityMeetingSessions(@Query("page") int page, @Query("pageSize") int pageSize);
+    Call<GetTargetingSessionsResponse> getSecondCommunityMeetingSessions(
+            @Query("traditional-authority-code") Long taCode,
+            @Query("village-cluster-code") Long villageCluster,
+            @Query("zone-code") Long zone,
+            @Query("village-code") Long village,
+            @Query("page") int page,
+            @Query("pageSize") int pageSize
+    );
 
     @GET("/targeting/meetings/district-meeting")
-    Call<CommunityMeetingSessionResponse> getSecondDistrictMeetingSessions(@Query("page") int page, @Query("pageSize") int pageSize);
+    Call<GetTargetingSessionsResponse> getSecondDistrictMeetingSessions(
+            @Query("traditional-authority-code") Long taCode,
+            @Query("village-cluster-code") Long villageCluster,
+            @Query("zone-code") Long zone,
+            @Query("village-code") Long village,
+            @Query("page") int page,
+            @Query("pageSize") int pageSize
+    );
 }

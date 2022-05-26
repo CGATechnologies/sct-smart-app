@@ -24,27 +24,21 @@ import app.sctp.core.ui.BindableFragment;
 import app.sctp.core.ui.adapter.GenericAdapter;
 import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.FragmentTargetingCommunityMeetingBinding;
-import app.sctp.databinding.LocationInfoBinding;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.HouseholdDetailResponse;
 import app.sctp.targeting.models.HouseholdDetails;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.PreEligibilityVerificationSession;
-import app.sctp.targeting.models.PreEligibilityVerificationSessionResponse;
 import app.sctp.targeting.models.SelectionStatus;
-import app.sctp.targeting.models.SessionView;
+import app.sctp.targeting.models.TargetedCluster;
+import app.sctp.targeting.models.TargetingSession;
+import app.sctp.targeting.repositories.TargetingSessionRepository;
 import app.sctp.targeting.services.TargetingService;
-import app.sctp.targeting.ui.activities.PreEligibilityVerificationSessionActivity;
-import app.sctp.targeting.ui.viewholders.PreEligibilityVerificationSessionViewHolderCreator;
+import app.sctp.targeting.ui.viewholders.TargetingSessionViewHolderCreator;
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
 import app.sctp.targeting.viewmodels.IndividualViewModel;
-import app.sctp.targeting.viewmodels.PreEligibilityVerificationSessionViewModel;
-import app.sctp.utils.PlatformUtils;
+import app.sctp.targeting.viewmodels.TargetingSessionViewModel;
 import app.sctp.utils.UiUtils;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
-import retrofit2.Call;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
@@ -56,8 +50,8 @@ public class CommunityMeetingFragment extends BindableFragment {
     private IndividualViewModel individualViewModel;
     private FragmentTargetingCommunityMeetingBinding binding;
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private PreEligibilityVerificationSessionViewModel sessionViewModel;
-    private GenericAdapter<SessionView> sessionAdapter;
+    private TargetingSessionViewModel sessionViewModel;
+    private GenericAdapter<TargetingSession> sessionAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,27 +65,27 @@ public class CommunityMeetingFragment extends BindableFragment {
         locationSelection = CommunityMeetingFragmentArgs.fromBundle(getArguments())
                 .getSelectedLocation();
 
-        progressDialog = UiUtils.progressDialog(requireContext());
+        progressDialog = UiUtils.progressDialogWithProgress(requireContext());
 
-        sessionAdapter = new GenericAdapter<>(new PreEligibilityVerificationSessionViewHolderCreator());
-        sessionAdapter.setItemSelectionListener(new ItemSelectionListener<SessionView>() {
+        sessionAdapter = new GenericAdapter<>(new TargetingSessionViewHolderCreator());
+        sessionAdapter.setItemSelectionListener(new ItemSelectionListener<TargetingSession>() {
             @Override
-            public void onItemSelected(SessionView item) {
-                PreEligibilityVerificationSessionActivity.selectEligibleHouseholds(
+            public void onItemSelected(TargetingSession item) {
+                /*PreEligibilityVerificationSessionActivity.selectEligibleHouseholds(
                         requireActivity(),
                         item
-                );
+                );*/
             }
 
             @Override
-            public void onItemLongSelected(SessionView item) {
+            public void onItemLongSelected(TargetingSession item) {
 
             }
         });
 
         householdViewModel = getViewModel(HouseholdViewModel.class);
         individualViewModel = getViewModel(IndividualViewModel.class);
-        sessionViewModel = getViewModel(PreEligibilityVerificationSessionViewModel.class);
+        sessionViewModel = getViewModel(TargetingSessionViewModel.class);
 
         binding.list.setAdapter(sessionAdapter);
 
@@ -99,26 +93,8 @@ public class CommunityMeetingFragment extends BindableFragment {
     }
 
     private void loadSessions() {
-        sessionViewModel.getSessionViewsByLocation(locationSelection)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSubscriber<List<SessionView>>() {
-                    @Override
-                    public void onNext(List<SessionView> sessions) {
-                        sessionAdapter.submitList(sessions);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        PlatformUtils.printStackTrace(t);
-                        UiUtils.toast(requireContext(), R.string.error_loading_data);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        dispose();
-                    }
-                });
+        sessionViewModel.get2ndCommunityMeetingTargetingSessions(locationSelection)
+                .observe(requireActivity(), sessionAdapter::submitList);
     }
 
     @Override
@@ -135,13 +111,58 @@ public class CommunityMeetingFragment extends BindableFragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.cmo_download_new_data) {
-            downloadEligibilityVerificationSessions();
+            downloadTargetingSessions();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void downloadEligibilityVerificationSessions() {
+    private void downloadTargetingSessions() {
+        sessionViewModel.downloadTargetingSessions(
+                locationSelection,
+                TargetingSession.MeetingPhase.second_community_meeting,
+                getService(TargetingService.class),
+                new TargetingSessionRepository.SessionDownloadListener() {
+                    @Override
+                    public void onStart() {
+                        progressDialog.setIndeterminate(false);
+                        progressDialog.setMessage("Preparing...");
+                        progressDialog.show();
+                    }
+
+                    @Override
+                    public void onProgressTotalAvailable(int total) {
+                        progressDialog.setIndeterminate(false);
+                        progressDialog.setMax(total);
+                        progressDialog.setProgress(0);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        progressDialog.dismiss();
+                        UiUtils.snackbar(binding.getRoot(), R.string.download_successful);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        progressDialog.dismiss();
+                        UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_data);
+                    }
+
+                    @Override
+                    public void onMessage(String message) {
+                        progressDialog.setMessage(message);
+                    }
+
+                    @Override
+                    public void onProgress(int progress, int total) {
+                        progressDialog.setProgress(progress);
+                    }
+                }
+        );
+    }
+
+    /*private void downloadTargetingSessions() {
         progressDialog.show();
         progressDialog.setMessage("Downloading sessions...");
         getApplicationConfiguration().postBackgroundWork(() -> {
@@ -188,7 +209,7 @@ public class CommunityMeetingFragment extends BindableFragment {
                 });
             }
         });
-    }
+    }*/
 
     private void downloadSessionHouseholds(List<PreEligibilityVerificationSession> sessions) throws IOException {
         handler.post(() -> progressDialog.setMessage("Downloading household data..."));

@@ -94,4 +94,8 @@ public class LocationSelection implements Serializable {
     public static Long codeOrNull(GeoLocation geoLocation) {
         return geoLocation != null ? geoLocation.getCode() : null;
     }
+
+    public static Long codeOrZero(GeoLocation geoLocation) {
+        return geoLocation != null ? geoLocation.getCode() : 0L;
+    }
 }

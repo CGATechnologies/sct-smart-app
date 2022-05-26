@@ -5,10 +5,13 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Locale;
 import java.util.Set;
 
+import app.sctp.core.model.Diffable;
+
 @Entity(tableName = "targeting_sessions")
-public class TargetingSession {
+public class TargetingSession implements Diffable {
     public enum SessionStatus {
         Review,
         Closed
@@ -233,5 +236,23 @@ public class TargetingSession {
 
     public void setHouseholdCount(Long householdCount) {
         this.householdCount = householdCount;
+    }
+
+    @Override
+    public Object getDiffValue() {
+        return getId();
+    }
+
+    public String getHouseholdCountSummary() {
+        return String.format(Locale.US, "%,d household%s",
+                getHouseholdCount(), getHouseholdCount() != 1 ? 's' : "");
+    }
+
+    public String getCreationSummary() {
+        return String.format(Locale.US, "%s • %s", createdAt, creatorName);
+    }
+
+    public String getTitle() {
+        return String.format(Locale.US, "%s %s", getTaName(), getProgramName());
     }
 }

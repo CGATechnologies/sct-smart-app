@@ -58,4 +58,8 @@ public abstract class TargetingSessionDao {
                 TargetingSession.MeetingPhase.district_meeting
         );
     }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Transaction
+    public abstract void saveAll(List<TargetingSession> sessions);
 }
