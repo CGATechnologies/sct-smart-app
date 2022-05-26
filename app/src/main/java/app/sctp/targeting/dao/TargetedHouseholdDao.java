@@ -9,7 +9,6 @@ import androidx.room.Transaction;
 
 import java.util.List;
 
-import app.sctp.targeting.models.Household;
 import app.sctp.targeting.models.HouseholdSelectionResults;
 import app.sctp.targeting.models.SelectionCount;
 import app.sctp.targeting.models.SelectionStatus;
