@@ -21,6 +21,7 @@ import app.sctp.targeting.repositories.HouseholdRepository;
 import app.sctp.targeting.services.TargetingService;
 import app.sctp.targeting.ui.viewholders.HouseholdViewHolderCreator;
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
+import app.sctp.targeting.viewmodels.TargetingSessionViewModel;
 import app.sctp.utils.PlatformUtils;
 import app.sctp.utils.UiUtils;
 import retrofit2.Call;
@@ -31,9 +32,10 @@ public class TargetingSessionActivity extends BaseActivity {
     private static final String KEY_SESSION = "sctp.targeting.pev.session";
     private static final int REVIEW_HOUSEHOLD_REQUEST_ID = 1001;
 
+    private TargetingSession session;
     private ProgressDialog progressDialog;
     private HouseholdViewModel householdViewModel;
-    private TargetingSession session;
+    private TargetingSessionViewModel sessionViewModel;
     private GenericPagedAdapter<TargetedHousehold> householdAdapter;
     private ActivityHouseholdEligibilitySelectionBinding binding;
 
@@ -66,12 +68,14 @@ public class TargetingSessionActivity extends BaseActivity {
         binding.list.setAdapter(householdAdapter);
 
         householdViewModel = getViewModel(HouseholdViewModel.class);
+        sessionViewModel = getViewModel(TargetingSessionViewModel.class);
 /*
         householdViewModel.getHouseholdsLiveData().observe(this, householdAdapter::submitList);
         householdViewModel.updateFilterParameters(session.getId(), null);*/
         /*householdViewModel.getSessionHouseholds().observe(this, householdAdapter::submitList);
         householdViewModel.setSessionId(session.getId());*/
         //refreshHouseholds();
+        householdViewModel.getSessionHouseholds(session.getId()).observe(this, householdAdapter::submitList);
 
         progressDialog = UiUtils.progressDialogWithProgress(this);
     }
@@ -85,7 +89,7 @@ public class TargetingSessionActivity extends BaseActivity {
     private void refreshHouseholds() {
         // TODO Fix LiveDate update
         // noinspection NotifyDatasetChanged
-        householdViewModel.getSessionHouseholds(session.getId()).observe(this, householdAdapter::submitList);
+        //householdViewModel.getSessionHouseholds(session.getId()).observe(this, householdAdapter::submitList);
     }
 
     public static void selectEligibleHouseholds(Activity activity, TargetingSession session) {
@@ -190,6 +194,10 @@ public class TargetingSessionActivity extends BaseActivity {
                 if (!response.isSuccessful()) {
                     throw new HttpException(response);
                 }
+
+                // move session to next phase
+                session.setMeetingPhase(session.getMeetingPhase().next());
+                sessionViewModel.update(session);
 
                 progressDialog.dismiss();
                 UiUtils.snackbar(binding.getRoot(), R.string.household_updates_sent);

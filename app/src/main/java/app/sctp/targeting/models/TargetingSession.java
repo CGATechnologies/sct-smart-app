@@ -20,7 +20,23 @@ public class TargetingSession implements Diffable {
     public enum MeetingPhase {
         completed,
         district_meeting,
-        second_community_meeting
+        second_community_meeting;
+
+        /**
+         * Moves current phase to the next phase
+         *
+         * @return .
+         */
+        public final MeetingPhase next() {
+            switch (this) {
+                case second_community_meeting:
+                    return district_meeting;
+                case completed:
+                case district_meeting:
+                default:
+                    return completed;
+            }
+        }
     }
 
     @PrimaryKey
@@ -241,6 +257,16 @@ public class TargetingSession implements Diffable {
     @Override
     public Object getDiffValue() {
         return getId();
+    }
+
+    @Override
+    public boolean contentsSameAs(Diffable diffable) {
+        if (!(diffable instanceof TargetingSession)) {
+            return false;
+        }
+        final TargetingSession other = (TargetingSession) diffable;
+        return getDiffValue() == other.getDiffValue()
+                && this.meetingPhase == other.meetingPhase;
     }
 
     public String getHouseholdCountSummary() {

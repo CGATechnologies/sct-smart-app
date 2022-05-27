@@ -96,4 +96,8 @@ public class HouseholdViewModel extends BaseViewModel {
             HouseholdRepository.SyncListener listener) {
         householdRepository.synchronizeHouseholds(sessionId, service, phase, listener);
     }
+
+    public void update(TargetedHousehold household) {
+        householdRepository.update(household);
+    }
 }

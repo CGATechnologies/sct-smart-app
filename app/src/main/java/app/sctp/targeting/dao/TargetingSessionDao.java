@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -27,7 +28,8 @@ public abstract class TargetingSessionDao {
             "and (:taCode IS NULL OR ts.taCode = :taCode) " +
             "and (:clusterCode IS NULL or (select exists(select 1 from targeted_clusters tc where tc.targeting_session_id = ts.id and tc.cluster_code = :clusterCode))) " +
             "and (:zoneCode is null or (select exists(select 1 from targeted_zones tz where tz.targeting_session_id = ts.id and tz.code = :zoneCode))) " +
-            "and (:villageCode is null or (select exists(select 1 from targeted_villages tv where tv.targeting_session_id = ts.id and tv.code = :villageCode)))")
+            "and (:villageCode is null or (select exists(select 1 from targeted_villages tv where tv.targeting_session_id = ts.id and tv.code = :villageCode))) " +
+            "and meetingPhase != 'completed'")
     protected abstract DataSource.Factory<Integer, TargetingSession> getByLocation(
             Long districtCode,
             Long taCode,
@@ -62,4 +64,7 @@ public abstract class TargetingSessionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @Transaction
     public abstract void saveAll(List<TargetingSession> sessions);
+
+    @Update
+    public abstract void update(TargetingSession session);
 }

@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public abstract class TargetedHouseholdDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(TargetedHousehold household);
 
-    @Query("select * from targeted_households where targeting_session = :sessionId")
+    @Query("select * from targeted_households where targeting_session = :sessionId ORDER BY ranking ASC")
     public abstract DataSource.Factory<Integer, TargetedHousehold> getBySessionId(Long sessionId);
 
     @Query("select count(household_id) from targeted_households where targeting_session = :sessionId")
@@ -38,4 +39,7 @@ public abstract class TargetedHouseholdDao {
 
     @Query("update targeted_households set status = :status WHERE targeting_session = :sessionId")
     public abstract void updateHouseholdStatus(Long sessionId, SelectionStatus status);
+
+    @Update
+    public abstract void update(TargetedHousehold household);
 }

@@ -64,7 +64,7 @@ public class HouseholdReviewActivity extends BaseActivity {
         binding.btnComposition.setOnClickListener(v -> HouseholdMemberListActivity.viewHouseholdMembers(this, household));
         binding.btnSave.setOnClickListener(v -> {
             household.setRanking(UiUtils.getInteger(binding.newRank, household.getRanking()));
-            householdViewModel.save(household);
+            householdViewModel.update(household);
             UiUtils.toast(HouseholdReviewActivity.this, R.string.updates_saved);
             setResult(RESULT_OK);
             finish();

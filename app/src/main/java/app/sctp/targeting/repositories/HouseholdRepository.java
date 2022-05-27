@@ -114,7 +114,7 @@ public class HouseholdRepository extends BaseRepository {
                             call = service.updateDistrictMeetingHouseholds(sessionId, request);
                             break;
                         default:
-                            throw new UnsupportedOperationException("operation not unsupported for " + phase);
+                            throw new UnsupportedOperationException("operation not unsupported for phase: " + phase);
                     }
 
                     response = call.execute();
@@ -128,6 +128,10 @@ public class HouseholdRepository extends BaseRepository {
                 listener.onError(exception);
             }
         });
+    }
+
+    public void update(TargetedHousehold household) {
+        post(() -> householdDao.update(household));
     }
 
     public interface SyncListener {

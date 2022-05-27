@@ -89,6 +89,10 @@ public class TargetingSessionViewModel extends BaseViewModel {
         repository.saveAll(sessions);
     }
 
+    public void update(TargetingSession session) {
+        repository.update(session);
+    }
+
     public void downloadTargetingSessions(LocationSelection location,
                                           TargetingSession.MeetingPhase phase,
                                           TargetingService service,

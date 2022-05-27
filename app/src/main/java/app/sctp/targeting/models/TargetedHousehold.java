@@ -1,11 +1,13 @@
 package app.sctp.targeting.models;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 
 import java.util.List;
+import java.util.Objects;
 
 import app.sctp.core.model.Diffable;
 
@@ -252,5 +254,27 @@ public class TargetedHousehold implements Diffable {
     @Override
     public Object getDiffValue() {
         return getHouseholdId();
+    }
+
+    @Override
+    public boolean contentsSameAs(Diffable diffable) {
+        if (!(diffable instanceof TargetedHousehold)) {
+            throw new IllegalArgumentException(diffable + " not instance of " + TargetedHousehold.class);
+        }
+        final TargetedHousehold other = (TargetedHousehold) diffable;
+        if (Objects.equals(getDiffValue(), other.getDiffValue())) {
+            return this.status == other.status
+                    && Objects.equals(this.ranking, other.ranking);
+        }
+        return false;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "TargetedHousehold{" +
+                "formNumber=" + formNumber +
+                ", householdHead='" + householdHead + '\'' +
+                '}';
     }
 }

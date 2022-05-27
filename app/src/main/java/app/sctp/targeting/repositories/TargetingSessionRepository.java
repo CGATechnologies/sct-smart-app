@@ -177,6 +177,10 @@ public class TargetingSessionRepository extends BaseRepository {
         }
     }
 
+    public void update(TargetingSession session) {
+        post(() -> dao.update(session));
+    }
+
     public interface SessionDownloadListener {
         void onStart();
 

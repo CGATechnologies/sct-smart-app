@@ -12,6 +12,7 @@ import app.sctp.core.ui.adapter.ItemViewHolder;
 import app.sctp.core.ui.adapter.ItemViewHolderCreator;
 import app.sctp.databinding.ItemHouseholdBinding;
 import app.sctp.targeting.models.TargetedHousehold;
+import app.sctp.utils.PlatformUtils;
 
 public class HouseholdViewHolderCreator implements ItemViewHolderCreator<TargetedHousehold> {
     @Override
@@ -30,6 +31,7 @@ public class HouseholdViewHolderCreator implements ItemViewHolderCreator<Targete
 
         @Override
         protected void bind(ItemAdapter<TargetedHousehold> adapter, int position, List<Object> changePayload) {
+            PlatformUtils.debugLog("hh %s@%d ", adapter.getItemAt(position), position);
             binding.setHousehold(adapter.getItemAt(position));
         }
     }
