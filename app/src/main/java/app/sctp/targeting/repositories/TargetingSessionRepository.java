@@ -23,6 +23,7 @@ import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.targeting.models.TargetedHouseholdsResponse;
 import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.services.TargetingService;
+import app.sctp.utils.DownloadOptionsDialog;
 import app.sctp.utils.PlatformUtils;
 import retrofit2.Call;
 import retrofit2.HttpException;
@@ -66,7 +67,12 @@ public class TargetingSessionRepository extends BaseRepository {
      * @param service
      * @param listener
      */
-    public void downloadTargetingSessions(LocationSelection location, TargetingSession.MeetingPhase phase, TargetingService service, SessionDownloadListener listener) {
+    public void downloadTargetingSessions(
+            LocationSelection location,
+            TargetingSession.MeetingPhase phase,
+            TargetingService service,
+            SessionDownloadListener listener,
+            DownloadOptionsDialog.DownloadOption downloadOption) {
         post(() -> {
             try {
                 AtomicInteger page = new AtomicInteger(0);
@@ -113,17 +119,17 @@ public class TargetingSessionRepository extends BaseRepository {
                         handler.post(() -> listener.onProgressTotalAvailable(pageCount.get()));
 
                         if (!response.getItems().isEmpty()) {
-                            dao.saveAll(response.getItems());
+                            dao.saveAll(response.getItems(), downloadOption);
 
                             for (TargetingSession session : response.getItems()) {
                                 if (!session.getClusters().isEmpty()) {
-                                    clusterDao.saveAll(TargetedCluster.of(session.getClusters(), session.getId()));
+                                    clusterDao.saveAll(TargetedCluster.of(session.getClusters(), session.getId()), downloadOption);
                                 }
                             }
                         }
 
                         // download households under this session
-                        downloadSessionHouseholds(response.getItems(), service, listener);
+                        downloadSessionHouseholds(response.getItems(), service, listener, downloadOption);
 
                         handler.post(() -> listener.onProgress(page.get(), pageCount.get()));
                     } else {
@@ -138,7 +144,11 @@ public class TargetingSessionRepository extends BaseRepository {
         });
     }
 
-    private void downloadSessionHouseholds(List<TargetingSession> sessions, TargetingService service, SessionDownloadListener listener) throws IOException {
+    private void downloadSessionHouseholds(
+            List<TargetingSession> sessions,
+            TargetingService service,
+            SessionDownloadListener listener,
+            DownloadOptionsDialog.DownloadOption downloadOption) throws IOException {
         handler.post(() -> listener.onMessage("Downloading household data..."));
         for (TargetingSession session : sessions) {
             AtomicInteger page = new AtomicInteger(0);
@@ -164,9 +174,9 @@ public class TargetingSessionRepository extends BaseRepository {
 
                     if (!detailResponse.getItems().isEmpty()) {
                         for (TargetedHousehold household : detailResponse.getItems()) {
-                            householdDao.insert(household);
+                            householdDao.insert(household, downloadOption);
                             if (!household.getMemberDetails().isEmpty()) {
-                                individualDao.saveAll(household.getMemberDetails());
+                                individualDao.saveAll(household.getMemberDetails(), downloadOption);
                             }
                         }
                     }

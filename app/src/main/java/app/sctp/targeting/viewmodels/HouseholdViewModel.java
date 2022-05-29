@@ -17,6 +17,7 @@ import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.repositories.HouseholdRepository;
 import app.sctp.targeting.services.TargetingService;
+import app.sctp.utils.DownloadOptionsDialog;
 
 public class HouseholdViewModel extends BaseViewModel {
 
@@ -64,12 +65,12 @@ public class HouseholdViewModel extends BaseViewModel {
         );
     }
 
-    public void save(List<TargetedHousehold> households) {
-        householdRepository.save(households);
+    public void save(List<TargetedHousehold> households, DownloadOptionsDialog.DownloadOption dopt) {
+        householdRepository.save(households, dopt);
     }
 
-    public void save(TargetedHousehold household) {
-        householdRepository.save(household);
+    public void save(TargetedHousehold household, DownloadOptionsDialog.DownloadOption dltop) {
+        householdRepository.save(household, dltop);
     }
 
     private void setSessionId(Long sessionId) {

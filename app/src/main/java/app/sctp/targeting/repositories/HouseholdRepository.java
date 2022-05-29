@@ -23,6 +23,7 @@ import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.targeting.models.TargetedHouseholdUpdateRequest;
 import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.services.TargetingService;
+import app.sctp.utils.DownloadOptionsDialog;
 import app.sctp.utils.PlatformUtils;
 import app.sctp.utils.UiUtils;
 import retrofit2.Call;
@@ -42,13 +43,13 @@ public class HouseholdRepository extends BaseRepository {
     }
 
     @Transaction
-    public void save(List<TargetedHousehold> households) {
-        super.post(() -> householdDao.insert(households));
+    public void save(List<TargetedHousehold> households, DownloadOptionsDialog.DownloadOption dopt) {
+        super.post(() -> householdDao.insert(households, dopt));
     }
 
     @Transaction
-    public void save(TargetedHousehold household) {
-        super.post(() -> householdDao.insert(household));
+    public void save(TargetedHousehold household, DownloadOptionsDialog.DownloadOption dlopt) {
+        super.post(() -> householdDao.insert(household, dlopt));
     }
 
     public DataSource.Factory<Integer, TargetedHousehold> getSessionHouseholds(Long sessionId) {

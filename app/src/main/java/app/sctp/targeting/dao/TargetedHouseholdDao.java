@@ -14,15 +14,46 @@ import app.sctp.targeting.models.HouseholdSelectionResults;
 import app.sctp.targeting.models.SelectionCount;
 import app.sctp.targeting.models.SelectionStatus;
 import app.sctp.targeting.models.TargetedHousehold;
+import app.sctp.utils.DownloadOptionsDialog;
 
 @Dao
 public abstract class TargetedHouseholdDao {
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insert(List<TargetedHousehold> households);
+    protected abstract void insertReplace(List<TargetedHousehold> households);
+
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    protected abstract void insertIgnore(List<TargetedHousehold> households);
+
+    public void insert(List<TargetedHousehold> households, DownloadOptionsDialog.DownloadOption saveOption) {
+        switch (saveOption) {
+            case Ignore:
+                insertIgnore(households);
+                break;
+            case Replace:
+                insertReplace(households);
+                break;
+        }
+    }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insert(TargetedHousehold household);
+    protected abstract void insertReplace(TargetedHousehold household);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    protected abstract void insertIgnore(TargetedHousehold household);
+
+
+    public void insert(TargetedHousehold household, DownloadOptionsDialog.DownloadOption saveOption) {
+        switch (saveOption) {
+            case Ignore:
+                insertIgnore(household);
+                break;
+            case Replace:
+                insertReplace(household);
+                break;
+        }
+    }
 
     @Query("select * from targeted_households where targeting_session = :sessionId ORDER BY ranking ASC")
     public abstract DataSource.Factory<Integer, TargetedHousehold> getBySessionId(Long sessionId);

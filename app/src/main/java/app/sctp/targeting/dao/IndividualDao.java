@@ -8,13 +8,28 @@ import androidx.room.Query;
 import java.util.List;
 
 import app.sctp.targeting.models.Individual;
+import app.sctp.utils.DownloadOptionsDialog;
 import io.reactivex.Flowable;
 
 @Dao
 public abstract class IndividualDao {
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    protected abstract void saveAllIgnore(List<Individual> individuals);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void saveAll(List<Individual> individuals);
+    protected abstract void saveAllReplace(List<Individual> individuals);
+
+    public void saveAll(List<Individual> individuals, DownloadOptionsDialog.DownloadOption saveOption) {
+        switch (saveOption) {
+            case Replace:
+                saveAllReplace(individuals);
+                break;
+            case Ignore:
+                saveAllIgnore(individuals);
+                break;
+        }
+    }
 
     @Query(value = "select * from individual where householdId = :householdId")
     public abstract Flowable<List<Individual>> getByHouseholdId(Long householdId);

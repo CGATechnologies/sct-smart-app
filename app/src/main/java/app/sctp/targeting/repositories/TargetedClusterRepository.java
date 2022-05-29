@@ -8,6 +8,7 @@ import app.sctp.persistence.BaseRepository;
 import app.sctp.persistence.SctpAppDatabase;
 import app.sctp.targeting.dao.TargetedClusterDao;
 import app.sctp.targeting.models.TargetedCluster;
+import app.sctp.utils.DownloadOptionsDialog;
 
 public class TargetedClusterRepository extends BaseRepository {
     private final TargetedClusterDao dao;
@@ -17,7 +18,7 @@ public class TargetedClusterRepository extends BaseRepository {
         dao = database.targetedClusterDao();
     }
 
-    public void saveAll(List<TargetedCluster> targetedClusters) {
-        post(() -> dao.saveAll(targetedClusters));
+    public void saveAll(List<TargetedCluster> targetedClusters, DownloadOptionsDialog.DownloadOption dltop) {
+        post(() -> dao.saveAll(targetedClusters, dltop));
     }
 }

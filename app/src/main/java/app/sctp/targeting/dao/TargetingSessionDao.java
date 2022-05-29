@@ -12,6 +12,7 @@ import java.util.List;
 
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.TargetingSession;
+import app.sctp.utils.DownloadOptionsDialog;
 
 @Dao
 public abstract class TargetingSessionDao {
@@ -63,7 +64,24 @@ public abstract class TargetingSessionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @Transaction
-    public abstract void saveAll(List<TargetingSession> sessions);
+    protected abstract void saveAllReplace(List<TargetingSession> sessions);
+
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Transaction
+    protected abstract void saveAllIgnore(List<TargetingSession> sessions);
+
+
+    public void saveAll(List<TargetingSession> sessions, DownloadOptionsDialog.DownloadOption saveOption) {
+        switch (saveOption) {
+            case Ignore:
+                saveAllIgnore(sessions);
+                break;
+            case Replace:
+                saveAllReplace(sessions);
+                break;
+        }
+    }
 
     @Update
     public abstract void update(TargetingSession session);

@@ -2,8 +2,6 @@ package app.sctp.targeting.ui.fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +27,7 @@ import app.sctp.targeting.ui.viewholders.TargetingSessionViewHolderCreator;
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
 import app.sctp.targeting.viewmodels.IndividualViewModel;
 import app.sctp.targeting.viewmodels.TargetingSessionViewModel;
+import app.sctp.utils.DownloadOptionsDialog;
 import app.sctp.utils.UiUtils;
 
 public class CommunityMeetingFragment extends BindableFragment {
@@ -37,10 +36,10 @@ public class CommunityMeetingFragment extends BindableFragment {
     private LocationSelection locationSelection;
     private HouseholdViewModel householdViewModel;
     private IndividualViewModel individualViewModel;
-    private FragmentTargetingCommunityMeetingBinding binding;
-    private final Handler handler = new Handler(Looper.getMainLooper());
     private TargetingSessionViewModel sessionViewModel;
+    private DownloadOptionsDialog downloadOptionsDialog;
     private GenericAdapter<TargetingSession> sessionAdapter;
+    private FragmentTargetingCommunityMeetingBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,6 +71,11 @@ public class CommunityMeetingFragment extends BindableFragment {
             }
         });
 
+        downloadOptionsDialog = new DownloadOptionsDialog(
+                requireContext(),
+                (dlg, downloadOption) -> downloadTargetingSessions(downloadOption)
+        );
+
         householdViewModel = getViewModel(HouseholdViewModel.class);
         individualViewModel = getViewModel(IndividualViewModel.class);
         sessionViewModel = getViewModel(TargetingSessionViewModel.class);
@@ -100,13 +104,13 @@ public class CommunityMeetingFragment extends BindableFragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.cmo_download_new_data) {
-            downloadTargetingSessions();
+            downloadOptionsDialog.show();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void downloadTargetingSessions() {
+    private void downloadTargetingSessions(DownloadOptionsDialog.DownloadOption downloadOption) {
         sessionViewModel.downloadTargetingSessions(
                 locationSelection,
                 TargetingSession.MeetingPhase.second_community_meeting,
@@ -147,7 +151,8 @@ public class CommunityMeetingFragment extends BindableFragment {
                     public void onProgress(int progress, int total) {
                         progressDialog.setProgress(progress);
                     }
-                }
+                },
+                downloadOption
         );
     }
 }

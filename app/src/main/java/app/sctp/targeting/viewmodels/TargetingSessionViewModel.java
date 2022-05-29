@@ -17,6 +17,7 @@ import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.repositories.TargetingSessionRepository;
 import app.sctp.targeting.services.TargetingService;
+import app.sctp.utils.DownloadOptionsDialog;
 
 public class TargetingSessionViewModel extends BaseViewModel {
 
@@ -96,7 +97,8 @@ public class TargetingSessionViewModel extends BaseViewModel {
     public void downloadTargetingSessions(LocationSelection location,
                                           TargetingSession.MeetingPhase phase,
                                           TargetingService service,
-                                          TargetingSessionRepository.SessionDownloadListener listener) {
-        repository.downloadTargetingSessions(location, phase, service, listener);
+                                          TargetingSessionRepository.SessionDownloadListener listener,
+                                          DownloadOptionsDialog.DownloadOption downloadOption) {
+        repository.downloadTargetingSessions(location, phase, service, listener, downloadOption);
     }
 }
