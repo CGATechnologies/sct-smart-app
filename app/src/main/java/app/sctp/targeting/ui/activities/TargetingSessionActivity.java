@@ -2,6 +2,7 @@ package app.sctp.targeting.ui.activities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -49,6 +50,17 @@ public class TargetingSessionActivity extends BaseActivity {
 
         session = (TargetingSession) getIntent().getSerializableExtra(KEY_SESSION);
 
+        switch (session.getMeetingPhase()) {
+            case district_meeting:
+                setTitle(R.string.label_district_meeting);
+                break;
+            case second_community_meeting:
+                setTitle(R.string.label_community_meeting);
+                break;
+            default:
+                throw new UnsupportedOperationException("unsupported phase: " + session.getMeetingPhase());
+        }
+
         householdAdapter = new GenericPagedAdapter<>(new HouseholdViewHolderCreator());
         householdAdapter.setItemSelectionListener(new ItemSelectionListener<TargetedHousehold>() {
             @Override
@@ -80,32 +92,20 @@ public class TargetingSessionActivity extends BaseActivity {
         progressDialog = UiUtils.progressDialogWithProgress(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        refreshHouseholds();
-    }
-
-    private void refreshHouseholds() {
-        // TODO Fix LiveDate update
-        // noinspection NotifyDatasetChanged
-        //householdViewModel.getSessionHouseholds(session.getId()).observe(this, householdAdapter::submitList);
-    }
-
     public static void selectEligibleHouseholds(Activity activity, TargetingSession session) {
         activity.startActivity(new Intent(activity, TargetingSessionActivity.class)
                 .putExtra(KEY_SESSION, session));
     }
 
-    @Override
+/*    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REVIEW_HOUSEHOLD_REQUEST_ID) {
             if (resultCode == RESULT_OK) {
-                refreshHouseholds();
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,8 +116,11 @@ public class TargetingSessionActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.cmo_send_households) {
-            // TODO Show dialog to ask whether to move to next phase or not
-            synchronizeHouseholds(true);
+            UiUtils.dialogPrompt(this, R.string.targeting_upload_confirmation_prompt)
+                    .cancelable(false)
+                    .onOk("Yes", (dialog, which) -> synchronizeHouseholds(true))
+                    .onCancel("Cancel", (dialog, which) -> dialog.cancel())
+                    .show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -150,6 +153,8 @@ public class TargetingSessionActivity extends BaseActivity {
 
                     @Override
                     public void onStart() {
+                        progressDialog.setProgress(0);
+                        progressDialog.setIndeterminate(true);
                         progressDialog.setMessage("Please wait...");
                         progressDialog.show();
                     }
@@ -162,6 +167,7 @@ public class TargetingSessionActivity extends BaseActivity {
 
                     @Override
                     public void onInitializeProgress(int max) {
+                        progressDialog.setIndeterminate(false);
                         progressDialog.setMax(max);
                     }
 
