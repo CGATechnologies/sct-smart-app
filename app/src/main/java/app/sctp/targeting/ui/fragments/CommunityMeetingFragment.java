@@ -1,63 +1,37 @@
 package app.sctp.targeting.ui.fragments;
 
-import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewbinding.ViewBinding;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import app.sctp.R;
-import app.sctp.core.ui.BindableFragment;
-import app.sctp.core.ui.adapter.GenericAdapter;
-import app.sctp.core.ui.adapter.ItemSelectionListener;
-import app.sctp.databinding.FragmentTargetingCommunityMeetingBinding;
-import app.sctp.databinding.LocationInfoBinding;
-import app.sctp.targeting.models.GeoLocation;
-import app.sctp.targeting.models.HouseholdDetailResponse;
-import app.sctp.targeting.models.HouseholdDetails;
-import app.sctp.targeting.models.LocationSelection;
-import app.sctp.targeting.models.PreEligibilityVerificationSession;
-import app.sctp.targeting.models.PreEligibilityVerificationSessionResponse;
-import app.sctp.targeting.models.SelectionStatus;
-import app.sctp.targeting.models.SessionView;
-import app.sctp.targeting.services.TargetingService;
-import app.sctp.targeting.ui.activities.PreEligibilityVerificationSessionActivity;
-import app.sctp.targeting.ui.viewholders.PreEligibilityVerificationSessionViewHolderCreator;
-import app.sctp.targeting.viewmodels.HouseholdViewModel;
-import app.sctp.targeting.viewmodels.IndividualViewModel;
-import app.sctp.targeting.viewmodels.PreEligibilityVerificationSessionViewModel;
-import app.sctp.utils.PlatformUtils;
-import app.sctp.utils.UiUtils;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
-import retrofit2.Call;
-import retrofit2.HttpException;
-import retrofit2.Response;
+import app.sctp.targeting.models.TargetingSession;
 
-public class CommunityMeetingFragment extends BindableFragment {
+public class CommunityMeetingFragment extends TargetingMeetingBaseFragment /*BindableFragment*/ {
+    @Override
+    protected String getSubtitle() {
+        return null;
+    }
 
-    private ProgressDialog progressDialog;
+    @Override
+    protected int getMenu() {
+        return R.menu.community_meeting_options;
+    }
+
+    @Override
+    protected int getDownloadMenuOption() {
+        return R.id.cmo_download_new_data;
+    }
+
+    @Override
+    protected TargetingSession.MeetingPhase getMeetingPhase() {
+        return TargetingSession.MeetingPhase.second_community_meeting;
+    }
+
+    /*private ProgressDialog progressDialog;
     private LocationSelection locationSelection;
     private HouseholdViewModel householdViewModel;
     private IndividualViewModel individualViewModel;
+    private TargetingSessionViewModel sessionViewModel;
+    private DownloadOptionsDialog downloadOptionsDialog;
+    private GenericAdapter<TargetingSession> sessionAdapter;
     private FragmentTargetingCommunityMeetingBinding binding;
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private PreEligibilityVerificationSessionViewModel sessionViewModel;
-    private GenericAdapter<SessionView> sessionAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,27 +45,32 @@ public class CommunityMeetingFragment extends BindableFragment {
         locationSelection = CommunityMeetingFragmentArgs.fromBundle(getArguments())
                 .getSelectedLocation();
 
-        progressDialog = UiUtils.progressDialog(requireContext());
+        progressDialog = UiUtils.progressDialogWithProgress(requireContext());
 
-        sessionAdapter = new GenericAdapter<>(new PreEligibilityVerificationSessionViewHolderCreator());
-        sessionAdapter.setItemSelectionListener(new ItemSelectionListener<SessionView>() {
+        sessionAdapter = new GenericAdapter<>(new TargetingSessionViewHolderCreator());
+        sessionAdapter.setItemSelectionListener(new ItemSelectionListener<TargetingSession>() {
             @Override
-            public void onItemSelected(SessionView item) {
-                PreEligibilityVerificationSessionActivity.selectEligibleHouseholds(
+            public void onItemSelected(TargetingSession session) {
+                TargetingSessionActivity.selectEligibleHouseholds(
                         requireActivity(),
-                        item
+                        session
                 );
             }
 
             @Override
-            public void onItemLongSelected(SessionView item) {
+            public void onItemLongSelected(TargetingSession item) {
 
             }
         });
 
+        downloadOptionsDialog = new DownloadOptionsDialog(
+                requireContext(),
+                (dlg, downloadOption) -> downloadTargetingSessions(downloadOption)
+        );
+
         householdViewModel = getViewModel(HouseholdViewModel.class);
         individualViewModel = getViewModel(IndividualViewModel.class);
-        sessionViewModel = getViewModel(PreEligibilityVerificationSessionViewModel.class);
+        sessionViewModel = getViewModel(TargetingSessionViewModel.class);
 
         binding.list.setAdapter(sessionAdapter);
 
@@ -99,26 +78,8 @@ public class CommunityMeetingFragment extends BindableFragment {
     }
 
     private void loadSessions() {
-        sessionViewModel.getSessionViewsByLocation(locationSelection)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSubscriber<List<SessionView>>() {
-                    @Override
-                    public void onNext(List<SessionView> sessions) {
-                        sessionAdapter.submitList(sessions);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        PlatformUtils.printStackTrace(t);
-                        UiUtils.toast(requireContext(), R.string.error_loading_data);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        dispose();
-                    }
-                });
+        sessionViewModel.get2ndCommunityMeetingTargetingSessions(locationSelection)
+                .observe(requireActivity(), sessionAdapter::submitList);
     }
 
     @Override
@@ -135,93 +96,55 @@ public class CommunityMeetingFragment extends BindableFragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.cmo_download_new_data) {
-            downloadEligibilityVerificationSessions();
+            downloadOptionsDialog.show();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void downloadEligibilityVerificationSessions() {
-        progressDialog.show();
-        progressDialog.setMessage("Downloading sessions...");
-        getApplicationConfiguration().postBackgroundWork(() -> {
-            try {
-                int page = 0;
-                AtomicInteger pageCount = new AtomicInteger(0);
-                do {
-                    handler.post(() -> progressDialog.setMessage("Downloading sessions..."));
-
-                    Response<PreEligibilityVerificationSessionResponse> sessionResponse =
-                            getService(TargetingService.class)
-                                    .getPreEligibilitySessions(
-                                            locationCode(locationSelection.getTraditionalAuthority())
-                                            , locationCode(locationSelection.getCluster())
-                                            , locationCode(locationSelection.getZone())
-                                            , locationCode(locationSelection.getVillage())
-                                            , page
-                                    ).execute();
-                    if (sessionResponse.isSuccessful()) {
-                        PreEligibilityVerificationSessionResponse response = sessionResponse.body();
-
-                        pageCount.compareAndSet(0, response.getTotalPages());
-
-                        if (!response.getItems().isEmpty()) {
-                            sessionViewModel.save(response.getItems());
-                        }
-                        // download households under this session
-                        downloadSessionHouseholds(response.getItems());
-
-                        progressDialog.setProgress(page);
-                    } else {
-                        throw new HttpException(sessionResponse);
+    private void downloadTargetingSessions(DownloadOptionsDialog.DownloadOption downloadOption) {
+        sessionViewModel.downloadTargetingSessions(
+                locationSelection,
+                TargetingSession.MeetingPhase.second_community_meeting,
+                getService(TargetingService.class),
+                new TargetingSessionRepository.SessionDownloadListener() {
+                    @Override
+                    public void onStart() {
+                        progressDialog.setIndeterminate(false);
+                        progressDialog.setMessage("Preparing...");
+                        progressDialog.show();
                     }
-                } while (++page < pageCount.get());
-                handler.post(() -> {
-                    progressDialog.dismiss();
-                    UiUtils.snackbar(binding.getRoot(), R.string.download_successful);
-                });
-            } catch (Exception exception) {
-                PlatformUtils.printStackTrace(exception);
-                handler.post(() -> {
-                    progressDialog.dismiss();
-                    UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_data);
-                });
-            }
-        });
-    }
 
-    private void downloadSessionHouseholds(List<PreEligibilityVerificationSession> sessions) throws IOException {
-        handler.post(() -> progressDialog.setMessage("Downloading household data..."));
-        for (PreEligibilityVerificationSession session : sessions) {
-            int page = 0;
-            AtomicInteger pageCount = new AtomicInteger(0);
-            do {
-                Response<HouseholdDetailResponse> response =
-                        getService(TargetingService.class)
-                                .getHouseholdsFromPreEligibilitySession(session.getId(), page)
-                                .execute();
-                if (response.isSuccessful()) {
-                    HouseholdDetailResponse detailResponse = response.body();
-                    pageCount.compareAndSet(0, detailResponse.getTotalPages());
-
-                    if (!detailResponse.getItems().isEmpty()) {
-                        for (HouseholdDetails householdDetails : detailResponse.getItems()) {
-                            // TODO default to eligible
-                            householdDetails.getHousehold().setSelection(SelectionStatus.Eligible);
-                            householdViewModel.save(householdDetails.getHousehold());
-                            if (!householdDetails.getMemberDetails().isEmpty()) {
-                                individualViewModel.save(householdDetails.getMemberDetails());
-                            }
-                        }
+                    @Override
+                    public void onProgressTotalAvailable(int total) {
+                        progressDialog.setIndeterminate(false);
+                        progressDialog.setMax(total);
+                        progressDialog.setProgress(0);
                     }
-                } else {
-                    throw new HttpException(response);
-                }
-            } while (++page < pageCount.get());
-        }
-    }
 
-    private Long locationCode(GeoLocation geoLocation) {
-        return geoLocation != null ? geoLocation.getCode() : 0L;
-    }
+                    @Override
+                    public void onCompleted() {
+                        progressDialog.dismiss();
+                        UiUtils.snackbar(binding.getRoot(), R.string.download_successful);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        progressDialog.dismiss();
+                        UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_data);
+                    }
+
+                    @Override
+                    public void onMessage(String message) {
+                        progressDialog.setMessage(message);
+                    }
+
+                    @Override
+                    public void onProgress(int progress, int total) {
+                        progressDialog.setProgress(progress);
+                    }
+                },
+                downloadOption
+        );
+    }*/
 }

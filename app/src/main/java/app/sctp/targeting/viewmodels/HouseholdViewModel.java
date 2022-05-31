@@ -12,20 +12,18 @@ import androidx.paging.PagedList;
 import java.util.List;
 
 import app.sctp.persistence.BaseViewModel;
-import app.sctp.targeting.models.Household;
 import app.sctp.targeting.models.HouseholdSelectionResults;
-import app.sctp.targeting.models.SelectionStatus;
+import app.sctp.targeting.models.TargetedHousehold;
+import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.repositories.HouseholdRepository;
-import app.sctp.utils.LocaleUtils;
+import app.sctp.targeting.services.TargetingService;
+import app.sctp.utils.DownloadOptionsDialog;
 
 public class HouseholdViewModel extends BaseViewModel {
 
     static class HouseholdListingKey {
         private String search;
         private Long sessionId;
-
-        public HouseholdListingKey() {
-        }
 
         public HouseholdListingKey(Long sessionId, String search) {
             this.sessionId = sessionId;
@@ -50,8 +48,8 @@ public class HouseholdViewModel extends BaseViewModel {
     }
 
     private final HouseholdRepository householdRepository;
-    private LiveData<PagedList<Household>> householdsLiveData;
-    private MutableLiveData<HouseholdListingKey> searchLiveData;
+    private final MutableLiveData<HouseholdListingKey> searchLiveData;
+    private final LiveData<PagedList<TargetedHousehold>> householdsLiveData;
 
     public HouseholdViewModel(@NonNull Application application) {
         super(application);
@@ -60,55 +58,47 @@ public class HouseholdViewModel extends BaseViewModel {
 
         householdsLiveData = Transformations.switchMap(
                 searchLiveData,
-                input -> {
-                    if (!LocaleUtils.hasText(input.search)) {
-                        return new LivePagedListBuilder<>(
-                                householdRepository.getSessionHouseholds(input.sessionId),
-                                PAGE_SIZE
-                        ).build();
-                    } else {
-                        return new LivePagedListBuilder<>(
-                                householdRepository.search(input.sessionId, input.search),
-                                PAGE_SIZE
-                        ).build();
-                    }
-                }
+                input -> new LivePagedListBuilder<>(
+                        householdRepository.getSessionHouseholds(input.sessionId),
+                        PAGE_SIZE
+                ).build()
         );
     }
 
-    public void updateFilterParameters(Long sessionId, String search) {
-        searchLiveData.postValue(new HouseholdListingKey(sessionId, search));
+    public void save(List<TargetedHousehold> households, DownloadOptionsDialog.DownloadOption dopt) {
+        householdRepository.save(households, dopt);
     }
 
-    public void save(List<Household> households) {
-        householdRepository.save(households);
+    public void save(TargetedHousehold household, DownloadOptionsDialog.DownloadOption dltop) {
+        householdRepository.save(household, dltop);
     }
 
-    public void save(Household household) {
-        householdRepository.save(household);
-    }
-
-    public LiveData<PagedList<Household>> getHouseholdsLiveData() {
-        return householdsLiveData;
-    }
-
-    public void setSessionId(Long sessionId) {
+    private void setSessionId(Long sessionId) {
         searchLiveData.postValue(new HouseholdListingKey(sessionId, null));
     }
 
-    public LiveData<PagedList<Household>> getSessionHouseholds() {
+    public LiveData<PagedList<TargetedHousehold>> getSessionHouseholds(Long sessionId) {
+        setSessionId(sessionId);
         return householdsLiveData;
     }
 
-    public List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId) {
-        return householdRepository.getHouseholdSelectionResultsForSession(sessionId);
+    public int getHouseholdCount(long sessionId) {
+        return householdRepository.getHouseholdCount(sessionId);
     }
 
-    public boolean sessionHouseholdsSelected(Long sessionId) {
-        return householdRepository.sessionHouseholdsSelected(sessionId);
+    public List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId, int offset, int count) {
+        return householdRepository.getHouseholdSelectionResultsForSession(sessionId, offset, count);
     }
 
-    public void updateHouseholdStatus(Long sessionId, SelectionStatus selectionStatus) {
-        householdRepository.updateHouseholdStatus(sessionId, selectionStatus);
+    public void synchronizeHouseholds(
+            Long sessionId,
+            TargetingService service,
+            TargetingSession.MeetingPhase phase,
+            HouseholdRepository.SyncListener listener) {
+        householdRepository.synchronizeHouseholds(sessionId, service, phase, listener);
+    }
+
+    public void update(TargetedHousehold household) {
+        householdRepository.update(household);
     }
 }

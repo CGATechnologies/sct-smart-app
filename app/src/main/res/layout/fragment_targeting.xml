@@ -15,14 +15,24 @@
         android:paddingEnd="8dp"
         android:paddingBottom="8dp">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".5" />
+
         <app.sctp.core.ui.views.CardViewMenuItem
             android:id="@+id/targeting_community_meeting_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:labelText="@string/community_meeting"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:menuIcon="@drawable/ic_targeting"
+            app:showStep="true"
+            app:stepValue="1"
             app:targetAction="@+id/action_home_to_targeting" />
 
         <app.sctp.core.ui.views.CardViewMenuItem
@@ -31,19 +41,23 @@
             android:layout_height="wrap_content"
             app:labelText="@string/district_meeting"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/targeting_community_meeting_card"
+            app:layout_constraintStart_toEndOf="@id/guideline"
             app:layout_constraintTop_toTopOf="parent"
-            app:menuIcon="@drawable/ic_baseline_location_city_24" />
+            app:menuIcon="@drawable/ic_baseline_location_city_24"
+            app:showStep="true"
+            app:stepValue="2" />
 
         <app.sctp.core.ui.views.CardViewMenuItem
             android:id="@+id/targeting_enrollment_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:labelText="@string/enrollment"
-            app:layout_constraintEnd_toEndOf="@id/targeting_community_meeting_card"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/targeting_community_meeting_card"
-            app:menuIcon="@drawable/ic_round_menu_book_24" />
+            app:menuIcon="@drawable/ic_round_menu_book_24"
+            app:showStep="true"
+            app:stepValue="3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -20,4 +20,8 @@
         <item name="android:textSize">13sp</item>
         <item name="drawableTint">@color/info_color</item>
     </style>
+
+    <style name="Widget.MaterialComponents.Button.Red">
+        <item name="backgroundTint">@color/red_500</item>
+    </style>
 </resources>

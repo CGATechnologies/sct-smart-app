@@ -5,14 +5,17 @@ import androidx.room.PrimaryKey;
 
 public class HouseholdSelectionResults {
 
-    @ColumnInfo(name = "ranking")
+    @ColumnInfo
     private Long rank;
 
     @PrimaryKey
     private Long householdId;
 
-    @ColumnInfo(name = "selection")
-    private SelectionStatus cbtStatus;
+    @ColumnInfo
+    private SelectionStatus status;
+
+    @ColumnInfo
+    private String reason;
 
     public Long getRank() {
         return rank;
@@ -30,11 +33,19 @@ public class HouseholdSelectionResults {
         this.householdId = householdId;
     }
 
-    public SelectionStatus getCbtStatus() {
-        return cbtStatus;
+    public SelectionStatus getStatus() {
+        return status;
     }
 
-    public void setCbtStatus(SelectionStatus cbtStatus) {
-        this.cbtStatus = cbtStatus;
+    public void setStatus(SelectionStatus status) {
+        this.status = status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

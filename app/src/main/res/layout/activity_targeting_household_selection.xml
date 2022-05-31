@@ -5,7 +5,7 @@
 
         <variable
             name="household"
-            type="app.sctp.targeting.models.Household" />
+            type="app.sctp.targeting.models.TargetedHousehold" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -207,7 +207,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{household.formNumber}"
+                        android:text="@{household.formNumber.toString()}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         tools:text="903456" />
 
@@ -251,33 +251,11 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{household.selection.name()}"
+                        android:text="@{household.status.name()}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         tools:text="PreEligible" />
 
                 </TableRow>
-
-                <!--<TableRow
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Traditional Authority"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </TableRow>-->
 
             </TableLayout>
 

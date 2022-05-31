@@ -4,4 +4,5 @@
     <string name="error_loading_data">Error loading data</string>
     <string name="error_downloading_data">Error downloading data</string>
     <string name="label_status">Status</string>
+    <string name="empty_enrollment_sessions">There are no enrollment sessions to display.</string>
 </resources>

@@ -41,14 +41,14 @@
     <string name="village_cluster">Village cluster</string>
     <string name="select_zone">Select zone</string>
     <string name="zone">Zone</string>
-    <string name="community_meeting">Community Meeting</string>
-    <string name="district_meeting">District Meeting</string>
+    <string name="community_meeting">Community Validation</string>
+    <string name="district_meeting">District Approval Meeting</string>
     <string name="location_information">Selected location</string>
-    <string name="label_community_meeting">Community Meeting</string>
+    <string name="label_community_meeting">Community Validation</string>
     <string name="targeting_home_summary">Select type of meeting</string>
     <string name="auth_account_locked">Inactive account or district user profile is deactivated.</string>
     <string name="select_village">Select village</string>
-    <string name="label_district_meeting">District Meeting</string>
+    <string name="label_district_meeting">District Approval Meeting</string>
     <string name="label_apply">Apply</string>
     <string name="error_zone_must_be_selected">You must select a zone</string>
     <string name="error_cluster_must_be_selected">You must select a cluster</string>
@@ -64,6 +64,12 @@
     <string name="household_selection_info">
         <![CDATA[
         1. Click on a household below to open it.\n\n2. When all households have been selected, select \"Upload selection results\" to synchronize.
+        ]]>
+    </string>
+    <string name="enrollment_selection_info">
+        <![CDATA[
+        1. Select \"Download enrollment data\" to download new data from the MIS.
+        \n\n2. Click on an enrollment session to open it and review households under that session.
         ]]>
     </string>
     <string name="label_household_status">Status</string>
@@ -93,9 +99,25 @@
     <string name="title_household_composition">Household composition</string>
     <string name="name">Name</string>
     <string name="targeting_session_info"><![CDATA[1. Select a session below to manage households.\n\n2. To download new data, select \"Download new data\" under the menu options]]></string>
+    <string name="targeting_dcm_session_info"><![CDATA[1. Select a session below to manage households.\n\n2. To download new data, select \"Download new data\" under the menu options]]></string>
     <string name="enrollment">Enrollment</string>
     <string name="sync_households">Upload selection results</string>
     <string name="household_selection_incomplete">You must select all households before uploading the results to the MIS</string>
     <string name="household_updates_sent">Updates successfully sent</string>
     <string name="household_updates_failed">Error uploading updates</string>
+    <string name="download_option_replace">Replace it</string>
+    <string name="download_option_ignore">Ignore it</string>
+    <string name="download_option_message">Choose what to do with unsynchronized existing data on this device?</string>
+    <string name="upload_option_message">Na?</string>
+    <string name="download_option_replace_summary">Overwrite existing data with data from the server</string>
+    <string name="download_option_ignore_summary">Existing data will not be replaced with data from server.</string>
+    <string name="download">Download</string>
+    <string name="cancel">Cancel</string>
+    <string name="upload">Upload</string>
+    <string name="targeting_upload_confirmation_prompt">Upload data to the MIS server?</string>
+    <string name="label_enrollment">Enrollment</string>
+    <string name="title_enrollment">Enrollment</string>
+    <string name="session_meeting_close_error">Error closing current meeting stage. Please try again.</string>
+    <string name="enrollment_menu_item_location_info">Show Location Information</string>
+    <string name="enrollment_menu_item_download_sessions">Download enrollment data</string>
 </resources>

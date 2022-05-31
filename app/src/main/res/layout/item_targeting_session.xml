@@ -7,7 +7,7 @@
 
         <variable
             name="session"
-            type="app.sctp.targeting.models.SessionView" />
+            type="app.sctp.targeting.models.TargetingSession" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="8dp"
-                android:text="@{session.criterionName}"
+                android:text="@{session.title}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 tools:text="District Name" />
 

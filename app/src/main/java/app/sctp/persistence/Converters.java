@@ -19,6 +19,7 @@ import app.sctp.targeting.models.MaritalStatus;
 import app.sctp.targeting.models.Orphanhood;
 import app.sctp.targeting.models.RelationshipToHead;
 import app.sctp.targeting.models.SelectionStatus;
+import app.sctp.targeting.models.TargetingSession;
 import app.sctp.utils.LocaleUtils;
 
 public class Converters {
@@ -164,6 +165,26 @@ public class Converters {
     @TypeConverter
     public static SelectionStatus selectionStatusFromString(String name) {
         return enumFromString(name, SelectionStatus.class);
+    }
+
+    @TypeConverter
+    public static String meetingPhaseToString(TargetingSession.MeetingPhase meetingPhase) {
+        return enumToString(meetingPhase);
+    }
+
+    @TypeConverter
+    public static TargetingSession.MeetingPhase meetingPhaseFromString(String name) {
+        return enumFromString(name, TargetingSession.MeetingPhase.class);
+    }
+
+    @TypeConverter
+    public static String sessionStatusToString(TargetingSession.SessionStatus sessionStatus) {
+        return enumToString(sessionStatus);
+    }
+
+    @TypeConverter
+    public static TargetingSession.SessionStatus sessionStatusFromString(String name) {
+        return enumFromString(name, TargetingSession.SessionStatus.class);
     }
 
     private static String enumToString(Enum<?> tEnum) {

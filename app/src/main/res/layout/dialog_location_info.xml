@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="app.sctp.targeting.models.LocationSelection" />
+
+        <variable
+            name="location"
+            type="app.sctp.targeting.models.LocationSelection" />
+
+        <variable
+            name="districtName"
+            type="String" />
+    </data>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_color"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background_color"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/info_textview.with_icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Location information" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray" />
+
+            <app.sctp.core.ui.views.DualLineTextView
+                android:id="@+id/district"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:line1="@string/label_district"
+                app:line2="@{districtName}" />
+
+            <app.sctp.core.ui.views.DualLineTextView
+                android:id="@+id/ta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:line1="@string/traditional_authority"
+                app:line2="@{LocationSelection.nameOrAsterisks(location.traditionalAuthority)}" />
+
+            <app.sctp.core.ui.views.DualLineTextView
+                android:id="@+id/cluster"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:line1="@string/village_cluster"
+                app:line2="@{LocationSelection.nameOrAsterisks(location.cluster)}" />
+
+            <app.sctp.core.ui.views.DualLineTextView
+                android:id="@+id/zone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:line1="@string/zone"
+                app:line2="@{LocationSelection.nameOrAsterisks(location.zone)}" />
+
+            <app.sctp.core.ui.views.DualLineTextView
+                android:id="@+id/village"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                app:line1="@string/village"
+                app:line2="@{LocationSelection.nameOrAsterisks(location.village)}" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>
