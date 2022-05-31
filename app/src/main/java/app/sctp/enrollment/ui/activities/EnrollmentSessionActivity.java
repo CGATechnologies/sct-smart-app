@@ -13,36 +13,39 @@ import androidx.annotation.Nullable;
 import app.sctp.R;
 import app.sctp.core.ui.BaseActivity;
 import app.sctp.core.ui.adapter.GenericPagedAdapter;
+import app.sctp.databinding.ActivityEnrollmentLayoutBinding;
 import app.sctp.databinding.ActivityHouseholdEligibilitySelectionBinding;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.TargetedHousehold;
+import app.sctp.utils.DownloadOptionsDialog;
 import app.sctp.utils.LocationInfoDialog;
 import app.sctp.utils.PlatformUtils;
+import app.sctp.utils.UiUtils;
 
 public class EnrollmentSessionActivity extends BaseActivity {
-    private static final String KEY_SESSION = "sctp.enrollment.session";
-    private static final int REVIEW_HOUSEHOLD_REQUEST_ID = 1001;
-
 
     private String districtName;
     private ProgressDialog progressDialog;
     private LocationSelection locationSelection;
     private LocationInfoDialog locationInfoDialog;
-    private ActivityHouseholdEligibilitySelectionBinding binding;
+    private ActivityEnrollmentLayoutBinding binding;
+    private DownloadOptionsDialog downloadOptionsDialog;
     private GenericPagedAdapter<TargetedHousehold> householdAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityHouseholdEligibilitySelectionBinding.inflate(getLayoutInflater());
+        binding = ActivityEnrollmentLayoutBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setupToolBar();
-        setSubTitle(getText(R.string.enrollment));
+        setSubTitle(getText(R.string.label_targeting_and_enrollment));
 
         locationSelection = (LocationSelection) getIntent().getSerializableExtra("location");
 
-        districtName = getApplicationConfiguration().getUserDetails().getDistrictName();
         locationInfoDialog = new LocationInfoDialog(this);
+        progressDialog = UiUtils.progressDialogWithProgress(this);
+        districtName = getApplicationConfiguration().getUserDetails().getDistrictName();
+        downloadOptionsDialog = new DownloadOptionsDialog(this, (dlg, downloadOption) -> downloadSessions(downloadOption));
     }
 
     @Override
@@ -55,12 +58,12 @@ public class EnrollmentSessionActivity extends BaseActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         PlatformUtils.dynamicSwitchOn(item.getItemId())
                 .when(R.id.enrollment_location_info, this::showLocationInfo)
-                .when(R.id.enrollment_download_sessions, this::downloadSessions)
+                .when(R.id.enrollment_download_sessions, () -> downloadOptionsDialog.show())
                 .eval();
         return super.onOptionsItemSelected(item);
     }
 
-    private void downloadSessions() {
+    private void downloadSessions(DownloadOptionsDialog.DownloadOption downloadOption) {
 
     }
 

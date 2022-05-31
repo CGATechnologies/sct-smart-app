@@ -66,6 +66,12 @@
         1. Click on a household below to open it.\n\n2. When all households have been selected, select \"Upload selection results\" to synchronize.
         ]]>
     </string>
+    <string name="enrollment_selection_info">
+        <![CDATA[
+        1. Select \"Download enrollment data\" to download new data from the MIS.
+        \n\n2. Click on an enrollment session to open it and review households under that session.
+        ]]>
+    </string>
     <string name="label_household_status">Status</string>
     <string name="label_household_rank">Rank</string>
     <string name="label_household_head">Head</string>

@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    android:gravity="center"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -13,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/household_selection_info" />
+        android:text="@string/enrollment_selection_info" />
 
     <app.sctp.core.ui.views.StandardRecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:allow_filter="true"
         app:empty_label="@string/empty_enrollment_sessions" />
 
