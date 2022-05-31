@@ -1,6 +1,7 @@
 package app.sctp.targeting.models;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -67,6 +68,10 @@ public class TargetedHousehold implements Diffable {
     private SelectionStatus status;
 
     private Integer ranking;
+
+    @ColumnInfo(name = "change_reason")
+    @Nullable
+    private String changeReason;
 
     @ColumnInfo(name = "created_at")
     private String createdAt;
@@ -267,6 +272,14 @@ public class TargetedHousehold implements Diffable {
                     && Objects.equals(this.ranking, other.ranking);
         }
         return false;
+    }
+
+    public String getChangeReason() {
+        return changeReason;
+    }
+
+    public void setChangeReason(String changeReason) {
+        this.changeReason = changeReason;
     }
 
     @NonNull

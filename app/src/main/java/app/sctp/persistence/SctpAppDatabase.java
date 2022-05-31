@@ -38,7 +38,7 @@ import app.sctp.targeting.models.TargetingSession;
 )
 @TypeConverters({Converters.class})
 public abstract class SctpAppDatabase extends RoomDatabase {
-    public static final int VERSION = 6;
+    public static final int VERSION = 7;
 
     public abstract LocationDao locationDao();
 

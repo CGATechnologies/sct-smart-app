@@ -16,10 +16,12 @@ import androidx.viewbinding.ViewBinding;
 import app.sctp.R;
 import app.sctp.core.ui.BindableFragment;
 import app.sctp.databinding.FragmentTargetingBinding;
+import app.sctp.enrollment.ui.activities.EnrollmentSessionActivity;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.ui.activities.LocationSelectionActivity;
 
 public class TargetingModuleFragment extends BindableFragment {
+    private static final int ENROLLMENT_LOCATION_SELECTION_REQUEST_CODE = 1003;
     private static final int DISTRICT_MEETING_LOCATION_SELECTION_REQUEST_CODE = 1002;
     private static final int COMMUNITY_MEETING_LOCATION_SELECTION_REQUEST_CODE = 1001;
 
@@ -34,6 +36,9 @@ public class TargetingModuleFragment extends BindableFragment {
         );
         binding.targetingCommunityMeetingCard.setOnClickListener(
                 v -> selectLocation(COMMUNITY_MEETING_LOCATION_SELECTION_REQUEST_CODE)
+        );
+        binding.targetingEnrollmentCard.setOnClickListener(
+                v -> selectLocation(ENROLLMENT_LOCATION_SELECTION_REQUEST_CODE)
         );
 
         navController = Navigation.findNavController(binding.getRoot());
@@ -51,6 +56,10 @@ public class TargetingModuleFragment extends BindableFragment {
         navController.navigate(R.id.action_home_to_community_meeting, args.toBundle());
     }
 
+    private void navigateToEnrollment(LocationSelection location) {
+        EnrollmentSessionActivity.manageSessions(requireActivity(), location);
+    }
+
     private void selectLocation(int requestCode) {
         LocationSelectionActivity.selectLocation(this, requestCode);
     }
@@ -62,6 +71,8 @@ public class TargetingModuleFragment extends BindableFragment {
                 navigateToCommunityMeeting(LocationSelectionActivity.getSelectedLocation(data));
             } else if (requestCode == DISTRICT_MEETING_LOCATION_SELECTION_REQUEST_CODE) {
                 navigateToDistrictMeeting(LocationSelectionActivity.getSelectedLocation(data));
+            } else if (requestCode == ENROLLMENT_LOCATION_SELECTION_REQUEST_CODE) {
+                navigateToEnrollment(LocationSelectionActivity.getSelectedLocation(data));
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

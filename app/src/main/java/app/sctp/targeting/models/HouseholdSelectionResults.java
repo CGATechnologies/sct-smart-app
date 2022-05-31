@@ -14,6 +14,9 @@ public class HouseholdSelectionResults {
     @ColumnInfo
     private SelectionStatus status;
 
+    @ColumnInfo
+    private String reason;
+
     public Long getRank() {
         return rank;
     }
@@ -36,5 +39,13 @@ public class HouseholdSelectionResults {
 
     public void setStatus(SelectionStatus status) {
         this.status = status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

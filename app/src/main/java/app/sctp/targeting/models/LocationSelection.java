@@ -98,4 +98,8 @@ public class LocationSelection implements Serializable {
     public static Long codeOrZero(GeoLocation geoLocation) {
         return geoLocation != null ? geoLocation.getCode() : 0L;
     }
+
+    public static String nameOrAsterisks(GeoLocation geoLocation) {
+        return geoLocation != null ? geoLocation.getName() : "*";
+    }
 }

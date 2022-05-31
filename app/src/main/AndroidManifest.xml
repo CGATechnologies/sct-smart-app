@@ -66,6 +66,11 @@
             android:label="@string/title_household_composition"
             android:theme="@style/Theme.SCTP.Windowed" />
 
+        <activity
+            android:name=".enrollment.ui.activities.EnrollmentSessionActivity"
+            android:label="@string/title_enrollment"
+            android:theme="@style/Theme.SCTP.Windowed" />
+
     </application>
 
 </manifest>

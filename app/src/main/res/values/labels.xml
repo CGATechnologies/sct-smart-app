@@ -109,4 +109,9 @@
     <string name="cancel">Cancel</string>
     <string name="upload">Upload</string>
     <string name="targeting_upload_confirmation_prompt">Upload data to the MIS server?</string>
+    <string name="label_enrollment">Enrollment</string>
+    <string name="title_enrollment">Enrollment</string>
+    <string name="session_meeting_close_error">Error closing current meeting stage. Please try again.</string>
+    <string name="enrollment_menu_item_location_info">Show Location Information</string>
+    <string name="enrollment_menu_item_download_sessions">Download enrollment data</string>
 </resources>
