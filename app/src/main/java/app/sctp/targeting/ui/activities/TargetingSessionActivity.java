@@ -68,6 +68,7 @@ public class TargetingSessionActivity extends BaseActivity {
                 HouseholdReviewActivity.reviewHousehold(
                         TargetingSessionActivity.this,
                         item,
+                        session,
                         REVIEW_HOUSEHOLD_REQUEST_ID
                 );
             }

@@ -1,8 +1,6 @@
 package app.sctp.targeting.repositories;
 
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PagedList;
+import androidx.paging.DataSource;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -13,19 +11,14 @@ import app.sctp.persistence.SctpAppDatabase;
 import app.sctp.targeting.dao.LocationDao;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationType;
-import app.sctp.targeting.services.TargetingService;
 import io.reactivex.Flowable;
 
 public class LocationRepository extends BaseRepository {
-    private LocationDao locationDao;
-    private TargetingService targetingService;
-    private MutableLiveData<PagedList<GeoLocation>> locationLiveData;
-
+    private final LocationDao locationDao;
 
     public LocationRepository(SctpAppDatabase appDatabase) {
         super(appDatabase);
         locationDao = appDatabase.locationDao();
-        locationLiveData = new MediatorLiveData<>();
     }
 
     public Flowable<List<GeoLocation>> getLocationsByParentCode(Long parentCode) {
@@ -34,6 +27,10 @@ public class LocationRepository extends BaseRepository {
 
     public void save(List<GeoLocation> locationList) {
         post(() -> locationDao.saveLocations(locationList));
+    }
+
+    public DataSource.Factory<Integer, GeoLocation> getByLocation(long parentCode, String searchValue) {
+        return locationDao.getByParentCode(parentCode, searchValue);
     }
 
     public ObservableDatabaseCall<List<GeoLocation>> getLocationsByType(LocationType locationType) {

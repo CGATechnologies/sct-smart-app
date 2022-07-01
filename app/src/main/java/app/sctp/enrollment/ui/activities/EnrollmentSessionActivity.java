@@ -58,7 +58,7 @@ public class EnrollmentSessionActivity extends BaseActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         PlatformUtils.dynamicSwitchOn(item.getItemId())
                 .when(R.id.enrollment_location_info, this::showLocationInfo)
-                .when(R.id.enrollment_download_sessions, () -> downloadOptionsDialog.show())
+                .when(R.id.enrollment_download_sessions, () -> downloadOptionsDialog.show(R.string.enrollment_sessions_download_prompt))
                 .eval();
         return super.onOptionsItemSelected(item);
     }

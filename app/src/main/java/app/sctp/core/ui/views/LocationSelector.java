@@ -14,6 +14,7 @@ import app.sctp.R;
 import app.sctp.databinding.LocationSelectorBinding;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationType;
+import app.sctp.utils.PlatformUtils;
 
 public class LocationSelector extends LinearLayout {
     private String selectionPrompt;
@@ -22,6 +23,8 @@ public class LocationSelector extends LinearLayout {
     private SelectionDialog selectionDialog;
     private LocationSelectorBinding binding;
     private OnLocationSelectedListener locationSelectedListener;
+
+    private long parentCodeHint;
 
     public LocationSelector(Context context) {
         super(context);
@@ -78,7 +81,7 @@ public class LocationSelector extends LinearLayout {
             if (locationSelectedListener != null) {
                 locationSelectedListener.onLocationSelected(geoLocation);
             }
-        }, selectionPrompt, locationType));
+        }, selectionPrompt, locationType, parentCodeHint));
         updateUi();
     }
 
@@ -102,6 +105,17 @@ public class LocationSelector extends LinearLayout {
 
     public void setLocationSelectedListener(OnLocationSelectedListener locationSelectedListener) {
         this.locationSelectedListener = locationSelectedListener;
+    }
+
+    public void setParentCodeHint(long parentCode) {
+        this.parentCodeHint = parentCode;
+        PlatformUtils.debugLog("set parent code %d", parentCode);
+    }
+
+    public void invalidateSelection() {
+        selectedLocation = null;
+        updateUi();
+        selectionDialog.invalidateSelection();
     }
 
     public interface OnLocationSelectedListener {

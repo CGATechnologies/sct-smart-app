@@ -14,16 +14,21 @@ import app.sctp.core.ui.BaseActivity;
 import app.sctp.databinding.ActivityTargetingHouseholdSelectionBinding;
 import app.sctp.targeting.models.SelectionStatus;
 import app.sctp.targeting.models.TargetedHousehold;
+import app.sctp.targeting.models.TargetingSession;
 import app.sctp.targeting.viewmodels.HouseholdViewModel;
 import app.sctp.utils.UiUtils;
 
 public class HouseholdReviewActivity extends BaseActivity {
+    private static final String KEY_SESSION = "session";
     private static final String KEY_HOUSEHOLD = "sctp.targeting.pev.session.household";
 
     private TargetedHousehold household;
-    private ArrayAdapter<SelectionStatus> spinnerAdapter;
     private HouseholdViewModel householdViewModel;
+    private ArrayAdapter<SelectionStatus> spinnerAdapter;
     private ActivityTargetingHouseholdSelectionBinding binding;
+
+    private TargetingSession targetingSession;
+
     private static final SelectionStatus[] SELECTION_STATUSES = {
             SelectionStatus.PreEligible,
             SelectionStatus.Eligible,
@@ -39,6 +44,8 @@ public class HouseholdReviewActivity extends BaseActivity {
         setSubTitle(getText(R.string.title_household_review));
 
         household = (TargetedHousehold) getIntent().getSerializableExtra(KEY_HOUSEHOLD);
+        targetingSession = (TargetingSession) getIntent().getSerializableExtra(KEY_SESSION);
+
         binding.getRoot().post(() -> binding.setHousehold(household));
         householdViewModel = getViewModel(HouseholdViewModel.class);
 
@@ -63,7 +70,14 @@ public class HouseholdReviewActivity extends BaseActivity {
         });
         binding.btnComposition.setOnClickListener(v -> HouseholdMemberListActivity.viewHouseholdMembers(this, household));
         binding.btnSave.setOnClickListener(v -> {
+            /*Integer newRank = UiUtils.getInteger(binding.newRank, -1);
+
+            if(newRank > 0){
+                household.setRanking(UiUtils.getInteger(binding.newRank, household.getRanking()));
+
+            }*/
             household.setRanking(UiUtils.getInteger(binding.newRank, household.getRanking()));
+            household.setChangeReason("Change me!!");
             householdViewModel.update(household);
             UiUtils.toast(HouseholdReviewActivity.this, R.string.updates_saved);
             setResult(RESULT_OK);
@@ -71,8 +85,10 @@ public class HouseholdReviewActivity extends BaseActivity {
         });
     }
 
-    public static void reviewHousehold(Activity activity, TargetedHousehold household, int requestCode) {
+    public static void reviewHousehold(Activity activity, TargetedHousehold household, TargetingSession session, int requestCode) {
         activity.startActivityForResult(new Intent(activity, HouseholdReviewActivity.class)
-                .putExtra(KEY_HOUSEHOLD, household), requestCode);
+                        .putExtra(KEY_HOUSEHOLD, household)
+                        .putExtra(KEY_SESSION, session)
+                , requestCode);
     }
 }

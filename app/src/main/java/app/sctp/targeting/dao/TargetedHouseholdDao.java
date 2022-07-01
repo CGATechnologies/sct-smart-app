@@ -61,7 +61,8 @@ public abstract class TargetedHouseholdDao {
     @Query("select count(household_id) from targeted_households where targeting_session = :sessionId")
     public abstract int countSessionHouseholds(long sessionId);
 
-    @Query("select household_id householdId, status, ranking rank from targeted_households where targeting_session = :sessionId LIMIT :offset, :count")
+    // TODO remove change reason after adding text box
+    @Query("select household_id householdId, status, ranking rank, change_reason reason from targeted_households where targeting_session = :sessionId LIMIT :offset, :count")
     public abstract List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId, int offset, int count);
 
     @Deprecated

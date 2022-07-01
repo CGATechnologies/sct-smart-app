@@ -107,7 +107,7 @@
     <string name="household_updates_failed">Error uploading updates</string>
     <string name="download_option_replace">Replace it</string>
     <string name="download_option_ignore">Ignore it</string>
-    <string name="download_option_message">Choose what to do with unsynchronized existing data on this device?</string>
+    <string name="download_option_message">Choose what to do with unsynchronized existing data on this device</string>
     <string name="upload_option_message">Na?</string>
     <string name="download_option_replace_summary">Overwrite existing data with data from the server</string>
     <string name="download_option_ignore_summary">Existing data will not be replaced with data from server.</string>
@@ -120,4 +120,5 @@
     <string name="session_meeting_close_error">Error closing current meeting stage. Please try again.</string>
     <string name="enrollment_menu_item_location_info">Show Location Information</string>
     <string name="enrollment_menu_item_download_sessions">Download enrollment data</string>
+    <string name="enrollment_sessions_download_prompt">Choose what to do with unsynchronized existing enrollment data on this device</string>
 </resources>

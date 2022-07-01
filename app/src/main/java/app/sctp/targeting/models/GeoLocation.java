@@ -69,6 +69,16 @@ public class GeoLocation implements Diffable {
     }
 
     @Override
+    public boolean contentsSameAs(Diffable diffable) {
+        if (!(diffable instanceof GeoLocation)) {
+            throw new IllegalArgumentException("unsupported type");
+        }
+        final GeoLocation other = (GeoLocation) diffable;
+        return code.equals(other.code)
+                && parentCode.equals(other.parentCode);
+    }
+
+    @Override
     public String toString() {
         return "GeoLocation{" +
                 "id=" + id +

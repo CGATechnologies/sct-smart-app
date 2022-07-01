@@ -12,26 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewbinding.ViewBinding;
 
-import java.util.List;
-
 import app.sctp.R;
 import app.sctp.core.net.api.ext.ApiCall;
 import app.sctp.core.net.api.ext.ApiErrorCallback;
 import app.sctp.core.ui.WindowedActivity;
 import app.sctp.core.ui.adapter.GenericAdapter;
-import app.sctp.core.ui.adapter.ItemSelectionListener;
 import app.sctp.databinding.ActivityLocationSelectionBinding;
 import app.sctp.targeting.models.GeoLocation;
 import app.sctp.targeting.models.LocationDownloadResponse;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.LocationType;
 import app.sctp.targeting.services.LocationService;
-import app.sctp.targeting.ui.viewholders.LocationItemViewHolderCreator;
 import app.sctp.targeting.viewmodels.LocationViewModel;
 import app.sctp.utils.UiUtils;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subscribers.DisposableSubscriber;
 
 public class LocationSelectionActivity extends WindowedActivity {
     public static final String PARAM_LOCATION = "selection.result.location";
@@ -63,18 +56,25 @@ public class LocationSelectionActivity extends WindowedActivity {
         super.onCreate(savedInstanceState);
         locationViewModel = getViewModel(LocationViewModel.class);
 
-        adapter = new GenericAdapter<>(new LocationItemViewHolderCreator(
+        /*adapter = new GenericAdapter<>(new LocationItemViewHolderCreator(
                 new ItemSelectionListener<GeoLocation>() {
                     @Override
                     public void onItemSelected(GeoLocation item) {
                         // TODO(zikani03): Handler here?
+                        PlatformUtils.debugLog("selected location %s", item);
                     }
 
                     @Override
                     public void onItemLongSelected(GeoLocation item) {
 
                     }
-                }));
+                }));*/
+
+        binding.taSelector.setParentCodeHint(getApplicationConfiguration().getUserDetails().getDistrictCode());
+
+        binding.taSelector.setLocationSelectedListener(geoLocation -> binding.villageCluster.setParentCodeHint(geoLocation.getCode()));
+        binding.villageCluster.setLocationSelectedListener(geoLocation -> binding.zone.setParentCodeHint(geoLocation.getCode()));
+        binding.zone.setLocationSelectedListener(geoLocation -> binding.village.setParentCodeHint(geoLocation.getCode()));
 
         binding.selectButton.setOnClickListener(v -> {
             GeoLocation zone = binding.zone.getSelectedLocation();
@@ -109,34 +109,10 @@ public class LocationSelectionActivity extends WindowedActivity {
             setResult(RESULT_OK, new Intent().putExtra(PARAM_LOCATION, locationSelection));
             finish();
         });
-
-        listLocations();
     }
 
     private boolean isInvalidSelection(GeoLocation parent, GeoLocation child) {
         return child != null && parent == null;
-    }
-
-    private void listLocations() {
-        locationViewModel.getSubLocationsByParentCode(getApplicationConfiguration().getUserDetails().getDistrictCode())
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSubscriber<List<GeoLocation>>() {
-                    @Override
-                    public void onNext(List<GeoLocation> locations) {
-                        adapter.submitList(locations);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        dispose();
-                    }
-                });
     }
 
     @Override
@@ -152,6 +128,13 @@ public class LocationSelectionActivity extends WindowedActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.location_selection_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void invalidateSelection() {
+        binding.zone.invalidateSelection();
+        binding.village.invalidateSelection();
+        binding.taSelector.invalidateSelection();
+        binding.villageCluster.invalidateSelection();
     }
 
     /**
@@ -184,6 +167,7 @@ public class LocationSelectionActivity extends WindowedActivity {
                                                                 R.string.location_download_complete,
                                                                 true);
                                                         // TODO notify the selectors to refresh
+                                                        invalidateSelection();
                                                     })
                                                     .onCompleted(progressDialog::cancel)
                                                     .execute();
