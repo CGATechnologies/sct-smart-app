@@ -6,4 +6,6 @@
     <string name="label_status">Status</string>
     <string name="empty_enrollment_sessions">There are no enrollment sessions to display.</string>
     <string name="reason_for_nchanging">Reason for \nchanging</string>
+    <string name="label_rank_reason">Rank Reason</string>
+    <string name="label_status_reason">Status Reason</string>
 </resources>

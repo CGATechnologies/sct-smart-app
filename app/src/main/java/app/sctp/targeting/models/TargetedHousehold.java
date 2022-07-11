@@ -69,9 +69,13 @@ public class TargetedHousehold implements Diffable {
 
     private Integer ranking;
 
-    @ColumnInfo(name = "change_reason")
+    @ColumnInfo(name = "status_change_reason")
     @Nullable
-    private String changeReason;
+    private String statusChangeReason;
+
+    @ColumnInfo(name = "rank_change_reason")
+    @Nullable
+    private String rankChangeReason;
 
     @ColumnInfo(name = "created_at")
     private String createdAt;
@@ -81,10 +85,6 @@ public class TargetedHousehold implements Diffable {
 
     @Ignore
     private List<Individual> memberDetails;
-
-    public List<Individual> getMemberDetails() {
-        return memberDetails;
-    }
 
     public void setTargetingSession(@NonNull Long targetingSession) {
         this.targetingSession = targetingSession;
@@ -158,6 +158,14 @@ public class TargetedHousehold implements Diffable {
         this.ranking = ranking;
     }
 
+    public void setStatusChangeReason(@Nullable String statusChangeReason) {
+        this.statusChangeReason = statusChangeReason;
+    }
+
+    public void setRankChangeReason(@Nullable String rankChangeReason) {
+        this.rankChangeReason = rankChangeReason;
+    }
+
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
@@ -170,76 +178,9 @@ public class TargetedHousehold implements Diffable {
         this.memberDetails = memberDetails;
     }
 
-    public String getHouseholdHead() {
-        return householdHead;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public Integer getRanking() {
-        return ranking;
-    }
-
-    public SelectionStatus getStatus() {
-        return status;
-    }
-
-    public String getVillageHead() {
-        return villageHead;
-    }
-
-    public Long getVillageCode() {
-        return villageCode;
-    }
-
-    public String getVillage() {
-        return village;
-    }
-
-    public Long getZoneCode() {
-        return zoneCode;
-    }
-
-    public String getZone() {
-        return zone;
-    }
-
-    public Long getClusterCode() {
-        return clusterCode;
-    }
-
-    public String getCluster() {
-        return cluster;
-    }
-
-    public Long getTaCode() {
-        return taCode;
-    }
-
-    public String getTa() {
-        return ta;
-    }
-
-    public Long getDistrictCode() {
-        return districtCode;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public Long getMembers() {
-        return members;
-    }
-
-    public Long getFormNumber() {
-        return formNumber;
-    }
-
-    public Long getMlCode() {
-        return mlCode;
+    @NonNull
+    public Long getTargetingSession() {
+        return targetingSession;
     }
 
     @NonNull
@@ -247,9 +188,90 @@ public class TargetedHousehold implements Diffable {
         return householdId;
     }
 
-    @NonNull
-    public Long getTargetingSession() {
-        return targetingSession;
+    public Long getMlCode() {
+        return mlCode;
+    }
+
+    public Long getFormNumber() {
+        return formNumber;
+    }
+
+    public Long getMembers() {
+        return members;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public Long getDistrictCode() {
+        return districtCode;
+    }
+
+    public String getTa() {
+        return ta;
+    }
+
+    public Long getTaCode() {
+        return taCode;
+    }
+
+    public String getCluster() {
+        return cluster;
+    }
+
+    public Long getClusterCode() {
+        return clusterCode;
+    }
+
+    public String getZone() {
+        return zone;
+    }
+
+    public Long getZoneCode() {
+        return zoneCode;
+    }
+
+    public String getVillage() {
+        return village;
+    }
+
+    public Long getVillageCode() {
+        return villageCode;
+    }
+
+    public String getVillageHead() {
+        return villageHead;
+    }
+
+    public SelectionStatus getStatus() {
+        return status;
+    }
+
+    public Integer getRanking() {
+        return ranking;
+    }
+
+    @Nullable
+    public String getStatusChangeReason() {
+        return statusChangeReason;
+    }
+
+    @Nullable
+    public String getRankChangeReason() {
+        return rankChangeReason;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public String getHouseholdHead() {
+        return householdHead;
+    }
+
+    public List<Individual> getMemberDetails() {
+        return memberDetails;
     }
 
     public String getMlCodeForPrint() {
@@ -272,14 +294,6 @@ public class TargetedHousehold implements Diffable {
                     && Objects.equals(this.ranking, other.ranking);
         }
         return false;
-    }
-
-    public String getChangeReason() {
-        return changeReason;
-    }
-
-    public void setChangeReason(String changeReason) {
-        this.changeReason = changeReason;
     }
 
     @NonNull
