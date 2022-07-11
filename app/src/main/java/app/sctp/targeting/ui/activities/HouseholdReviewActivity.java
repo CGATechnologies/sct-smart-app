@@ -3,8 +3,6 @@ package app.sctp.targeting.ui.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.Nullable;
@@ -50,20 +48,16 @@ public class HouseholdReviewActivity extends BaseActivity {
         binding.selection.setAdapter(spinnerAdapter);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         binding.selection.setSelection(UiUtils.itemAdapterPosition(spinnerAdapter, household.getStatus()));
-        binding.selection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                household.setStatus(spinnerAdapter.getItem(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         binding.btnComposition.setOnClickListener(v -> HouseholdMemberListActivity.viewHouseholdMembers(this, household));
-        binding.btnSave.setOnClickListener(v -> {
+        binding.btnSaveRank.setOnClickListener(view -> {
             household.setRanking(UiUtils.getInteger(binding.newRank, household.getRanking()));
+            householdViewModel.update(household);
+            UiUtils.toast(HouseholdReviewActivity.this, R.string.updates_saved);
+            setResult(RESULT_OK);
+            finish();
+        });
+        binding.btnSaveStatus.setOnClickListener(view -> {
+            household.setStatus(spinnerAdapter.getItem(binding.selection.getSelectedItemPosition()));
             householdViewModel.update(household);
             UiUtils.toast(HouseholdReviewActivity.this, R.string.updates_saved);
             setResult(RESULT_OK);
