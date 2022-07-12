@@ -54,7 +54,7 @@ public final class UiUtils {
     }
 
     public static String getNonEmptyText(EditText editText) {
-        String text = editText.getText().toString();
+        String text = editText.getText().toString().trim();
         if (!LocaleUtils.hasText(text)) {
             editText.setError("Field is required.");
             return null;
