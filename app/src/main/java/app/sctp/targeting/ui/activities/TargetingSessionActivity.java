@@ -116,7 +116,7 @@ public class TargetingSessionActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.cmo_send_households) {
-            String promptMessage = "Update data for the "+householdAdapter.getItemCount()+" households to the MIS server?";
+            String promptMessage = "Upload data for the "+householdAdapter.getItemCount()+" households to the MIS server?";
             UiUtils.dialogPrompt(this, promptMessage)
                     .cancelable(false)
                     .onOk("Yes", (dialog, which) -> synchronizeHouseholds(true))
