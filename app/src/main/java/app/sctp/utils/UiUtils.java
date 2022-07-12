@@ -111,6 +111,10 @@ public final class UiUtils {
         return new DialogCallImpl(new AlertDialog.Builder(context).setMessage(message).create());
     }
 
+    public static DialogCall dialogPrompt(Context context, String message) {
+        return new DialogCallImpl(new AlertDialog.Builder(context).setMessage(message).create());
+    }
+
     public static AlertDialog messageDialog(Context context, @StringRes int resId) {
         return new AlertDialog.Builder(context)
                 .setMessage(resId)
