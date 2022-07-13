@@ -443,7 +443,7 @@
       },
       {
         "tableName": "targeted_households",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`targeting_session` INTEGER NOT NULL, `household_id` INTEGER NOT NULL, `ml_code` INTEGER, `form_number` INTEGER, `members` INTEGER, `district` TEXT, `district_code` INTEGER, `ta` TEXT, `ta_code` INTEGER, `cluster` TEXT, `cluster_code` INTEGER, `zone` TEXT, `zone_code` INTEGER, `village` TEXT, `village_code` INTEGER, `village_head` TEXT, `status` TEXT, `ranking` INTEGER, `change_reason` TEXT, `created_at` TEXT, `household_head` TEXT, PRIMARY KEY(`targeting_session`, `household_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`targeting_session` INTEGER NOT NULL, `household_id` INTEGER NOT NULL, `ml_code` INTEGER, `form_number` INTEGER, `members` INTEGER, `district` TEXT, `district_code` INTEGER, `ta` TEXT, `ta_code` INTEGER, `cluster` TEXT, `cluster_code` INTEGER, `zone` TEXT, `zone_code` INTEGER, `village` TEXT, `village_code` INTEGER, `village_head` TEXT, `status` TEXT, `ranking` INTEGER, `status_change_reason` TEXT, `rank_change_reason` TEXT, `created_at` TEXT, `household_head` TEXT, PRIMARY KEY(`targeting_session`, `household_id`))",
         "fields": [
           {
             "fieldPath": "targetingSession",
@@ -554,8 +554,14 @@
             "notNull": false
           },
           {
-            "fieldPath": "changeReason",
-            "columnName": "change_reason",
+            "fieldPath": "statusChangeReason",
+            "columnName": "status_change_reason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rankChangeReason",
+            "columnName": "rank_change_reason",
             "affinity": "TEXT",
             "notNull": false
           },

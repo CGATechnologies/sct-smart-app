@@ -54,7 +54,7 @@ public final class UiUtils {
     }
 
     public static String getNonEmptyText(EditText editText) {
-        String text = editText.getText().toString();
+        String text = editText.getText().toString().trim();
         if (!LocaleUtils.hasText(text)) {
             editText.setError("Field is required.");
             return null;
@@ -108,6 +108,10 @@ public final class UiUtils {
     }
 
     public static DialogCall dialogPrompt(Context context, @StringRes int message) {
+        return new DialogCallImpl(new AlertDialog.Builder(context).setMessage(message).create());
+    }
+
+    public static DialogCall dialogPrompt(Context context, String message) {
         return new DialogCallImpl(new AlertDialog.Builder(context).setMessage(message).create());
     }
 
