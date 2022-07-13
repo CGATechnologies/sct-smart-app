@@ -58,7 +58,10 @@ public class HouseholdReviewActivity extends BaseActivity {
         binding.btnComposition.setOnClickListener(v -> HouseholdMemberListActivity.viewHouseholdMembers(this, household));
         binding.btnSaveRank.setOnClickListener(view -> {
             household.setRanking(UiUtils.getInteger(binding.newRank, household.getRanking()));
-            household.setChangeReason("Change me!!");
+            household.setRankChangeReason(UiUtils.getNonEmptyText(binding.rankChangeReason));
+            if (household.getRanking() == null || household.getRankChangeReason() == null){
+                return;
+            }
             householdViewModel.update(household);
             UiUtils.toast(HouseholdReviewActivity.this, R.string.updates_saved);
             setResult(RESULT_OK);
@@ -66,6 +69,10 @@ public class HouseholdReviewActivity extends BaseActivity {
         });
         binding.btnSaveStatus.setOnClickListener(view -> {
             household.setStatus(spinnerAdapter.getItem(binding.selection.getSelectedItemPosition()));
+            household.setStatusChangeReason(UiUtils.getNonEmptyText(binding.statusChangeReason));
+            if (household.getStatus() == null || household.getStatusChangeReason() == null){
+                return;
+            }
             householdViewModel.update(household);
             UiUtils.toast(HouseholdReviewActivity.this, R.string.updates_saved);
             setResult(RESULT_OK);

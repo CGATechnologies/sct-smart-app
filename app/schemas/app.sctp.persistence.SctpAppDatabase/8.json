@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 7,
-    "identityHash": "955ea84dbdcffcfa95196b60c17b00fe",
+    "version": 8,
+    "identityHash": "bbc4c65a7cbec673e005c252f524eaec",
     "entities": [
       {
         "tableName": "locations",
@@ -443,7 +443,7 @@
       },
       {
         "tableName": "targeted_households",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`targeting_session` INTEGER NOT NULL, `household_id` INTEGER NOT NULL, `ml_code` INTEGER, `form_number` INTEGER, `members` INTEGER, `district` TEXT, `district_code` INTEGER, `ta` TEXT, `ta_code` INTEGER, `cluster` TEXT, `cluster_code` INTEGER, `zone` TEXT, `zone_code` INTEGER, `village` TEXT, `village_code` INTEGER, `village_head` TEXT, `status` TEXT, `ranking` INTEGER, `created_at` TEXT, `household_head` TEXT, PRIMARY KEY(`targeting_session`, `household_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`targeting_session` INTEGER NOT NULL, `household_id` INTEGER NOT NULL, `ml_code` INTEGER, `form_number` INTEGER, `members` INTEGER, `district` TEXT, `district_code` INTEGER, `ta` TEXT, `ta_code` INTEGER, `cluster` TEXT, `cluster_code` INTEGER, `zone` TEXT, `zone_code` INTEGER, `village` TEXT, `village_code` INTEGER, `village_head` TEXT, `status` TEXT, `ranking` INTEGER, `status_change_reason` TEXT, `rank_change_reason` TEXT, `created_at` TEXT, `household_head` TEXT, PRIMARY KEY(`targeting_session`, `household_id`))",
         "fields": [
           {
             "fieldPath": "targetingSession",
@@ -554,6 +554,18 @@
             "notNull": false
           },
           {
+            "fieldPath": "statusChangeReason",
+            "columnName": "status_change_reason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rankChangeReason",
+            "columnName": "rank_change_reason",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "createdAt",
             "columnName": "created_at",
             "affinity": "TEXT",
@@ -622,7 +634,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '955ea84dbdcffcfa95196b60c17b00fe')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bbc4c65a7cbec673e005c252f524eaec')"
     ]
   }
 }
