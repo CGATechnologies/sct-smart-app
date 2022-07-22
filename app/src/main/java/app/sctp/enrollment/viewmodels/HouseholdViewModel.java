@@ -12,11 +12,9 @@ import androidx.paging.PagedList;
 import java.util.List;
 
 import app.sctp.enrollment.models.EnrollmentHousehold;
-import app.sctp.enrollment.models.EnrollmentSession;
+import app.sctp.enrollment.models.HouseholdSelectionResults;
 import app.sctp.enrollment.repositories.HouseholdRepository;
-import app.sctp.enrollment.services.EnrollmentService;
 import app.sctp.persistence.BaseViewModel;
-import app.sctp.targeting.models.HouseholdSelectionResults;
 import app.sctp.utils.DownloadOptionsDialog;
 
 public class HouseholdViewModel  extends BaseViewModel {
@@ -74,7 +72,7 @@ public class HouseholdViewModel  extends BaseViewModel {
     }
 
     private void setSessionId(Long sessionId) {
-        searchLiveData.postValue(new app.sctp.targeting.viewmodels.HouseholdViewModel.HouseholdListingKey(sessionId, null));
+        searchLiveData.postValue(new HouseholdViewModel.HouseholdListingKey(sessionId, null));
     }
 
     public LiveData<PagedList<EnrollmentHousehold>> getSessionHouseholds(Long sessionId) {

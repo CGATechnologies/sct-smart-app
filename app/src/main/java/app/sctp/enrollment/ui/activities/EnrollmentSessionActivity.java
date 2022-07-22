@@ -12,11 +12,16 @@ import androidx.annotation.Nullable;
 
 import app.sctp.R;
 import app.sctp.core.ui.BaseActivity;
+import app.sctp.core.ui.adapter.GenericAdapter;
 import app.sctp.core.ui.adapter.GenericPagedAdapter;
 import app.sctp.databinding.ActivityEnrollmentLayoutBinding;
-import app.sctp.databinding.ActivityHouseholdEligibilitySelectionBinding;
+import app.sctp.enrollment.models.EnrollmentHousehold;
+import app.sctp.enrollment.models.EnrollmentSession;
+import app.sctp.enrollment.repositories.EnrollmentSessionRepository;
+import app.sctp.enrollment.services.EnrollmentService;
+import app.sctp.enrollment.ui.viewholders.EnrollmentSessionViewHolderCreator;
+import app.sctp.enrollment.viewmodels.EnrollmentSessionViewModel;
 import app.sctp.targeting.models.LocationSelection;
-import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.utils.DownloadOptionsDialog;
 import app.sctp.utils.LocationInfoDialog;
 import app.sctp.utils.PlatformUtils;
@@ -30,8 +35,10 @@ public class EnrollmentSessionActivity extends BaseActivity {
     private LocationInfoDialog locationInfoDialog;
     private ActivityEnrollmentLayoutBinding binding;
     private DownloadOptionsDialog downloadOptionsDialog;
-    private GenericPagedAdapter<TargetedHousehold> householdAdapter;
+    private GenericPagedAdapter<EnrollmentHousehold> householdAdapter;
 
+    private GenericAdapter<EnrollmentSession> sessionAdapter;
+    private EnrollmentSessionViewModel sessionViewModel;  //  TODO remove
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +53,12 @@ public class EnrollmentSessionActivity extends BaseActivity {
         progressDialog = UiUtils.progressDialogWithProgress(this);
         districtName = getApplicationConfiguration().getUserDetails().getDistrictName();
         downloadOptionsDialog = new DownloadOptionsDialog(this, (dlg, downloadOption) -> downloadSessions(downloadOption));
+
+        sessionViewModel = getViewModel(EnrollmentSessionViewModel.class);  // TODO remove
+
+        sessionAdapter = new GenericAdapter<EnrollmentSession>(new EnrollmentSessionViewHolderCreator());
+        sessionViewModel.getEnrollmentSessions(locationSelection)
+                .observe(this, sessionAdapter::submitList);
     }
 
     @Override
@@ -64,7 +77,48 @@ public class EnrollmentSessionActivity extends BaseActivity {
     }
 
     private void downloadSessions(DownloadOptionsDialog.DownloadOption downloadOption) {
+        sessionViewModel.downloadEnrollmentSessions(
+                locationSelection,
+                getApplicationConfiguration().getService(EnrollmentService.class),
+                new EnrollmentSessionRepository.SessionDownloadListener() {
+                    @Override
+                    public void onStart() {
+                        progressDialog.setIndeterminate(false);
+                        progressDialog.setMessage("Preparing...");
+                        progressDialog.show();
+                    }
 
+                    @Override
+                    public void onProgressTotalAvailable(int total) {
+                        progressDialog.setIndeterminate(false);
+                        progressDialog.setMax(total);
+                        progressDialog.setProgress(0);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        progressDialog.dismiss();
+                        UiUtils.snackbar(binding.getRoot(), R.string.download_successful);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        progressDialog.dismiss();
+                        UiUtils.snackbar(binding.getRoot(), R.string.error_downloading_data);
+                    }
+
+                    @Override
+                    public void onMessage(String message) {
+                        progressDialog.setMessage(message);
+                    }
+
+                    @Override
+                    public void onProgress(int progress, int total) {
+                        progressDialog.setProgress(progress);
+                    }
+                },
+                downloadOption
+        );
     }
 
     private void showLocationInfo() {

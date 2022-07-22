@@ -10,27 +10,25 @@ import androidx.room.Transaction;
 import java.util.List;
 
 import app.sctp.enrollment.dao.EnrollmentHouseholdDao;
+import app.sctp.enrollment.dao.EnrollmentIndividualDao;
 import app.sctp.enrollment.models.EnrollmentHousehold;
-import app.sctp.enrollment.models.EnrollmentSession;
+import app.sctp.enrollment.models.HouseholdSelectionResults;
 import app.sctp.persistence.BaseRepository;
 import app.sctp.persistence.SctpAppDatabase;
-import app.sctp.targeting.dao.IndividualDao;
-import app.sctp.targeting.models.HouseholdSelectionResults;
 import app.sctp.targeting.models.SelectionCount;
 import app.sctp.targeting.models.SelectionStatus;
-import app.sctp.targeting.models.TargetedHousehold;
 import app.sctp.utils.DownloadOptionsDialog;
 
 public class HouseholdRepository extends BaseRepository {
     private final Handler handler;
-    private final IndividualDao individualDao;
+    private final EnrollmentIndividualDao individualDao;
     private final EnrollmentHouseholdDao householdDao;
 
     public HouseholdRepository(@NonNull SctpAppDatabase database) {
         super(database);
         this.handler = new Handler(Looper.getMainLooper());
         this.householdDao = database.enrollmentHouseholdDao();
-        this.individualDao = database.individualDao();
+        this.individualDao = database.enrollmentIndividualDao();
     }
 
     @Transaction
@@ -66,7 +64,7 @@ public class HouseholdRepository extends BaseRepository {
     public boolean sessionHouseholdsSelected(Long sessionId) {
         return getHouseholdSelectionCount(sessionId).getUnselected() == 0;
     }
-    public void update(EnrollmentSession household) {
+    public void update(EnrollmentHousehold household) {
         post(() -> householdDao.update(household));
     }
 

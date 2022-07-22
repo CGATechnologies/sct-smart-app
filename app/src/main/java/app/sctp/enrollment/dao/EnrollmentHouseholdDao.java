@@ -11,7 +11,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import app.sctp.enrollment.models.EnrollmentHousehold;
-import app.sctp.targeting.models.HouseholdSelectionResults;
+import app.sctp.enrollment.models.HouseholdSelectionResults;
 import app.sctp.targeting.models.SelectionCount;
 import app.sctp.targeting.models.SelectionStatus;
 import app.sctp.utils.DownloadOptionsDialog;
@@ -58,21 +58,20 @@ public abstract class EnrollmentHouseholdDao {
     @Query("select * from enrollment_households where enrollment_session = :sessionId ORDER BY ranking ASC")
     public abstract DataSource.Factory<Integer, EnrollmentHousehold> getBySessionId(Long sessionId);
 
-    @Query("select count(household_id) from targeted_households where targeting_session = :sessionId")
+    @Query("select count(household_id) from enrollment_households where enrollment_session = :sessionId")
     public abstract int countSessionHouseholds(long sessionId);
 
-    @Query("select household_id householdId, status, ranking rank from targeted_households where targeting_session = :sessionId LIMIT :offset, :count")
+    @Query("select household_id householdId, status, ranking rank from enrollment_households where enrollment_session = :sessionId LIMIT :offset, :count")
     public abstract List<HouseholdSelectionResults> getHouseholdSelectionResultsForSession(Long sessionId, int offset, int count);
 
     @Deprecated
-    @Query("select selected.c as selected, unselected.c as unselected from (select count(household_id) c from targeted_households where targeting_session = :sessionId and status = 'Eligible') selected, (select count(household_id) c from targeted_households where targeting_session = :sessionId and status != 'Eligible') as unselected")
+    @Query("select selected.c as selected, unselected.c as unselected from (select count(household_id) c from enrollment_households where enrollment_session = :sessionId and status = 'Eligible') selected, (select count(household_id) c from enrollment_households where enrollment_session = :sessionId and status != 'Eligible') as unselected")
     public abstract SelectionCount sessionHouseholdsSelected(Long sessionId);
 
-    @Query("update targeted_households set status = :status WHERE targeting_session = :sessionId")
+    @Query("update enrollment_households set status = :status WHERE enrollment_session = :sessionId")
     public abstract void updateHouseholdStatus(Long sessionId, SelectionStatus status);
 
     @Update
     public abstract void update(EnrollmentHousehold household);
-}
 
 }

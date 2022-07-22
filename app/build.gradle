@@ -7,7 +7,7 @@ plugins {
 
 def versionMajor = 1
 def versionMinor = 3
-def versionPatch = 0
+def versionPatch = 3
 def versionCodeSerial = 5
 
 def nav_version = "2.4.1"

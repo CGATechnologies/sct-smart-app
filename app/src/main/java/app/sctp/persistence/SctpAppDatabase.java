@@ -4,6 +4,14 @@ import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
+import app.sctp.enrollment.dao.EnrollmentClusterDao;
+import app.sctp.enrollment.dao.EnrollmentHouseholdDao;
+import app.sctp.enrollment.dao.EnrollmentIndividualDao;
+import app.sctp.enrollment.dao.EnrollmentSessionDao;
+import app.sctp.enrollment.models.EnrollmentCluster;
+import app.sctp.enrollment.models.EnrollmentHousehold;
+import app.sctp.enrollment.models.EnrollmentIndividual;
+import app.sctp.enrollment.models.EnrollmentSession;
 import app.sctp.targeting.dao.IndividualDao;
 import app.sctp.targeting.dao.LocationDao;
 import app.sctp.targeting.dao.TargetedClusterDao;
@@ -23,7 +31,11 @@ import app.sctp.targeting.models.TargetingSession;
                 Individual.class,
                 TargetingSession.class,
                 TargetedCluster.class,
-                TargetedHousehold.class
+                TargetedHousehold.class,
+                EnrollmentHousehold.class,
+                EnrollmentSession.class,
+                EnrollmentCluster.class,
+                EnrollmentIndividual.class
         },
         views = {
                 TargetedZone.class,
@@ -49,4 +61,12 @@ public abstract class SctpAppDatabase extends RoomDatabase {
     public abstract TargetingSessionDao targetingSessionDao();
 
     public abstract TargetedHouseholdDao targetedHouseholdDao();
+
+    public abstract EnrollmentIndividualDao enrollmentIndividualDao();
+
+    public abstract EnrollmentSessionDao enrollmentSessionDao();
+
+    public abstract EnrollmentHouseholdDao enrollmentHouseholdDao();
+
+    public abstract EnrollmentClusterDao enrollmentClusterDao();
 }

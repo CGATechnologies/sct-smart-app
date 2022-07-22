@@ -11,6 +11,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import app.sctp.enrollment.models.EnrollmentSession;
+import app.sctp.targeting.models.LocationSelection;
 import app.sctp.targeting.models.TargetingSession;
 import app.sctp.utils.DownloadOptionsDialog;
 
@@ -30,24 +31,21 @@ public abstract class EnrollmentSessionDao {
             "and (:zoneCode is null or (select exists(select 1 from targeted_zones tz where tz.targeting_session_id = es.id and tz.code = :zoneCode))) " +
             "and (:villageCode is null or (select exists(select 1 from targeted_villages tv where tv.targeting_session_id = es.id and tv.code = :villageCode))) "
     )
-    protected abstract DataSource.Factory<Integer, TargetingSession> getByLocation(
+    protected abstract DataSource.Factory<Integer, EnrollmentSession> getByLocation(
             Long districtCode,
             Long taCode,
             Long clusterCode,
             Long zoneCode,
-            Long villageCode,
-            TargetingSession.MeetingPhase meetingPhase
+            Long villageCode
     );
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @Transaction
     protected abstract void saveAllReplace(List<EnrollmentSession> sessions);
 
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     @Transaction
     protected abstract void saveAllIgnore(List<EnrollmentSession> sessions);
-
 
     public void saveAll(List<EnrollmentSession> sessions, DownloadOptionsDialog.DownloadOption saveOption) {
         switch (saveOption) {
@@ -63,4 +61,13 @@ public abstract class EnrollmentSessionDao {
     @Update
     public abstract void update(EnrollmentSession session);
 
+    public DataSource.Factory<Integer, EnrollmentSession> getEnrollmentSessions(LocationSelection selection) {
+        return getByLocation(
+                selection.getDistrictCode(),
+                LocationSelection.codeOrNull(selection.getTraditionalAuthority()),
+                LocationSelection.codeOrNull(selection.getCluster()),
+                LocationSelection.codeOrNull(selection.getZone()),
+                LocationSelection.codeOrNull(selection.getVillage())
+        );
+    }
 }

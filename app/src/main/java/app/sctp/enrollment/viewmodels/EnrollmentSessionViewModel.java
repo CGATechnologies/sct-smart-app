@@ -14,26 +14,16 @@ import java.util.List;
 
 import app.sctp.enrollment.models.EnrollmentSession;
 import app.sctp.enrollment.repositories.EnrollmentSessionRepository;
+import app.sctp.enrollment.services.EnrollmentService;
 import app.sctp.persistence.BaseViewModel;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.utils.DownloadOptionsDialog;
 
-public class EnrollmentSessionViewModel  extends BaseViewModel {
-
-    static class SessionListingKey {
-        private final String search;
-        private final LocationSelection location;;
-
-        public SessionListingKey(LocationSelection location, String search) {
-            this.search = search;
-            this.location = location;
-        }
-    }
+public class EnrollmentSessionViewModel extends BaseViewModel {
 
     private final EnrollmentSessionRepository repository;
     private MutableLiveData<EnrollmentSessionViewModel.SessionListingKey> searchLiveData;
     private LiveData<PagedList<EnrollmentSession>> sessionLiveData;
-
     public EnrollmentSessionViewModel(@NonNull Application application) {
         super(application);
         repository = getRepository(EnrollmentSessionRepository.class);
@@ -45,57 +35,48 @@ public class EnrollmentSessionViewModel  extends BaseViewModel {
         );
     }
 
-    private LivePagedListBuilder<Integer, EnrollmentSession> buildList(EnrollmentSessionRepository.LIkey) {
-        DataSource.Factory<Integer, EnrollmentSession> factory;
-        switch (key.meetingPhase) {
-            case district_meeting:
-                factory = repository.getDistrictMeetingSessions(key.location);
-                break;
-            case second_community_meeting:
-                factory = repository.getSecondCommunityMeetingSessions(key.location);
-                break;
-            default:
-                throw new IllegalArgumentException("unsupported meeting phase value " + key.meetingPhase);
-        }
+    private LivePagedListBuilder<Integer, EnrollmentSession> buildList(SessionListingKey key) {
+        DataSource.Factory<Integer, EnrollmentSession> factory
+                = repository.getEnrollmentSessions(key.location);
+
         return new LivePagedListBuilder<>(factory, PAGE_SIZE);
     }
 
-    public void updateFilterParameters(LocationSelection location, TargetingSession.MeetingPhase meetingPhase, String search) {
-        searchLiveData.postValue(new TargetingSessionViewModel.SessionListingKey(location, meetingPhase, search));
+    public void updateFilterParameters(LocationSelection location, String search) {
+        searchLiveData.postValue(new SessionListingKey(location, search));
     }
 
-    public LiveData<PagedList<TargetingSession>> getTargetingSessions(LocationSelection location, TargetingSession.MeetingPhase meetingPhase) {
-        updateFilterParameters(location, meetingPhase, null);
+    public LiveData<PagedList<EnrollmentSession>> getEnrollmentSessions(LocationSelection location) {
+        updateFilterParameters(location, null);
         return sessionLiveData;
     }
 
-    public LiveData<PagedList<TargetingSession>> get2ndCommunityMeetingTargetingSessions(LocationSelection location) {
-        updateFilterParameters(location, TargetingSession.MeetingPhase.second_community_meeting, null);
+    public LiveData<PagedList<EnrollmentSession>> getEnrollmentSessions() {
         return sessionLiveData;
     }
 
-    public LiveData<PagedList<TargetingSession>> getDistrictMeetingTargetingSessions(LocationSelection location) {
-        updateFilterParameters(location, TargetingSession.MeetingPhase.district_meeting, null);
-        return sessionLiveData;
-    }
-
-    public LiveData<PagedList<TargetingSession>> getTargetingSessions() {
-        return sessionLiveData;
-    }
-
-    public void save(List<TargetingSession> sessions) {
+    public void save(List<EnrollmentSession> sessions) {
         repository.saveAll(sessions);
     }
 
-    public void update(TargetingSession session) {
+    public void update(EnrollmentSession session) {
         repository.update(session);
     }
 
-    public void downloadTargetingSessions(LocationSelection location,
-                                          TargetingSession.MeetingPhase phase,
-                                          TargetingService service,
-                                          TargetingSessionRepository.SessionDownloadListener listener,
-                                          DownloadOptionsDialog.DownloadOption downloadOption) {
-        repository.downloadTargetingSessions(location, phase, service, listener, downloadOption);
+    public void downloadEnrollmentSessions(LocationSelection location,
+                                           EnrollmentService service,
+                                           EnrollmentSessionRepository.SessionDownloadListener listener,
+                                           DownloadOptionsDialog.DownloadOption downloadOption) {
+        repository.downloadEnrollmentSessions(location, service, listener, downloadOption);
+    }
+
+    static class SessionListingKey {
+        private final String search;
+        private final LocationSelection location;
+
+        public SessionListingKey(LocationSelection location, String search) {
+            this.search = search;
+            this.location = location;
+        }
     }
 }

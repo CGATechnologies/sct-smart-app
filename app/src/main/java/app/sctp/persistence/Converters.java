@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
 
+import app.sctp.enrollment.models.EnrollmentSession;
 import app.sctp.targeting.models.ChronicIllness;
 import app.sctp.targeting.models.Disability;
 import app.sctp.targeting.models.EducationLevel;
@@ -185,6 +186,16 @@ public class Converters {
     @TypeConverter
     public static TargetingSession.SessionStatus sessionStatusFromString(String name) {
         return enumFromString(name, TargetingSession.SessionStatus.class);
+    }
+
+    @TypeConverter
+    public static String enrollmentSessionStatusToString(EnrollmentSession.SessionStatus sessionStatus) {
+        return enumToString(sessionStatus);
+    }
+
+    @TypeConverter
+    public static EnrollmentSession.SessionStatus EnrollmentSessionStatusFromString(String name) {
+        return enumFromString(name, EnrollmentSession.SessionStatus.class);
     }
 
     private static String enumToString(Enum<?> tEnum) {

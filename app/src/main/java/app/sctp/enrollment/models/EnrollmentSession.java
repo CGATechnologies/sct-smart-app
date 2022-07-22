@@ -4,10 +4,17 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.Locale;
+
 import app.sctp.core.model.Diffable;
 
 @Entity(tableName = "enrollment_sessions")
-public class EnrollmentSession implements Diffable {
+public class EnrollmentSession implements Diffable{
+    public enum SessionStatus {
+        Review,
+        Closed
+    }
+
     @PrimaryKey
     private Long id;
     private String createdAt;
@@ -138,6 +145,19 @@ public class EnrollmentSession implements Diffable {
         this.status = status;
     }
 
+    public String getHouseholdCountSummary() {
+        return String.format(Locale.US, "%,d household%s",
+                getHouseholdCount(), getHouseholdCount() != 1 ? 's' : "");
+    }
+
+    public String getCreationSummary() {
+        return String.format(Locale.US, "%s • %s", createdAt, "Creator Name");
+    }
+
+    public String getTitle() {
+        return String.format(Locale.US, "%s %s", getTaName(), getProgramName());
+    }
+
     @Override
     public Object getDiffValue() {
         return null;
@@ -146,10 +166,5 @@ public class EnrollmentSession implements Diffable {
     @Override
     public boolean contentsSameAs(Diffable diffable) {
         return Diffable.super.contentsSameAs(diffable);
-    }
-
-    public enum SessionStatus {
-        Review,
-        Closed
     }
 }

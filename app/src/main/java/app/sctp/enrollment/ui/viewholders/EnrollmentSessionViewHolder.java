@@ -1,4 +1,4 @@
-package app.sctp.enrollment.viewholders;
+package app.sctp.enrollment.ui.viewholders;
 
 import androidx.annotation.NonNull;
 

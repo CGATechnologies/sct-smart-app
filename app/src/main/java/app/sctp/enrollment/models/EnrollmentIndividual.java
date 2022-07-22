@@ -1,6 +1,7 @@
 package app.sctp.enrollment.models;
 
 import androidx.room.ColumnInfo;
+import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -14,8 +15,8 @@ import app.sctp.targeting.models.GradeLevel;
 import app.sctp.targeting.models.MaritalStatus;
 import app.sctp.targeting.models.Orphanhood;
 import app.sctp.targeting.models.RelationshipToHead;
-
-public class Individual implements Diffable {
+@Entity(tableName = "enrollment_individuals")
+public class EnrollmentIndividual implements Diffable {
     @SerializedName("education_level")
     private EducationLevel educationLevel;
 

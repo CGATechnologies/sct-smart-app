@@ -10,14 +10,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import app.sctp.enrollment.dao.EnrollmentClusterDao;
 import app.sctp.enrollment.dao.EnrollmentHouseholdDao;
 import app.sctp.enrollment.dao.EnrollmentSessionDao;
+import app.sctp.enrollment.dao.EnrollmentIndividualDao;
+import app.sctp.enrollment.models.EnrollmentHousehold;
+import app.sctp.enrollment.models.EnrollmentHouseholdsResponse;
 import app.sctp.enrollment.models.EnrollmentSession;
 import app.sctp.enrollment.models.GetEnrollmentSessionsResponse;
 import app.sctp.enrollment.services.EnrollmentService;
 import app.sctp.persistence.BaseRepository;
 import app.sctp.persistence.SctpAppDatabase;
-import app.sctp.targeting.dao.IndividualDao;
 import app.sctp.targeting.models.LocationSelection;
 import app.sctp.utils.DownloadOptionsDialog;
 import app.sctp.utils.PlatformUtils;
@@ -30,15 +33,15 @@ public class EnrollmentSessionRepository extends BaseRepository {
 
     private final Handler handler;
     private final EnrollmentSessionDao dao;
-    private final IndividualDao individualDao;
-//    private final TargetedClusterDao clusterDao;
+    private final EnrollmentIndividualDao individualDao;
+    private final EnrollmentClusterDao clusterDao;
     private final EnrollmentHouseholdDao householdDao;
 
     public EnrollmentSessionRepository(@NonNull SctpAppDatabase database) {
         super(database);
         dao = database.enrollmentSessionDao();
-        individualDao = database.individualDao();
-//        clusterDao = database.targetedClusterDao();
+        individualDao = database.enrollmentIndividualDao();
+        clusterDao = database.enrollmentClusterDao();
         householdDao = database.enrollmentHouseholdDao();
         handler = new Handler(Looper.getMainLooper());
     }
@@ -66,8 +69,7 @@ public class EnrollmentSessionRepository extends BaseRepository {
 
                 Call<GetEnrollmentSessionsResponse> call;
 
-
-                        call = service.getSecondCommunityMeetingSessions(
+                        call = service.getEnrollmentSessions(
                                 LocationSelection.codeOrZero(location.getTraditionalAuthority())
                                 , LocationSelection.codeOrZero(location.getCluster())
                                 , LocationSelection.codeOrZero(location.getZone())
@@ -75,7 +77,6 @@ public class EnrollmentSessionRepository extends BaseRepository {
                                 , page.get()
                                 , DOWNLOAD_PAGE_SIZE
                         );
-
 
                 handler.post(listener::onStart);
 
@@ -126,18 +127,16 @@ public class EnrollmentSessionRepository extends BaseRepository {
             AtomicInteger page = new AtomicInteger(0);
             AtomicInteger pageCount = new AtomicInteger(0);
             do {
-                Call<GetEnrollmentSessionsResponse> call;
+                Call<EnrollmentHouseholdsResponse> call
+                        = service.getEnrollmentSessionHouseholds(session.getId(), page.get());
 
-//                call = service.getSecondCommunityMeetingTargetingSessionHouseholds(session.getId(), page.get());
-
-
-                Response<TargetedHouseholdsResponse> response = call.execute();
+                Response<EnrollmentHouseholdsResponse> response = call.execute();
                 if (response.isSuccessful()) {
-                    TargetedHouseholdsResponse detailResponse = response.body();
+                    EnrollmentHouseholdsResponse detailResponse = response.body();
                     pageCount.compareAndSet(0, detailResponse.getTotalPages());
 
                     if (!detailResponse.getItems().isEmpty()) {
-                        for (TargetedHousehold household : detailResponse.getItems()) {
+                        for (EnrollmentHousehold household : detailResponse.getItems()) {
                             householdDao.insert(household, downloadOption);
                             if (!household.getMemberDetails().isEmpty()) {
                                 individualDao.saveAll(household.getMemberDetails(), downloadOption);
@@ -151,7 +150,11 @@ public class EnrollmentSessionRepository extends BaseRepository {
         }
     }
 
-    public void update(TargetingSession session) {
+    public DataSource.Factory<Integer, EnrollmentSession> getEnrollmentSessions(LocationSelection location) {
+        return dao.getEnrollmentSessions(location);
+    }
+
+    public void update(EnrollmentSession session) {
         post(() -> dao.update(session));
     }
 
