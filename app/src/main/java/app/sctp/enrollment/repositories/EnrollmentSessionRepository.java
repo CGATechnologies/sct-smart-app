@@ -2,6 +2,7 @@ package app.sctp.enrollment.repositories;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.paging.DataSource;
@@ -14,6 +15,7 @@ import app.sctp.enrollment.dao.EnrollmentClusterDao;
 import app.sctp.enrollment.dao.EnrollmentHouseholdDao;
 import app.sctp.enrollment.dao.EnrollmentSessionDao;
 import app.sctp.enrollment.dao.EnrollmentIndividualDao;
+import app.sctp.enrollment.models.EnrollmentCluster;
 import app.sctp.enrollment.models.EnrollmentHousehold;
 import app.sctp.enrollment.models.EnrollmentHouseholdsResponse;
 import app.sctp.enrollment.models.EnrollmentSession;
@@ -50,13 +52,6 @@ public class EnrollmentSessionRepository extends BaseRepository {
         post(() -> dao.insert(sessions));
     }
 
-    /**
-     * Download targeting sessions from remote
-     *
-     * @param location
-     * @param service
-     * @param listener
-     */
     public void downloadEnrollmentSessions(
             LocationSelection location,
             EnrollmentService service,
@@ -95,9 +90,9 @@ public class EnrollmentSessionRepository extends BaseRepository {
                             dao.saveAll(response.getItems(), downloadOption);
 
                             for (EnrollmentSession session : response.getItems()) {
-                                /*if (!session.getClusters().isEmpty()) {
-                                    clusterDao.saveAll(TargetedCluster.of(session.getClusters(), session.getId()), downloadOption);
-                                }*/
+                                if (!session.getClusters().isEmpty()) {
+                                    clusterDao.saveAll(EnrollmentCluster.of(session.getClusters(), session.getId()), downloadOption);
+                                }
                             }
                         }
 
@@ -144,6 +139,7 @@ public class EnrollmentSessionRepository extends BaseRepository {
                         }
                     }
                 } else {
+                    Log.w("Response: ", response.toString());
                     throw new HttpException(response);
                 }
             } while (page.incrementAndGet() < pageCount.get());

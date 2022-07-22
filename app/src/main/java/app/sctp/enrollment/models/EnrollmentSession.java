@@ -2,9 +2,11 @@ package app.sctp.enrollment.models;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Locale;
+import java.util.Set;
 
 import app.sctp.core.model.Diffable;
 
@@ -32,6 +34,8 @@ public class EnrollmentSession implements Diffable{
     private String districtName;
     private Long householdCount;
     private SessionStatus status;
+    @Ignore
+    private Set<Long> clusters;
 
     public Long getId() {
         return id;
@@ -156,6 +160,14 @@ public class EnrollmentSession implements Diffable{
 
     public String getTitle() {
         return String.format(Locale.US, "%s %s", getTaName(), getProgramName());
+    }
+
+    public Set<Long> getClusters() {
+        return clusters;
+    }
+
+    public void setClusters(Set<Long> clusters) {
+        this.clusters = clusters;
     }
 
     @Override
